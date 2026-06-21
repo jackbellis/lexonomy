@@ -1,0 +1,701 @@
+<!DOCTYPE html><!-- v2606072620 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lexonomy Dashboard</title>
+<link rel="icon" href="favicon-lx.ico">
+<script src="strings.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap');
+
+  :root {
+    --blue:    #185FA5;
+    --ink:     #1a1a1a;
+    --mid:     #555555;
+    --muted:   #555555;
+    --rule:    #e8e8e2;
+    --bg:      #faf9f6;
+    --tile:    #ffffff;
+    --red:     #c0392b;
+    --amber:   #d4891a;
+    --green:   #2e7d5e;
+    --tile-r:  0 2px 12px rgba(0,0,0,.07);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 0 0 52px;
+  }
+
+  /* ── header ── */
+  .dash-header {
+    padding: 24px 16px 18px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .dash-wordmark {
+    font-family: 'DM Serif Display', serif;
+    font-size: 21px;
+    color: var(--blue);
+    text-decoration: none;
+  }
+  .dash-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .dash-updated {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+    align-self: center;
+  }
+  .dash-updated.recalc { color: var(--blue); }
+
+  /* ── outer wrapper ── */
+  .dash-wrap {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 14px;
+  }
+
+  /* ── section header ── */
+  .section-head {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px;
+    color: var(--mid);
+    letter-spacing: .02em;
+    padding: 22px 0 8px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 12px;
+  }
+
+  /* ── grid ── */
+  .dash-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .tile-full { grid-column: 1 / -1; }
+
+  /* ── tile base ── */
+  .tile {
+    background: var(--tile);
+    border-radius: 14px;
+    box-shadow: var(--tile-r);
+    padding: 16px 15px 14px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tile-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .tile-desc {
+    font-size: 12px;
+    color: var(--mid);
+    line-height: 1.45;
+    min-height: 2.9em;
+    margin-bottom: 10px;
+  }
+
+  .tile-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 34px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--ink);
+    transition: color .4s;
+  }
+  .tile-value.state-red   { color: var(--red); }
+  .tile-value.state-amber { color: var(--amber); }
+  .tile-value.state-green { color: var(--green); }
+  .tile-value.state-blue  { color: var(--blue); }
+  .tile-value.state-zero  { color: var(--green); }
+
+  .tile-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .tile-relation {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 8px;
+    font-style: italic;
+    min-height: 1.4em;
+  }
+
+  /* ── bar indicator ── */
+  .tile-bar-wrap {
+    margin-top: 8px;
+    height: 4px;
+    background: var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .tile-bar {
+    height: 100%;
+    border-radius: 3px;
+    transition: width .6s ease, background .4s;
+  }
+
+  /* ── frontier split bar ── */
+  .frontier-bar-wrap {
+    margin-top: 10px;
+    height: 8px;
+    background: var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+  }
+  .frontier-bar-developed {
+    height: 100%;
+    background: var(--blue);
+    transition: width .8s cubic-bezier(.4,0,.2,1);
+  }
+  .frontier-bar-frontier {
+    height: 100%;
+    background: var(--amber);
+    transition: width .8s cubic-bezier(.4,0,.2,1);
+  }
+  .frontier-legend {
+    display: flex;
+    gap: 12px;
+    margin-top: 6px;
+  }
+  .frontier-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .frontier-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── visitor tile ── */
+  .visitor-inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 4px;
+  }
+  .visitor-arc-wrap {
+    flex-shrink: 0;
+    width: 100px;
+    height: 58px;
+  }
+  .visitor-arc-wrap svg { overflow: visible; }
+  .visitor-numbers { flex: 1; min-width: 0; }
+  .visitor-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 38px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--blue);
+  }
+  .visitor-goal {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .visitor-pct {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--blue);
+    margin-top: 2px;
+  }
+
+  /* ── stale shimmer ── */
+  .tile.stale::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.55) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s infinite;
+    pointer-events: none;
+    border-radius: 14px;
+  }
+  @keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position:  200% 0; }
+  }
+  .recalc-badge {
+    position: absolute;
+    top: 9px; right: 11px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--blue);
+    opacity: 0;
+    transition: opacity .2s;
+  }
+  .tile.stale .recalc-badge { opacity: 1; }
+
+  /* ── footer ── */
+  .dash-footer {
+    max-width: 700px;
+    margin: 20px auto 0;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .wb-back{padding:6px 14px;border:1.5px solid #999;border-radius:20px;font-size:13px;color:#555;cursor:pointer;background:none}
+  .wb-back:hover{border-color:#378ADD;color:#185FA5}
+  .dash-footer a { font-size: 13px; color: var(--blue); text-decoration: none; }
+  .dash-footer a:hover { text-decoration: underline; }
+  .dash-footer-note { font-size: 11px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header class="dash-header">
+  <button class="wb-back" onclick="window.close()">← Close</button>
+  <a class="dash-wordmark" href="index.html">Lexonomy Dashboard</a>
+  <span class="dash-updated" id="dash-updated">—</span>
+</header>
+
+<div class="dash-wrap">
+
+  <!-- ── Participation ── -->
+  <div class="section-head">Participation</div>
+  <div class="dash-grid">
+    <div class="tile tile-full stale" id="tile-visitors">
+      <span class="recalc-badge">Recalculating…</span>
+      <div class="tile-label" id="lbl-visitors">Unique Visitors</div>
+      <div class="tile-desc" id="desc-visitors"></div>
+      <div class="visitor-inner">
+        <div class="visitor-arc-wrap">
+          <svg viewBox="0 0 110 64" width="100" height="58">
+            <path d="M 10 60 A 45 45 0 0 1 100 60" fill="none" stroke="#e8e8e2" stroke-width="8" stroke-linecap="round"/>
+            <path id="arc-fill" d="M 10 60 A 45 45 0 0 1 100 60" fill="none" stroke="#185FA5" stroke-width="8" stroke-linecap="round"
+              stroke-dasharray="0 141.37" style="transition:stroke-dasharray .8s cubic-bezier(.4,0,.2,1),stroke .4s"/>
+          </svg>
+        </div>
+        <div class="visitor-numbers">
+          <div class="visitor-count" id="val-visitors">—</div>
+          <div class="visitor-pct" id="val-visitors-pct"></div>
+        </div>
+      </div>
+      <div class="tile-relation" id="rel-visitors"></div>
+    </div>
+  </div>
+
+  <!-- ── Quality ── -->
+  <div class="section-head">Quality</div>
+  <div class="dash-grid">
+
+    <!-- Total Slips -->
+    <div class="tile stale" id="tile-total">
+      <span class="recalc-badge">Recalculating…</span>
+      <div class="tile-label" id="lbl-total">Total Slips</div>
+      <div class="tile-desc" id="desc-total"></div>
+      <div class="tile-value state-blue" id="val-total">—</div>
+      <div class="tile-relation" id="rel-total"></div>
+    </div>
+
+    <!-- Unique Words -->
+    <div class="tile stale" id="tile-words">
+      <span class="recalc-badge">Recalculating…</span>
+      <div class="tile-label" id="lbl-words">Unique Words</div>
+      <div class="tile-desc" id="desc-words"></div>
+      <div class="tile-value state-blue" id="val-words">—</div>
+      <div class="tile-sub" id="sub-words"></div>
+      <div class="tile-relation" id="rel-words"></div>
+    </div>
+
+    <!-- Vocabulary Frontier (full width) -->
+    <div class="tile tile-full stale" id="tile-frontier">
+      <span class="recalc-badge">Recalculating…</span>
+      <div class="tile-label" id="lbl-frontier">Vocabulary Frontier</div>
+      <div class="tile-desc" id="desc-frontier"></div>
+      <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap">
+        <div>
+          <div class="tile-value state-amber" id="val-frontier">—</div>
+          <div class="tile-sub" id="sub-frontier">leaf words</div>
+        </div>
+        <div style="flex:1;min-width:120px">
+          <div class="frontier-bar-wrap">
+            <div class="frontier-bar-developed" id="bar-developed" style="width:0%"></div>
+            <div class="frontier-bar-frontier" id="bar-frontier-fill" style="width:0%"></div>
+          </div>
+          <div class="frontier-legend">
+            <div class="frontier-legend-item">
+              <div class="frontier-dot" style="background:var(--blue)"></div>
+              <span id="legend-developed">developed</span>
+            </div>
+            <div class="frontier-legend-item">
+              <div class="frontier-dot" style="background:var(--amber)"></div>
+              <span id="legend-frontier">frontier</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tile-relation" id="rel-frontier"></div>
+    </div>
+
+    <!-- Unqualified -->
+    <div class="tile stale" id="tile-under">
+      <span class="recalc-badge">Recalculating…</span>
+      <div class="tile-label" id="lbl-under">Unqualified</div>
+      <div class="tile-desc" id="desc-under"></div>
+      <div class="tile-value" id="val-under">—</div>
+      <div class="tile-sub" id="sub-under"></div>
+      <div class="tile-bar-wrap"><div class="tile-bar" id="bar-under" style="width:0%"></div></div>
+      <div class="tile-relation" id="rel-under"></div>
+    </div>
+
+    <!-- Competing Qualifiers -->
+    <div class="tile stale" id="tile-cq">
+      <span class="recalc-badge">Recalculating…</span>
+      <div class="tile-label" id="lbl-cq">Competing Quals</div>
+      <div class="tile-desc" id="desc-cq"></div>
+      <div class="tile-value" id="val-cq">—</div>
+      <div class="tile-relation" id="rel-cq"></div>
+    </div>
+
+    <!-- Orphans -->
+    <div class="tile stale" id="tile-orphans">
+      <span class="recalc-badge">Recalculating…</span>
+      <div class="tile-label" id="lbl-orphans">Orphans</div>
+      <div class="tile-desc" id="desc-orphans"></div>
+      <div class="tile-value" id="val-orphans">—</div>
+      <div class="tile-sub" id="sub-orphans"></div>
+      <div class="tile-bar-wrap"><div class="tile-bar" id="bar-orphans" style="width:0%"></div></div>
+      <div class="tile-relation" id="rel-orphans"></div>
+    </div>
+
+    <!-- Immaculate -->
+    <div class="tile stale" id="tile-imm">
+      <span class="recalc-badge">Recalculating…</span>
+      <div class="tile-label" id="lbl-imm">Immaculate</div>
+      <div class="tile-desc" id="desc-imm"></div>
+      <div class="tile-value state-blue" id="val-imm">—</div>
+      <div class="tile-relation" id="rel-imm"></div>
+    </div>
+
+  </div><!-- end quality grid -->
+</div><!-- end dash-wrap -->
+
+<div class="dash-footer">
+  <a href="index.html">← Back to Lexonomy</a>
+  <span class="dash-footer-note">Live from Supabase · cached 1 hr</span>
+</div>
+
+<script>
+// ── config ────────────────────────────────────────────────────────────────────
+var SB_URL       = 'https://whtovqcfewvgviskhlwp.supabase.co';
+var SB_KEY       = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndodG92cWNmZXd2Z3Zpc2tobHdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2NTc3MjksImV4cCI6MjA4OTIzMzcyOX0._hUklyJU8LaaRY0P6K4YsANq_pRwyTiCYQI1fgLgH2U';
+var SB_HEADS     = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
+var VISITOR_GOAL = 1000;
+var CACHE_KEY    = 'lx_dash_cache';
+var CACHE_TTL    = 60 * 60 * 1000;
+
+// ── cache ─────────────────────────────────────────────────────────────────────
+function cacheLoadStale(){
+  try { var raw = localStorage.getItem(CACHE_KEY); return raw ? JSON.parse(raw) : null; } catch(e){ return null; }
+}
+function cacheSave(data){
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: data })); } catch(e){}
+}
+
+// ── arc ───────────────────────────────────────────────────────────────────────
+var ARC_LEN = Math.PI * 45;
+function setArc(pct){
+  var fill = Math.min(pct, 1) * ARC_LEN;
+  var arc  = document.getElementById('arc-fill');
+  if(!arc) return;
+  arc.setAttribute('stroke-dasharray', fill.toFixed(2) + ' ' + ARC_LEN.toFixed(2));
+  var hue = Math.round(210 + (145 - 210) * Math.min(pct, 1));
+  arc.style.stroke = 'hsl(' + hue + ',65%,38%)';
+}
+
+// ── color logic ───────────────────────────────────────────────────────────────
+function colorForPct(pct){
+  if(pct <= 0.03) return 'state-green';
+  if(pct <= 0.08) return 'state-amber';
+  return 'state-red';
+}
+function colorForCQ(n){
+  if(n === 0) return 'state-zero';
+  if(n <= 10) return 'state-amber';
+  return 'state-red';
+}
+function barColor(pct){
+  if(pct <= 0.03) return 'var(--green)';
+  if(pct <= 0.08) return 'var(--amber)';
+  return 'var(--red)';
+}
+
+// ── render ────────────────────────────────────────────────────────────────────
+function render(data, stale){
+  var total    = data.total    || 0;
+  var orphans  = data.orphans  || 0;
+  var under    = data.under    || 0;
+  var cq       = data.cq       || 0;
+  var imm      = data.imm      || 0;
+  var visitors = data.visitors || 0;
+  var words    = data.words    || 0;
+  var frontier = data.frontier || 0;
+  var developed = words - frontier;
+
+  // participation
+  var vpct = visitors / VISITOR_GOAL;
+  setArc(vpct);
+  setText('val-visitors', visitors.toLocaleString());
+  setText('val-visitors-pct', Math.min(Math.round(vpct * 100), 100) + '% of goal');
+
+  // total slips
+  setText('val-total', total.toLocaleString());
+
+  // competing quals
+  setClass('val-cq', 'tile-value ' + colorForCQ(cq));
+  setText('val-cq', cq.toLocaleString());
+
+  // orphans — % of slips
+  var oPct = total ? orphans / total : 0;
+  setClass('val-orphans', 'tile-value ' + colorForPct(oPct));
+  setText('val-orphans', orphans.toLocaleString());
+  setText('sub-orphans', total ? Math.round(oPct * 100) + '% of slips' : '');
+  setBar('bar-orphans', oPct);
+
+  // unqualified — % of slips
+  var uPct = total ? under / total : 0;
+  setClass('val-under', 'tile-value ' + colorForPct(uPct));
+  setText('val-under', under.toLocaleString());
+  setText('sub-under', total ? Math.round(uPct * 100) + '% of slips' : '');
+  setBar('bar-under', uPct);
+
+  // immaculate
+  setText('val-imm', imm.toLocaleString());
+
+  // unique words — ratio to slips
+  setText('val-words', words.toLocaleString());
+  setText('sub-words', '');
+
+  // vocabulary frontier — % of unique words
+  var fPct = words ? frontier / words : 0;
+  var dPct = words ? developed / words : 0;
+  setText('val-frontier', frontier.toLocaleString());
+  setText('sub-frontier', words ? Math.round(fPct * 100) + '% of vocabulary' : '');
+  // split bar
+  var bDev = document.getElementById('bar-developed');
+  var bFro = document.getElementById('bar-frontier-fill');
+  if(bDev) bDev.style.width = (dPct * 100).toFixed(1) + '%';
+  if(bFro) bFro.style.width = (fPct * 100).toFixed(1) + '%';
+  // legend counts
+  setText('legend-developed', developed.toLocaleString() + ' developed');
+  setText('legend-frontier',  frontier.toLocaleString()  + ' frontier');
+
+  // shimmer
+  var tileIds = ['tile-visitors','tile-total','tile-cq','tile-orphans','tile-under','tile-imm','tile-words','tile-frontier'];
+  tileIds.forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.classList.toggle('stale', !!stale);
+  });
+
+  // timestamp
+  var updEl = document.getElementById('dash-updated');
+  if(data.ts) updEl.textContent = 'Updated ' + new Date(data.ts).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  updEl.classList.toggle('recalc', !!stale);
+}
+
+function setText(id, val){ var el=document.getElementById(id); if(el) el.textContent=val; }
+function setClass(id, cls){ var el=document.getElementById(id); if(el) el.className=cls; }
+function setBar(id, pct){
+  var el=document.getElementById(id);
+  if(!el) return;
+  el.style.width = Math.min(pct*100,100).toFixed(1)+'%';
+  el.style.background = barColor(pct);
+}
+
+// ── fetch helpers ─────────────────────────────────────────────────────────────
+async function sbFetch(path){
+  var r = await fetch(SB_URL + path, { headers: SB_HEADS });
+  return r.json();
+}
+async function sbCount(table, filter){
+  var r  = await fetch(SB_URL+'/rest/v1/'+table+'?'+filter+'&select=id', {
+    headers: Object.assign({}, SB_HEADS, {'Prefer':'count=exact','Range-Unit':'items','Range':'0-0'})
+  });
+  var cr = r.headers.get('Content-Range');
+  if(!cr) return 0;
+  return parseInt(cr.split('/')[1], 10) || 0;
+}
+
+// Unique visitors — excludes all system sessions
+async function fetchVisitors(){
+  var PAGE=1000, offset=0, seen=new Set();
+  while(true){
+    var rows = await sbFetch('/rest/v1/murray_slips?select=session_id'+
+      '&session_id=not.like.play_*&session_id=not.like.ai_*&session_id=not.like.ww_*'+
+      '&session_id=not.like.roget*&session_id=not.like.avatar_*&session_id=not.like.claude_*'+
+      '&session_id=not.in.(cavendish7,ca)&limit='+PAGE+'&offset='+offset);
+    if(!Array.isArray(rows)||rows.length===0) break;
+    rows.forEach(function(r){ if(r.session_id) seen.add(r.session_id); });
+    if(rows.length<PAGE) break;
+    offset+=PAGE;
+  }
+  return seen.size;
+}
+
+// Competing qualifiers — in-memory cqMap
+async function fetchCompetingQuals(){
+  var PAGE=1000, offset=0, cqMap={};
+  while(true){
+    var rows = await sbFetch('/rest/v1/murray_slips?select=child,parent,qualifier'+
+      '&session_id=not.like.play_*&limit='+PAGE+'&offset='+offset);
+    if(!Array.isArray(rows)||rows.length===0) break;
+    rows.forEach(function(r){
+      if(!r.child||!r.parent) return;
+      var key=r.child.toLowerCase()+'|'+r.parent.toLowerCase();
+      if(!cqMap[key]) cqMap[key]={};
+      cqMap[key][(r.qualifier||'').toLowerCase()]=true;
+    });
+    if(rows.length<PAGE) break;
+    offset+=PAGE;
+  }
+  return Object.keys(cqMap).filter(function(k){ return Object.keys(cqMap[k]).length>1; }).length;
+}
+
+// Unqualified slips — null + empty
+async function fetchUnqualified(){
+  var a = await sbCount('murray_slips','qualifier=is.null&parent=not.eq.[orphan]&session_id=not.like.play_*');
+  var b = await sbCount('murray_slips','qualifier=eq.&parent=not.eq.[orphan]&session_id=not.like.play_*');
+  return a + b;
+}
+
+// Unique words + vocabulary frontier + prime words — one paginated pass
+async function fetchWordsAndFrontier(){
+  var PAGE=1000, offset=0;
+  var allWords=new Set(), parentWords=new Set(), childWords=new Set();
+  var primeSet=new Set(), dismissedWords=new Set();
+  while(true){
+    var rows = await sbFetch('/rest/v1/murray_slips?select=child,parent,qualifier,wl_immaculate'+
+      '&session_id=not.like.play_*&limit='+PAGE+'&offset='+offset);
+    if(!Array.isArray(rows)||rows.length===0) break;
+    rows.forEach(function(r){
+      if(r.child){
+        allWords.add(r.child.toLowerCase());
+        childWords.add(r.child.toLowerCase());
+      }
+      if(r.parent && r.parent!=='[orphan]'){
+        allWords.add(r.parent.toLowerCase());
+        parentWords.add(r.parent.toLowerCase());
+      }
+      // prime: parent='no', qualifier='[prime]'
+      if(r.child && r.parent && r.parent.toLowerCase()==='no' && r.qualifier==='[prime]')
+        primeSet.add(r.child.toLowerCase());
+      // curator-dismissed immaculates
+      if(r.wl_immaculate && r.parent)
+        dismissedWords.add(r.parent.toLowerCase());
+    });
+    if(rows.length<PAGE) break;
+    offset+=PAGE;
+  }
+  var frontier = 0;
+  allWords.forEach(function(w){ if(!parentWords.has(w)) frontier++; });
+  // prime words: in parentWords, never a child, not prime-flagged, not 'no', not dismissed
+  var imm = 0;
+  parentWords.forEach(function(w){
+    if(!childWords.has(w) && !primeSet.has(w) && w!=='no' && !dismissedWords.has(w)) imm++;
+  });
+  return { words: allWords.size, frontier: frontier, imm: imm };
+}
+
+// ── main fetch ────────────────────────────────────────────────────────────────
+async function fetchAll(){
+  var results = await Promise.allSettled([
+    sbCount('murray_slips','session_id=not.like.play_*'),        // 0 total
+    sbCount('murray_slips','parent=eq.[orphan]'),                 // 1 orphans
+    fetchUnqualified(),                                           // 2 under
+    fetchCompetingQuals(),                                        // 3 cq
+    fetchVisitors(),                                              // 4 visitors
+    fetchWordsAndFrontier()                                       // 5 words+frontier+imm
+  ]);
+  function val(r){ return r.status==='fulfilled' ? r.value : 0; }
+  var wf = val(results[5]) || { words:0, frontier:0, imm:0 };
+  return {
+    total:    val(results[0]),
+    orphans:  val(results[1]),
+    under:    val(results[2]),
+    cq:       val(results[3]),
+    visitors: val(results[4]),
+    words:    wf.words,
+    frontier: wf.frontier,
+    imm:      wf.imm,
+    ts:       Date.now()
+  };
+}
+
+// ── strings ───────────────────────────────────────────────────────────────────
+function str(k){ try{ var v=window[k]; return typeof v==='string'&&v?v:''; }catch(e){ return ''; } }
+function applyStrings(){
+  var map = {
+    visitors: { lbl:'DB_VISITORS_TITLE', desc:'DB_VISITORS_DESC', rel:'DB_VISITORS_RELATION' },
+    total:    { lbl:'DB_TOTAL_TITLE',    desc:'DB_TOTAL_DESC',    rel:'DB_TOTAL_RELATION'    },
+    cq:       { lbl:'DB_CQ_TITLE',       desc:'DB_CQ_DESC',       rel:'DB_CQ_RELATION'       },
+    orphans:  { lbl:'DB_ORPHAN_TITLE',   desc:'DB_ORPHAN_DESC',   rel:'DB_ORPHAN_RELATION'   },
+    under:    { lbl:'DB_UNQUAL_TITLE',   desc:'DB_UNQUAL_DESC',   rel:'DB_UNQUAL_RELATION'   },
+    imm:      { lbl:'DB_IMM_TITLE',      desc:'DB_IMM_DESC',      rel:'DB_IMM_RELATION'      },
+    words:    { lbl:'DB_WORDS_TITLE',    desc:'DB_WORDS_DESC',    rel:'DB_WORDS_RELATION'    },
+    frontier: { lbl:'DB_FRONTIER_TITLE', desc:'DB_FRONTIER_DESC', rel:'DB_FRONTIER_RELATION' }
+  };
+  Object.keys(map).forEach(function(key){
+    var m=map[key];
+    ['lbl','desc','rel'].forEach(function(part){
+      var el=document.getElementById(part+'-'+key);
+      var s=str(m[part]);
+      if(el&&s) el.textContent=s;
+    });
+  });
+}
+
+// ── init ──────────────────────────────────────────────────────────────────────
+(async function init(){
+  applyStrings();
+  var staleObj = cacheLoadStale();
+  if(staleObj && staleObj.data) render(staleObj.data, true);
+  try {
+    var fresh = await fetchAll();
+    cacheSave(fresh);
+    render(fresh, false);
+  } catch(e){
+    ['tile-visitors','tile-total','tile-cq','tile-orphans','tile-under','tile-imm','tile-words','tile-frontier']
+      .forEach(function(id){ var el=document.getElementById(id); if(el) el.classList.remove('stale'); });
+    var updEl = document.getElementById('dash-updated');
+    updEl.textContent = 'Live fetch failed';
+    updEl.classList.remove('recalc');
+  }
+})();
+</script>
+</body>
+</html>

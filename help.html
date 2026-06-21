@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lexonomy Help</title>
+<style>
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;line-height:1.7;color:#333;margin:0;padding:16px 18px 24px;background:#fff}
+  h1{font-size:20px;font-weight:700;color:#111;margin:0 0 6px}
+  h2{font-size:16px;font-weight:600;color:#17c;margin:22px 0 8px}
+  h3{font-size:14px;font-weight:600;color:#17c;margin:19px 0 6px}
+  p{margin:0 0 12px}
+  a{color:#185FA5}
+  ul{margin:0 0 12px;padding-left:20px}
+  ul li{margin-bottom:5px}
+  ol{margin:0 0 12px;padding-left:20px}
+  ol li{margin-bottom:5px}
+  img{max-width:100%;border-radius:6px;margin:10px 0}
+  .murray-slip{max-width:320px;display:block;margin:10px auto}
+.bodycntr {
+  width: 90%; /* or a fixed width like 960px */
+  max-width: 700px;
+  margin-left: auto; /* Centers the container horizontally */
+  margin-right: auto; /* Centers the container horizontally */
+  /* A shorthand for the above two lines is margin: 0 auto; */
+}
+  hr{border:none;border-top:1px solid #eee;margin:20px 0}
+</style>
+</head>
+
+
+<body class="bodycntr">
+
+<h1>Welcome to Lexonomy</h1>
+<p>June 17, 2026 2:24PM</p>
+<p><strong>Table of Contents</strong></p>
+<p><a href="accessibility.html">Accessibility Statement</a>&nbsp;&nbsp;<a href="#bugs">Bugs and Limitations</a>&nbsp;&nbsp;<a href="#about">About</a></p>
+<p><a href="#what">What</a>&nbsp; &nbsp;&nbsp;<a href="#who">Who</a>&nbsp; &nbsp;&nbsp;<a href="#where">Where</a>&nbsp; &nbsp;&nbsp;<a href="#why">Why</a>&nbsp; &nbsp;&nbsp;<a href="#when">When</a>&nbsp; &nbsp; &nbsp;<a href="#how">How</a>&nbsp; &nbsp;&nbsp;<a href="#howmuch">How Much</a>&nbsp;</p>
+<p><a href="#underthehood">Under the Hood</a>&nbsp;&nbsp;<a href="#synonyms">Synonyms, Antonyms, Nature, and Parts-of-Speech</a>&nbsp;&nbsp;<a href="#prime">Prime Words</a> <a href="#connectors">Connectors</a></p>
+<p><a href="#instructions">Instructions</a>&nbsp; &nbsp;<a href="#avatars">Avatars</a></p>
+<h2><a href="#play"><strong>Game</strong></a>&nbsp; &nbsp; <a href="#build"><strong>Build</strong></a>&nbsp; &nbsp; <a href="#lookup"><strong>Lookup</strong></a></h2>
+<p><a href="#quickadd">Quick Add</a>&nbsp;&nbsp; <a href="#edit">Edit</a>&nbsp;&nbsp;<a href="#curate">Curate</a>&nbsp;&nbsp;<a href="#wish">Wish List</a></p>
+<p>Images:&nbsp;<a href="#d_narrowerterm">Narrower Term Example</a>&nbsp; &nbsp;<a href="#d_murray">James Murray</a>&nbsp; &nbsp;<a href="#d_kleiser">Kleiser Book</a>&nbsp; &nbsp;<a href="#d_slip">OED Slip</a>&nbsp; &nbsp;<a href="#d_primes">Primes and Primitives</a>&nbsp; &nbsp;<a href="#d_qual">Qualifiers</a></p>
+<h2><a id="about"></a>About</h2>
+<p><span style="font-weight: 400;">Lexonomy is...</span></p>
+<ol>
+<li><span style="font-weight: 400;">A hierarchical dictionary...<br /><br />... founded on <strong>the principle that any concept in the developing mind can be 'defined' by two other terms, one that is broader and one that qualifies the broader term</strong>.<br /><br /></span></li>
+<li><span style="font-weight: 400;">A&nbsp;crowd-curated, completely u</span><span style="font-weight: 400;">nmediated web app, lexonomy.org:<br /><strong><br /></strong>The web app is completely open (no registration of any sort),&nbsp;and completely unmediated. Any user can create and edit the parent-child hierarchy and the qualifier words that comprise the dictionary. Only the complete removal of terms from the dictionary is&nbsp;protected (by administrative password). Note that public users <em>can, however, delete 'relationships'</em> between terms because this is key to crowd-sourcing the curation.</span></li>
+</ol>
+<p>As a lookup tool, Lexonomy.org enables you to look up broader (less specific) and narrower (more specific) words for a given term. For instance, if you recall that there's a special word for a 'pause' in a conflict, but can't remember it, you could look up 'pause' and see more specialized terms:</p>
+<p><a id="d_narrowerterm"></a><img class="murray-slip" src="images/pause.png" alt="the word pause in the lexonomy lookup" /></p>
+<p>&nbsp;</p>
+<h2>Discoveries and Principles</h2>
+<p><span style="font-weight: 400;">The seed for Lexonomy was planted in 1983 (more below), had fits-and-starts in 2019, and the software implementation became a reality only with the help of artificial intelligence, from March to May of 2026.&nbsp;</span><span style="font-weight: 400;">In the course of the creation, many observations and discoveries arose:</span></p>
+<ul>
+<li><span style="font-weight: 400;"><strong>The Development of Human Vocabulary</strong><br />As the system was developed, it became clear that the primary mechanism of Lexonomy&mdash;concepts refining from one to another&mdash;was nothing less than the mechanism of the growth of vocabulary in the individual, developing human.</span></li>
+</ul>
+<ul>
+<li><span style="font-weight: 400;"><strong>Primes and Primitives</strong><br /><a href="https://en.wikipedia.org/wiki/Natural_semantic_metalanguage">Semantic primes</a> (also known as conceptual primitives) are a foundational concept in linguistics pioneered by Anna Wierzbicka and her colleague Cliff Goddard in 1972. Lexonomy arrives at a list with overlaps but a very different character: 13 words upon which all other language is derived: the 5 human senses, the 6 "W" questions, and the words 'yes' and 'no.'</span></li>
+</ul>
+<ul>
+<li><span style="font-weight: 400;"><strong>The First <span style="text-decoration: underline;">Word</span>: 'no'</strong><br />Preceding the software development, the discovery arose that the first word in human vocabulary&mdash;perhaps communication in all entities born of DNA&mdash;is 'no.'&nbsp;</span></li>
+</ul>
+<ul>
+<li><span style="font-weight: 400;"><strong>The First <span style="text-decoration: underline;">Concept</span>: 'yes'</strong><br />If a concept is the joining of two terms, then 'yes' was the first concept, wherein the brain learned the trick of abstraction... separating one thing from another... subtraction... the act of 'not'... on the notion of 'no' itself. And everything else in the mind might be explained as extension of this negation trick.&nbsp;</span></li>
+</ul>
+<ul>
+<li><strong>Lexonomy Describes the Middleground of Vocabulary<br /></strong><span style="font-weight: 400;">At the root of the tree, prime terms belong to&nbsp;sensory input (smell...) and the cosmos (time, space, existence), and the mind works from there, combining terms in a somewhat tree-like simplicity. At the outer reaches of abstraction the relationships are as if multi-dimensional and richly intertwined. At that level everything is likely&nbsp; connected to everything, and the clarity of 'concept=broader(qualifier)' dissolves to "concept=concept X concept," more of a 'product' relationship than a superset/subset one.</span></li>
+</ul>
+<ul>
+<li><span style="font-weight: 400;"><strong>True Synonyms</strong><br />Lexonomy seems to reveal that true synonyms&mdash;words that are completely interchangeable to the point that even when used in a college essay a professor couldn't objectively argue betwen the two&mdash;are fairly rare. For instance, 'yearly' and 'annual' don't seem to have any breathing room between them, do they? Well, in fact, you wouldn't expect to see an 'annual report' entitled 'yearly report,' would you. So, while it might be difficult to find a qualifier that sliced neatly between the two (other than perhaps 'formal'?)... they are not absolute synonyms in the world of Lexonomy.&nbsp;</span></li>
+</ul>
+<ul>
+<li><strong>Polysemy... and Lexonomy's More Rigorous 'Lexophone'<br /></strong>In lingustics, the various senses of the word 'head' (physical body part, company leader, unit of livestock) are called polysemy (for multiple semantics) and have various&nbsp;definitions in dictionary. In Lexonomy, these three uses of the term are the same (!) concept. But consider two identically spelled words with thoroughly disconnected meanings, such as 'mole' (the animal), and 'mole' (the chemical measurement term). These two meanings were never connected in any way. But other instances had a connection at one time and that connection has dissolved completely over time. An example is 'fluke' (chance event, vs whale's tail). Apparently 'chance event' did evolve from an old idiom that invoked the whale's tail. But no connection is currenly perceivable, and no child could ever evolve one from the other! Both are polysemy with nary a trace of formative derivation. They are lexophones, with 'mole' being even more pure than 'fluke.'</li>
+</ul>
+<ul>
+<li><strong>Lexoneme... the Smallest Space Between Concepts</strong><br />Is 'mismatch' a pure synonym for 'disagreement'? In a conversation, I stated that there was a 'disagreement' between two sets of values. AI came back with a response about the 'mismatch.' And I immediately focused on the nuance between the two terms: disagreement implies action, or an actor, or an act; mismatch makes no such association and was the more correct term. This small gap, 'near rungs' on a ladder, I'm calling a 'lexoneme,' a pair of words with just the slightest qualification between them, one that Lexonomy strives to identify.</li>
+</ul>
+<ul>
+<li><strong>Lexonomy Doesn't Explain Nature or Man-Made Terms</strong><br />Those are simply not concepts, even if they often develop corresponding terms that are indeed conceptual. The are not the combining of two things in the brain. A 'frog' cannot be reduced to two existing terms; it might be a type of amphbian, but it is not uniquely distinguished from other amphibians by a single term. So too, with man's creations.</li>
+</ul>
+<ul>
+<li><strong>Lexone... Concept from the Un-Conceptual</strong><br />The word 'hammer'&nbsp;refers (first-and-foremost?) to the physical tool, but it is clearly a prominent member of conceptual space. We're using the term 'lexone' to denote such terms, whether man-made or nature-made, that&nbsp;gain conceptual standing.&nbsp;&nbsp;</li>
+</ul>
+<h2><a id="what"></a>What</h2>
+<ul>
+<li>A crowd-sourced, hierarchical dictionary.</li>
+<li>Lexonomy is founded on a bold concept that any word can be identified by as few as two other words. One of those two words is a more general term, and one is a term that qualifies that more general term. So in the general topic of 'stop' there might be two, more specific terms, 'pause' and 'end.' A very specific word, 'interregnum' is based on the term 'pause,' with the qualifier 'conflict,' as shown above. Thus, "interregnum = conflict pause."</li>
+<li>Seeded with words from Roget's Thesaurus. We didn't use all of them since there's a lot of arcana, but it's a useful starting point.</li>
+<li>You can look up words, or contribute to the dictionary with these options:
+<ul>
+<li>Quick Add: a simple page with three fields to enter any new entry into the dictionary, specifically intended for phone use.</li>
+<li>Edit: a more complex page for entering broader and narrower terms, and fits on a phone, but serious contributing should really be done on a full-screen desktop with the next two options.</li>
+<li>Curate: a drag-and-drop categorizing tool to organize the hierarchy of a term. This is generally used on whole topics from Roget's Thesaurus, which range from 10-50 words.</li>
+<li>Inheritance: the equivalent of Curate, but a 3-column tool that's not as quick and visual as Curate, but lets you build one level deeper of word nesting.</li>
+</ul>
+</li>
+</ul>
+<h2><a id="who"></a>Who</h2>
+<ul>
+<li>Lexonomy was created by Jack Bellis, of Philadelphia, PA USA, with...</li>
+<li>Software development 100% by <strong>Claude.ai</strong> of Anthropic.com. I had to direct Claude, move files, deploy, and massage the database, but Claude did every line of code. More, below, in 'How.'</li>
+<li>Peter Mark <strong>Roget&nbsp;</strong>(1779&ndash;1869), author of <a href="https://en.wikipedia.org/wiki/Roget%27s_Thesaurus">Roget's Thesaurus</a>. More, below, in 'How.'</li>
+<li><strong>Sir James Murray</strong> (1837-1915) (image at end), who created the Oxford English Dictionary. His methodology of collecting slips of paper (image at end), each with substantiation for the usage of a word, is part and parcel of our concept... soliciting teeny-weenie contributions that build our corpus.</li>
+<li><strong>Anna Wierzbicka</strong> and her colleague Cliff Goddard, who in 1972, formalized the concept of&nbsp;<a href="https://en.wikipedia.org/wiki/Natural_semantic_metalanguage">Semantic primes</a>.</li>
+<li>I am humbled and amazed to see in the Wikipedia accounting of the thesaurus, that I am following, in turn with Roget, on the work apparently of <strong>Liebniz</strong> and <strong>Aristotle</strong>.&nbsp;</li>
+</ul>
+<p>Sir James Murray with his collection of slips:</p>
+<p><a id="d_murray"></a><img class="murray-slip" src="images/murray.jpg" alt="Sir James Murray" /></p>
+<h2><a id="where"></a>Where</h2>
+<ul>
+<li>Lexonomy.org</li>
+</ul>
+<h2><a id="why"></a>Why</h2>
+<ul>
+<li>Now it gets interesting. At some point I started noticing that the meanings of words are hierarchical. I can recall at one time, in my techwriting years, noticing that it was important to properly choose between the words 'tap,' 'click,' 'choose,' and 'select'... and that some were too specific... and that the broader ones were sometimes broader even than one another. I don't know if that's the earliest time this happened, but it's one of the first.&nbsp;</li>
+<li>Eventually, doing many <strong>crossword puzzles</strong>, I noticed the wonderful economy of words in the clues. Complex terms were often reduced to one or two other words. When a clue is one word, it's probably just a synonym, nothing enlightening there. But two-word clues reveal a pattern, or at least beg a question: can any term be targeted by two words? If they're hierarchical, sure. Any word is the 'product of' a more general word and some word that qualifies it to a more specific use. Surely the human brain must need some sort of scaffolding on which to organize this massive jumble of terms that we deploy so precisely to slice-and-dice the world of our thoughts, which we then spill out onto pixels and ink.</li>
+<li>This eventually became Bellis's Law: any word can be identified by two other words, a broader term and a qualifier. The pieces of this triad, "term = [broad term], [qualifier]" I'm calling 'cepts,' suggested by the constituent part of the word con-cept, to bring together two ideas. The Lexonomy is unavoidably visualized as a simple multi-level outline of words, as shown above in the Lookup example. But the human brain is so richly networked, that every "term" in my little equation, above, becomes a broader term and/or a qualifier. So 'cept' is a bit of a fleeting notion... one term's qualifier becomes another term's broader. But let's move on.&nbsp;</li>
+<li>Why not just ask Google? You could, and still might. But Lexonomy lets you browse every which way among the mental space of any concept.</li>
+</ul>
+<h2><a id="when"></a>When</h2>
+<ul>
+<li>I started trying to make Lexonomy in 2010, manually extracting the public domain content of Roget's Thesaurus, chopping its 700 or so topics apart and arranging them into a Google "site," where I was surprised to see that the content is still present. I realized it was pointless.</li>
+<li>And then in February of 2026 I started experimenting with AI, Claude.ai, to be specific. From <a href="https://jackbellis.substack.com/p/my-ai-prediction-after-11-experiments">extensive experiments with Claude</a>, it became clear to me that he was superintelligent&mdash;I have zero trouble making that assessment&mdash; superfast, superprogrammer. And it took me weeks, but I finally asked myself, "can't I use Claude to make Lexonomy?" I believe it took 3 weeks, and about 200 prompts... and he did.</li>
+<li>In my lengthy discussions with Claude, which I've offloaded from Claude.ai for posterity, we discovered that the inspiration for Lexonomy goes even further back. I proposed further seeding Lexonomy with a list of two-word phrases from another word book, Grenville Kleiser's Fifteen Thousand Useful Phrases (image at end). I left my receipt in that book, and it's from May 2, 1995. It was just after the World Wide Web was getting up to speed. And that in turn meant that you could type into it almost anything, such as a book title you've always wondered about, and maybe learn about it or even buy it. Well I did buy it, because I'd been fascinated about that book after pulling it off of a bookshelp at a friend's house, and always remembered the name. And on a hand-written note on that very receipt, from Summerhouse Book Company in Philadelphia, I wrote "Very&nbsp; early internet purchase, a book I saw at a friend's house in 1983."</li>
+</ul>
+<p>The book that might have planted the seed for a hierarchical dictionary, Lexonomy, with my 1983 recollection:</p>
+<p><a id="d_kleiser"></a><img class="murray-slip" src="images/kleiserall.png" alt="Book and receipt from 1983" /></p>
+<ul>
+<li>I have no idea how long it took me to start formulating my law of two-word definitions, after getting transfixed by Kleiser's 45 pages (!) of two-word 'useful phrases,' but it's entirely reasonable to think of 1983 as the year that Lexonomy started. Maybe the seedling hadn't even sprouted, but the land was starting to be cultivated. Forty-three years, that's when Lexonomy started... and Claude essentially built it in 3 weeks.</li>
+</ul>
+<h2><a id="how"></a>How</h2>
+<ul>
+<li>The public domain contents of the <strong>thesaurus was ingested</strong> by Claude and extensively filtered and cleaned up to seed a good starting point for Lexonomy, rather than asking 'the crowd' to start from a blank slate.</li>
+<li>Roget had about 1000 groups of terms, which Lexonomy calls categories, and three levels of categorization above these terms. The categories would have gotten in the way of crowdsourcing the hierarchy so that level was omitted; none of <strong>Roget's classes</strong>, subclasses, or numbered section headings are in Lexonomy. Claude also recommended, and I took his recommendation to strip out lots of arcana (rackabones?), phrases, Latin, and so on.</li>
+<li><strong>AI Curation:</strong> I was going to rely only on crowdsourcing for the broader/narrower relationships, but then I realized... hold on a second, isn't Claude pretty good with language? So I asked Claude about taking a pass at creating the broader/narrower relationships and he literally said, "just ask." So I had him do it, and there are now crude groupings within almost every one of our 700 categories. It was amazing to see. This brings up the question...</li>
+<li>Why not just have AI totally create the hierarchy?&nbsp;</li>
+<li>Claude Conversation Instances: The first two Claude conversations lasted almost two weeks each, totalling 122,000 words. The first one started to slow down under its own weight. Apparently each instance maintains an ongoing context, which in turn does amount to familiarity with the project and resembles a definite nuance of comprehension that has to be reconstructed in a new instance. The first instance provided a lengthy "transfer of knowledge" project summary which was then pasted into the second instance, along with the few HTML and JS files that the first instance created. The second instance had zero trouble picking up where it was left off. The whole thing was as staggeringly impressive as <a href="https://jackbellis.substack.com/p/what-i-did-with-ai-today">my previous experiments with Claude</a>. I'll be writing up an extensive article on the experience of creating Lexonomy with Claude. At this writing, I'm in 'Claude 49'... yes, the 49th conversation instance.</li>
+<li><strong>Resulting Web App:</strong>&nbsp;The result is an app that
+<ul>
+<li>Phone users can use to look up terms. It's already rich with one flat level of synonyms and Claude's pass at creating hierarchy within them. A quick look at his groupings seems to show that the human touch can add a lot. I'll have to evaluate more.</li>
+<li>Quick Add: a phone page on which you can submit an entry to Lexonomy. And when I say "submit," I mean include on the fly with no moderator in the middle. Each entry you make, of term/broader/qualifier is the modern, Lexonomy equivalent of one the the Oxford English Dictionary's (OED) 'slips' (image at end) from which Sir Murray created the OED. So we call each submission&mdash;each row in the database&mdash;a <strong>Murray Slip</strong>! And you created it!</li>
+<li>Curation: Serious curation can be done on a large screen. The drag-and-drop is pretty cool, mostly in the tree.</li>
+<li>Games: There are 6 games you can play to help curate Lexonomy, deciding on best qualifiers, reconciling competing opinions and so on. They're a challengine alternative to Wordle for people who want to do a puzzle where the answer is only in one's on brain.</li>
+</ul>
+</li>
+</ul>
+<p>An actual Sir James Murray OED slip.&nbsp;This is what one of Murray's 3.5 million slips looks like:</p>
+<p><a id="d_slip"></a><img class="murray-slip" src="images/murrayslip_1.png" alt="A Murray Slip &mdash; the physical artifact that named our contribution mechanism" /></p>
+<h2><a id="howmuch"></a>How Much</h2>
+<ul>
+<li>Free, other than the cost of getting on the Web.</li>
+<li>No spam, currently no login, no password, no secret handshake, no nothin. If it gets trashed I'll do a restore and do what has to be done.</li>
+</ul>
+<h2><a id="underthehood"></a><strong>'Under the Hood'</strong></h2>
+<p>Lexonomy uses a simple database that is fundamentally 3 fields:</p>
+<ul>
+<li>Parent Term</li>
+<li>Term</li>
+<li>Qualifier</li>
+</ul>
+<p>There are several other fields that manage the game outputs when a worklist item is created, and disposition of wrorklist items but they have no influence on the dictionary, so to speak. In other words, the theory is captured very purely by the 'schema' to use the technical word. There are only these contrivances:</p>
+<ul>
+<li><strong>Orphans:</strong> The pseudo-value '[orphan]' is placed in the Parent Term field when a user performs an action that would completely remove the last occurence of a term from Lexonomy, whether that term was used as a parent or term or qualifier. These orphans appear in the Orphans worklist for anyone to place in a good home, whether foster care or permanent.</li>
+<li><strong>Variants</strong>
+<ul>
+<li><strong>Variant </strong>is the term used as a catchall for words that are the identical concept as another term but have not yet been more carefully identified with one of the following choices.</li>
+<li><strong>Synonyms</strong>: the pseudo-value [synonym] is placed in the qualifier field when users deem a term to be completely interchangeable with another. The system arbitrarily regards one term in a synonym relationship as the parent... simply based on what term happened to be the term being edited or curated... the 'main term' one might say. So if I'm working on 'blend' and see 'mix' as one of its children/narrower terms, I might decide they're synonyms (I emphasize, completely interchangeable), I can choose the autosuggested choice [synonym] for 'mix's qualifier. Thereafter, 'blend' is the parent, but only arbitrarily so, by virtue of editing order. Note that synonyms shouldn't have children... because their existence would imply a distinction from their counterpart, a distinction that surely must reveal a strong qualifier that could be identified.</li>
+<li><strong>Nouns, Adjectives, etc:</strong> In general, it's better to declare different parts of speech simply as one of these variants rather than a separate concept. How do we make the choice, when to provide some other qualifier than simply [noun], for instance? I don't have an exact answer, but it might be a moot point. The question is actually only, do you have a better qualifier??? Nouns and adjectives can have their own children... whereas synonyms shouldn't.&nbsp;</li>
+<li><strong>Not:</strong> Ah, the real troublemaker. Lexonomy has as its theoretical foundation that 'no' is the fundamental operation that starts vocabulary development in the growing mind. And Claude insists (don't laugh) that negation is the soul of vocabulary propagation (my words, his observation). Anyway, somewhere approaching 50% of&mdash;but I guarantee you not exceeding&mdash;vocabulary is probably just the negation of the other near half. In Lexonomy, opposites, antonyms, are the same concept... in a way. Lexonomy has no answer for this antimatter capability of the brain. It's automatic. It's the magic qualifier, the super qualifier. But at the outer reaches of the tree of words that Lexonomy proposes, the brain automatically uses every word (!) as a qualifier for every other word. That, just like the enormity of data centers proliferating right now in 2026, is probably the miracle of human-like thought. Assign '[not]' whereever you deem it the right qualifier... but don't remove antonyms from a concept just because they look like invaders... they're not.</li>
+</ul>
+</li>
+</ul>
+<h2><strong>Roget vs. Lexonomy</strong></h2>
+<p>Roget produced a book of 1042 topics, each with dozens to hundreds of terms. (In Lexonomy, we've settled on calling those original topics 'categories.') And he did have hierarchy, but it was totally about abstraction, whereas Lexonomy is all about development of concepts in the brain.</p>
+<p>And Roget did have hierarchy, 6 levels, in fact... as you can see below. But it was all about the general commonality between the words, then down to parts of speech. Here is his first entry:</p>
+<table style="width: 565px; border-color: #ddd; border-collapse: collapse;" border="1">
+<tbody>
+<tr>
+<td style="width: 62.375px;">1</td>
+<td style="width: 28.625px;">&nbsp;Class</td>
+<td style="width: 481px;">CLASS I: WORDS EXPRESSING ABSTRACT RELATIONS</td>
+</tr>
+<tr>
+<td style="width: 62.375px;">2</td>
+<td style="width: 28.625px;">&nbsp;Section</td>
+<td style="width: 481px;">SECTION I. EXISTENCE</td>
+</tr>
+<tr>
+<td style="width: 62.375px;">3</td>
+<td style="width: 28.625px;">&nbsp;Subsection</td>
+<td style="width: 481px;">1.BEING, IN THE ABSTRACT</td>
+</tr>
+<tr>
+<td style="width: 62.375px;">4</td>
+<td style="width: 28.625px;">&nbsp;Category</td>
+<td style="width: 481px;">#1. Existence</td>
+</tr>
+<tr>
+<td style="width: 62.375px;">5</td>
+<td style="width: 28.625px;">Part of Speech</td>
+<td style="width: 481px;">
+<p>N. existence, being, entity, ens...<br /><strong>494</strong> actual existence. presence&nbsp;<em>&amp;c.</em>&nbsp;<em>(existence in space)<br /></em><strong>186&nbsp;</strong>coexistence&nbsp;<em>&amp;c.</em><br />V. exist, be; have being...<br />Adj. existing &amp;c. v.; existent, under the sun;...<br />Adv. actually &amp;c. adj.; in fact, in point of fact,...<br />Phr. ens rationis [Lat.]; ergo sum cogito [Lat.],...</p>
+</td>
+</tr>
+<tr>
+<td style="width: 62.375px;">6</td>
+<td style="width: 28.625px;">Cross-refs</td>
+<td style="width: 481px;">(the 494 and 186, above)</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;So where Roget will have ...</p>
+<ul>
+<li>#906.&nbsp;<strong>Benevolence</strong>&nbsp;&mdash;<br /><strong>N.</strong>&nbsp;benevolence, Christian charity; God's love, God's grace; good will; philanthropy&nbsp;<em>&amp;c.</em>&nbsp; <br /><strong>910</strong> unselfishness&nbsp;<em>&amp;c.</em>&nbsp; <br /><strong>942</strong> good nature, good feeling, good wishes; kindness, kindliness&nbsp;<em>&amp;c.</em>&nbsp;<em>adj.;</em>&nbsp;loving-kindness, benignity, ...</li>
+</ul>
+<p><span style="font-weight: 400;">... Lexonomy is about developmental genealogy, looking for the simplest word in such a group that a child might learn first, and then deriving more and more sophisticated terms. Our tree might have this progression: </span></p>
+<ul>
+<li><span style="font-weight: 400;">good</span>
+<ul>
+<li><span style="font-weight: 400;">kind</span>
+<ul>
+<li><span style="font-weight: 400;">unselfish</span></li>
+<li><span style="font-weight: 400;">charity</span></li>
+<li><span style="font-weight: 400;">benevolent<br /></span></li>
+<li><span style="font-weight: 400;">generosity</span></li>
+<li><span style="font-weight: 400;">altruist</span></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>So in Lexonomy, "benevolence" is hardly a top-level term... it is developed over years of language learning from infancy to perhaps young adulthood. And note that Lexonomy will generally use the verb and adjective forms. Nouns are more of an abstraction, somewhat of an extreme accomplishment of the human brain. The actions and descriptions (adjectives) are closer to the root of our tree.</p>
+<h2>Synonyms, Antonyms, Nature, and Parts-of-Speech</h2>
+<ul>
+<li><strong>Parts-of-speech:</strong>&nbsp;when you enter qualifiers, you may wonder if you're supposed to use adjectives or nouns, or whatever... or try to re-use existing qualifier spellings, that sort of thing. And that's&nbsp; good instinct. But our design decision when creating Lexonomy was that parts of speech should be de-emphasized when they don't result in significantly separate meanings.&nbsp;Lexonomy is about concepts. Parts of speech are sometimes just a variant on any concept. (One could say that the noun for any concept is that concept qualified by 'thing.' And the verb for any concept is that concept qualifed by 'do.')&nbsp; Claude.ai has done two different passes through Roget's original set of words, and on the second pass used the qualifier, "nominal" to identify the noun form of verbs. Sometimes the noun form has a broad ontology of new senses of a word. For instance "motion" vs. "move" has a rich catalog of meanings, so in this case "part of speech" is important and valuable. In other cases it might not be as significant.&nbsp;<strong>Just enter whatever occurs to you as the right way to qualify something</strong>, without excessive regard for part-of-speech. I fully expect to have AI try to clean that up later... seriously. Claude and I talked about it and he's optimistic. In fact, since AI is founded first-and-foremost I seem to understand, it is words (not software code) that is&mdash;or should be&mdash;AI's strength. It certainly will have the speed required to review tens of thousands of sloppy, human words and disambiguate them.&nbsp;</li>
+<li><strong>Nouns vs Adjectives and Verbs:</strong> Roget's categories, which seed Lexonomy, are almost all phrased as nouns &mdash; 'youth' instead of 'young,' 'cessation' instead of 'stop.' Lexonomy leans toward adjective and verb forms. The reason is subtle: young is closer to lived experience than youth. Youth is a categorization &mdash; one step of abstraction away from life. Lexonomy is organized around how meaning forms in the mind, which is from living outward, not from categories inward.</li>
+<li><strong>Synonyms</strong>: if all goes as planned, <strong>synonyms are simply words with identical parents and no difference in qualifiers</strong>. I suppose that means either no qualifiers or identical qualifiers. (Hmmm, did we account for similar qualifiers? Don't know.) A lot of things will be learned about our Lookup logic and functionality after some beta usage. In Lexonomy we don't really try to claim that any two terms are synonyms, instead leaving that to the dictionary folks. It's as if we're saying "all we have here is evidence, not a verdict." Notice I said "if all goes as planned."</li>
+<li><strong>Antonyms</strong>: again, if all goes as planned, antonyms will be built into the Lexonomy premise itself: <strong>they will be the qualification of any concept by the word "not"</strong>. Let's see how THAT works out! So we shouldn't have to provide any instruction or rules to follow. Maybe like qualifiers, Claude will at some future time clean up all entries of the qualifiers 'no' and 'not' to all say 'no.'</li>
+<li><strong>Natural Objects</strong> are not subject to the whims of Lexonomy. The many-leveled taxonomy of the natural world is much deeper than any of us are likely to categorize any of our concepts. And I have thought through trying to find a 'crossword' (two-word) combination to identify various species, and it doesn't work. Consider 'elephant.' Tusked beast? That could be a rhino. They are not human contrivances, not concepts. 'Nuff said.</li>
+</ul>
+<h2><a id="prime"></a>Prime Words</h2>
+<p>If words are in fact hierarchical, with parent-child relationships, then some words must be at the top of the genealogy, right? That's my theory, and I call them 'prime word,' analogous to prime numbers. They are words that are not able to be expressed clearly relative to a broader term. Children learn them mostly by example, but that's how they learn almost all words, so that's probably just an interesting observation. Attempts to define them usually go in linguistic circles... but that's fine... that's what the brain is all about.</p>
+<h3>My Original Guess at Primes, 2019</h3>
+<p>Here's my list of prime words, formulated in approximately 2019 when I first tried manually curating a hierarchy in Google Sites:</p>
+<table style="width: 531px;">
+<tbody>
+<tr>
+<td style="width: 122px;">a</td>
+<td style="width: 130.422px;">feel</td>
+<td style="width: 130.578px;">me</td>
+<td style="width: 131px;">see</td>
+</tr>
+<tr>
+<td style="width: 122px;">about</td>
+<td style="width: 130.422px;">for</td>
+<td style="width: 130.578px;">my</td>
+<td style="width: 131px;">so</td>
+</tr>
+<tr>
+<td style="width: 122px;">and</td>
+<td style="width: 130.422px;">from</td>
+<td style="width: 130.578px;">no</td>
+<td style="width: 131px;">than</td>
+</tr>
+<tr>
+<td style="width: 122px;">answer</td>
+<td style="width: 130.422px;">good/bad</td>
+<td style="width: 130.578px;">not</td>
+<td style="width: 131px;">their</td>
+</tr>
+<tr>
+<td style="width: 122px;">as</td>
+<td style="width: 130.422px;">happen</td>
+<td style="width: 130.578px;">of</td>
+<td style="width: 131px;">then</td>
+</tr>
+<tr>
+<td style="width: 122px;">at</td>
+<td style="width: 130.422px;">have</td>
+<td style="width: 130.578px;">off</td>
+<td style="width: 131px;">thing</td>
+</tr>
+<tr>
+<td style="width: 122px;">big/small</td>
+<td style="width: 130.422px;">hear</td>
+<td style="width: 130.578px;">or</td>
+<td style="width: 131px;">way</td>
+</tr>
+<tr>
+<td style="width: 122px;">but</td>
+<td style="width: 130.422px;">I</td>
+<td style="width: 130.578px;">part</td>
+<td style="width: 131px;">weather</td>
+</tr>
+<tr>
+<td style="width: 122px;">by</td>
+<td style="width: 130.422px;">if</td>
+<td style="width: 130.578px;">place</td>
+<td style="width: 131px;">when</td>
+</tr>
+<tr>
+<td style="width: 122px;">can</td>
+<td style="width: 130.422px;">is</td>
+<td style="width: 130.578px;">question</td>
+<td style="width: 131px;">which</td>
+</tr>
+<tr>
+<td style="width: 122px;">do</td>
+<td style="width: 130.422px;">like</td>
+<td style="width: 130.578px;">same/different</td>
+<td style="width: 131px;">you</td>
+</tr>
+</tbody>
+</table>
+<h3><a id="d_primes"></a>The 13 Primes, After Lexonomy Matured, 2026</h3>
+<p>The following diagram shows the primes and primitives derived from Lexonomy, thinking through the likely mechanism of development of the earliest vocabulary terms... based on imagining a parent's words to a newborn.</p>
+<p><img src="images/lexonomyprimitives.jpg" alt="Schematic of prime and prmitive words" /></p>
+<p>Notice the green highlights, where the mind 'bottoms out' at the physical world. There are the 5 traditional senses</p>
+<ol>
+<li>smell</li>
+<li>taste</li>
+<li>touch</li>
+<li>see</li>
+<li>hear...<br /><br />and the classical questions that each has a more abstract word in the mature mind:<br /><br /></li>
+<li>do (how?)</li>
+<li>thing (what?)</li>
+<li>be (why?)</li>
+<li>you (who?)</li>
+<li>here (where?)</li>
+<li>now (when?). <br /><br />To these 11 Lexonomy adds...<br /><br /></li>
+<li>the first word, 'no,' and</li>
+<li>the first concept, 'yes,' both of which get emeritus status in the list of primes.&nbsp;</li>
+</ol>
+<p>That's the list of primes&mdash;true primes&mdash;according to Lexonomy. Only 13 terms that defy decomposition. Even seemingly cloud-like words such as 'by' can be factored, under enough curatorial pressure, into, for instance: by=when(must). even the seemingly (!) unsophisticated toddler brain is taking the thousands of times it hears 'by,' and realizing that it concerns matters of 'when' (whether with a sense of time or condition [if]), and combines it with matters of "necessity."</p>
+<p>Everything beyond the 13 primes is a matter of abstraction through combination.</p>
+<h3>Semantic Primitives: Wierzbicka (1972) vs Bellis</h3>
+<p>Wierzbicka et al started with 14 primes/primitives. In Lexonomy, I arrived eventually at 13... corresponding to the 5 human senses, and the traditional "who/what/where..." questions, and the first word ('no'), and first concept ('yes'). How do they compare?</p>
+<p class="subtitle">A structural comparison of two independently-derived primitive sets&nbsp;<span class="tag tag-match">exact / direct</span> <span class="tag tag-close">near match</span> <span class="tag tag-w">only in Wierzbicka</span> <span class="tag tag-unique">only in Bellis</span></p>
+<table style="width: 672px;">
+<thead>
+<tr style="height: 13px;">
+<th style="width: 142px; height: 13px;">Wierzbicka 1972</th>
+<th style="width: 141.325px; height: 13px;">Lexonomy</th>
+<th style="width: 367.675px; height: 13px;">Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr style="height: 13px;">
+<td style="width: 142px; height: 13px;">'you'</td>
+<td style="width: 141.325px; height: 13px; background-color: #ccffaa;">Exact match</td>
+<td style="width: 367.675px; height: 13px;"><span class="tag tag-match">A mother's most frequently repeated first word? No mystery we overlap even with different foundations.</span></td>
+</tr>
+<tr style="height: 40px;">
+<td style="width: 142px; height: 40px;">'say'</td>
+<td class="muted" style="width: 141.325px; height: 40px; background-color: #ccffaa;">1&nbsp;level different</td>
+<td style="width: 367.675px; height: 40px;">In Lexonomy, but 1&nbsp;level abstracted: 'do'&gt;'say'.</td>
+</tr>
+<tr style="height: 40px;">
+<td style="width: 142px; height: 40px;">'good'</td>
+<td style="width: 141.325px; height: 40px; background-color: #ccffaa;">1 level different</td>
+<td style="width: 367.675px; height: 40px;">In Lexonomy,&nbsp;but 1&nbsp;level abstracted: 'be'&gt;'good'.</td>
+</tr>
+<tr style="height: 40px;">
+<td style="width: 142px; height: 40px;">'want/not want'</td>
+<td style="width: 141.325px; height: 40px; background-color: #ccffaa;">1 level different</td>
+<td style="width: 367.675px; height: 40px;">In Lexonomy, but one level abstracted: 'do'&gt;'want'.</td>
+</tr>
+<tr style="height: 40.4748px;">
+<td style="width: 142px; height: 40.4748px;">'think of'</td>
+<td class="muted" style="width: 141.325px; height: 40.4748px; background-color: #ccffaa;">1 level different</td>
+<td style="width: 367.675px; height: 40.4748px;">In&nbsp;Lexonomy, but 1&nbsp;level abstracted: (from 'do'&gt;'think')</td>
+</tr>
+<tr style="height: 40px;">
+<td style="width: 142px; height: 40px;">'this'</td>
+<td style="width: 141.325px; height: 40px; background-color: #ccffaa;">1 level different</td>
+<td style="width: 367.675px; height: 40px;"><span class="tag tag-close">In Lexonomy, but one level abstracted, 'thing'&gt;'this'.</span></td>
+</tr>
+<tr style="height: 40px;">
+<td style="width: 142px; height: 40px;">'become'</td>
+<td style="width: 141.325px; height: 40px;">'be'</td>
+<td style="width: 367.675px; height: 40px;"><span class="tag tag-close">Agreement in principle, but not term. Lexonomy believes a child learns 'become' much later.</span></td>
+</tr>
+<tr style="height: 54px;">
+<td style="width: 142px; height: 54px;">'I'</td>
+<td class="muted" style="width: 141.325px; height: 54px;">2 levels different</td>
+<td style="width: 367.675px; height: 54px;"><span class="tag tag-w">2 levels abstracted (from 'you'&gt;'me'&gt;'I'). Lexonomy tries to identify a child's first words. As such, 'you' is the root of this line of cognition (who)&mdash;of modeling the curious world&mdash;and a child develops the vocabulary word for oneself ('I') significantly later... deriving it from 'you.'</span></td>
+</tr>
+<tr style="height: 54px;">
+<td style="width: 142px; height: 54px;">'someone'</td>
+<td class="muted" style="width: 141.325px; height: 54px;">2 levels different</td>
+<td style="width: 367.675px; height: 54px;"><span class="tag tag-w">Lexonomy originally had 'someone' one step up from 'you' in the 'who' branch of the tree, but then relegated it to a longer list of terms derived from people, or whatever term a child might first develop for the 'third person' collectively: 'you'&gt;'people'&gt;'someone'.</span></td>
+</tr>
+<tr style="height: 40px;">
+<td style="width: 142px; height: 40px;">'part of'</td>
+<td class="muted" style="width: 141.325px; height: 40px;">2 levels different ('part')</td>
+<td style="width: 367.675px; height: 40px;"><span class="tag tag-w">Lexonomy has 'thing'&gt;'this'&gt;'part'.</span></td>
+</tr>
+<tr style="height: 27px;">
+<td style="width: 142px; height: 27px;">'something'</td>
+<td style="width: 141.325px; height: 27px;">2 levels different ('thing')</td>
+<td style="width: 367.675px; height: 27px;"><span class="tag tag-match">Match in principle, but Lexonomy presumes the shorter word must be learned first.</span></td>
+</tr>
+<tr style="height: 27px;">
+<td style="width: 142px; height: 27px;">'like'</td>
+<td class="muted" style="width: 141.325px; height: 27px; background-color: #ffc5c5;">&lt;not included&gt;</td>
+<td style="width: 367.675px; height: 27px;"><span class="tag tag-w">Lexonomy dropped 'feel' (catch-all for emotions) from its prime/primitives tree late in the game, after noticing that emotions might correspond to 'thinking' that has persistence or even 'residue,' as the term originally came up in a discussion with Claude. As such 'like' is not currently on our diagram even though a mother asks a child 'like' questions from the moment of birth.&nbsp;</span></td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 142px; height: 13px;">'imagine'</td>
+<td class="muted" style="width: 141.325px; height: 13px; background-color: #ffc5c5;">&lt;not included&gt;</td>
+<td style="width: 367.675px; height: 13px;"><span class="tag tag-w">Very different interpretation...&nbsp;an infant might start imagining even in the womb, but their vocabulary doesn't&nbsp;articulate such a notion&nbsp;for quite some time.</span></td>
+</tr>
+<tr style="height: 27px;">
+<td class="muted" style="width: 142px; height: 27px; background-color: #ffc5c5;">&lt;not included&gt;</td>
+<td style="width: 141.325px; height: 27px;">'do'</td>
+<td style="width: 367.675px; height: 27px;"><span class="tag tag-unique">One of Lexonomy's core observations... the primacy of motion or action as the innate origin of&nbsp;</span>animality &mdash; the organism acts before it speaks or thinks.</td>
+</tr>
+<tr style="height: 13px;">
+<td class="muted" style="width: 142px; height: 13px; background-color: #ffc5c5;">&lt;not included&gt;</td>
+<td style="width: 141.325px; height: 13px;">here</td>
+<td style="width: 367.675px; height: 13px;"><span class="tag tag-unique">Only in Lexonomy.</span></td>
+</tr>
+<tr style="height: 13px;">
+<td class="muted" style="width: 142px; height: 13px; background-color: #ffc5c5;">&lt;not included&gt;</td>
+<td style="width: 141.325px; height: 13px;">now</td>
+<td style="width: 367.675px; height: 13px;">Only in Lexonomy.</td>
+</tr>
+<tr style="height: 40px;">
+<td class="muted" style="width: 142px; height: 40px; background-color: #ffc5c5;">&lt;not included&gt;</td>
+<td style="width: 141.325px; height: 40px;">'no'</td>
+<td style="width: 367.675px; height: 40px;"><span class="tag tag-unique">Very different. 'No' has a special place in Lexonomy, proposed as the original mechanism of abstraction by which the brain learns abstraction.</span></td>
+</tr>
+<tr style="height: 68px;">
+<td class="muted" style="width: 142px; height: 68px; background-color: #ffc5c5;">'see' and 'hear'&nbsp;added to 1972 list in 1989</td>
+<td style="width: 141.325px; height: 68px;">see, hear, touch, smell, taste</td>
+<td style="width: 367.675px; height: 68px;"><span class="tag tag-unique">Lexonomy&nbsp;</span>treats all five&nbsp;as&nbsp;input channels from the start, arrived at by architectural reasoning rather than their resistance to being defined.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key structural difference:</strong> Wierzbicka's method is reductive paraphrase &mdash; primitives are discovered when definitions fail. Bellis's method is architectural &mdash; primitives are the irreducible modes of contact between organism and world. Wierzbicka's&nbsp;list is the primitives of a <em>speaking mind</em>;&nbsp;Lexonomy's are the primitives of an <em>organism.</em></p>
+<h3>Primes vs. Primitives</h3>
+<p>To me, it can be an objective matter what constitutes a 'prime'... a word that is indivisible by others... simply cannot be factored. And Lexonomy declares 13. But 'primitive,' which sounds one degree less absolute, seems less objective after working through many decompositions in the course of working on Lexonomy and curating its tree. Clearly some words are more basic than, for instance 'personality,' or 'obfuscation.' But where is the line between 'person' and 'individual'? I think that 'primitive' is just a qualitative judgment.</p>
+<h2><a id="connectors"></a>Decomposing (Factoring) the Connector Words</h2>
+<p>Among the primitives, whether from my notions of such a list, or Wierzbicka or others, there are these troublesome, short little words like 'and' and 'for'... that seem immune to curation. But as my pencil has gotten sharper, I've started to work out how some of them might be qualified, built upon other early words.</p>
+<p><strong>Subsets versus Products</strong> And it seems that there's a bit of a difference between Lexonomy's general notion of qualification as 'subsetting,' and how these connector words are construed in the mind. They seem to be more like 'products' of two factors, moreso than a narrowing from one idea to another. And that same phenomenon, products versus subsets, seems like it might be the case as the vocabulary matures... toward the outer edge of the mental corpus (not my word, Claude's)... where terms are endlessly intertwined moreso than neat-and-simple two-dimensional sets.</p>
+<p>If you'll refer to our&nbsp;<a href="#d_primes">Primitives Diagram</a>, here's what I've worked out:</p>
+<h3>From the 'thing' Branch of Primes</h3>
+<table style="width: 255px;">
+<tbody>
+<tr style="height: 13px;">
+<td style="width: 69.525px; height: 13px;">this</td>
+<td style="width: 191.475px; height: 13px;">= [thing (here)]</td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 69.525px; height: 13px;">a</td>
+<td style="width: 191.475px; height: 13px;">= [thing (any)]</td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 69.525px; height: 13px;">the</td>
+<td style="width: 191.475px; height: 13px;">= [a (one)]</td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 69.525px; height: 13px;">than</td>
+<td style="width: 191.475px; height: 13px;">= [thing (not)]</td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 69.525px; height: 13px;">one</td>
+<td style="width: 191.475px; height: 13px;">= [a (only)]</td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 69.525px; height: 13px;">and</td>
+<td style="width: 191.475px; height: 13px;">= [this (this)]</td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 69.525px; height: 13px;">as</td>
+<td style="width: 191.475px; height: 13px;">= [thing (of)]</td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 69.525px; height: 13px;">all</td>
+<td style="width: 191.475px; height: 13px;">= [thing (every)]</td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 69.525px; height: 13px;">of</td>
+<td style="width: 191.475px; height: 13px;">= [thing (this)]</td>
+</tr>
+</tbody>
+</table>
+<p><span data-tt="{&quot;paragraphStyle&quot;:{&quot;alignment&quot;:4}}">I'm especially proud of 'the' turning out to be 'a (one)'... a play-on-words of the idiom A-one, altogether appropriate for the appelation (?), 'the,' denoting not just any entity, but the preeminent one.</span></p>
+<h3><span data-tt="{&quot;paragraphStyle&quot;:{&quot;alignment&quot;:4}}">From the 'be' Branch of Primes</span></h3>
+<table style="width: 257px;">
+<tbody>
+<tr style="height: 13px;">
+<td style="width: 53.6px; height: 13px;">if</td>
+<td style="width: 209.4px; height: 13px;">= be (is)</td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 53.6px; height: 13px;">or</td>
+<td style="width: 209.4px; height: 13px;">= be (not)</td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 53.6px; height: 13px;">so</td>
+<td style="width: 209.4px; height: 13px;">= be (can)</td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 53.6px; height: 13px;">but</td>
+<td style="width: 209.4px; height: 13px;">= be (if)</td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 53.6px; height: 13px;">why</td>
+<td style="width: 209.4px; height: 13px;">= be (think)</td>
+</tr>
+<tr style="height: 13.1123px;">
+<td style="width: 53.6px; height: 13.1123px;">else</td>
+<td style="width: 209.4px; height: 13.1123px;">= if (not)</td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 53.6px; height: 13px;">have</td>
+<td style="width: 209.4px; height: 13px;">= here (thing)</td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 53.6px; height: 13px;">because</td>
+<td style="width: 209.4px; height: 13px;">= is (why)</td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 53.6px; height: 13px;">happen</td>
+<td style="width: 209.4px; height: 13px;">= is (do)</td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 53.6px; height: 13px;">maybe</td>
+<td style="width: 209.4px; height: 13px;">= is (if)</td>
+</tr>
+</tbody>
+</table>
+<h3>&nbsp;From the 'now' Branch of Primes</h3>
+<table style="width: 302.6px;">
+<tbody>
+<tr>
+<td style="width: 10px;">at</td>
+<td style="width: 299.6px;">= when (be)</td>
+</tr>
+<tr>
+<td style="width: 10px;">by</td>
+<td style="width: 299.6px;">= when (must)</td>
+</tr>
+<tr>
+<td style="width: 10px;">then</td>
+<td style="width: 299.6px;">= when (if)</td>
+</tr>
+<tr>
+<td style="width: 10px;">from&nbsp;</td>
+<td style="width: 299.6px;">= where (be)</td>
+</tr>
+<tr>
+<td style="width: 10px;">when&nbsp;</td>
+<td style="width: 299.6px;">= now (not)</td>
+</tr>
+</tbody>
+</table>
+<h2><a id="gamelogic"></a>Game Logic</h2>
+<p>There are 6 games and 3 of them directly create worklists items if your answer leaves some sort of loose end, or undecided matter, such as two different opinions on a qualifier. A fourth game will also result in a worklist item in the Orphans worklist, if the action you took would result in the removal of the very last instance of a term in Lexonomy.</p>
+<p>The following topics describe the games technical aspects.</p>
+<h3>Qualify</h3>
+<p><strong>Pool Source</strong><br /> All&nbsp;concept where the&nbsp;<code>qualifier = ''</code> and <code>session_id</code> does not start with <code>play_</code>. No worklist column filter.</p>
+<p><strong>Screen options</strong></p>
+<ul>
+<li><strong>Text input + Submit</strong> &mdash; player types a qualifying word (typeahead wired)</li>
+<li><strong>[variant] &rarr; dropdown</strong> &mdash; expands to: noun / verb / adjective / adverb / not / synonym / variant (unspecified). Each saves a bracketed qualifier.</li>
+<li><strong>Skip</strong> &mdash; no action</li>
+</ul>
+<p><strong>Worklist impact:</strong> none. No column stamped.</p>
+<p><!-- obsidian --></p>
+<p><strong>Current size:</strong> Enormous. The vast majority of slips carry no qualifier at all (empty string). Bracket-qualified slips (<code>[noun]</code>, <code>[n/a]</code>, <code>[synonym]</code>, etc.) are excluded &mdash; they're treated as resolved. Will outlast every other pool by years.<br /> <strong>Depletion:</strong> Drains as qualifiers are entered via game votes or Build/Edit. No floor &mdash; new slips added without qualifiers re-enter the pool immediately.<br /> <strong>Replenishment:</strong> Any new unqualified slip is eligible.<br /> <strong>Note:</strong> Inversely correlated with Specify &mdash; as Qualify shrinks, Specify grows. The two pools trade mass as the corpus matures.</p>
+<p><!-- obsidian --></p>
+<h3>Parent</h3>
+<p><strong>Pool Source</strong><br /> All <code>concepts&nbsp;</code>where <code>session_id</code> starts with <code>ai_</code>, <code>roget</code>, <code>roget_clean</code>, or <code>roget_hier</code>, <strong>and</strong> <code>gm_parent IS NULL</code>. Human-entered slips excluded. Shuffled.</p>
+<p><strong>Screen options</strong></p>
+<ul>
+<li><strong>✓ Looks right</strong> &mdash; relationship confirmed</li>
+<li><strong>✗ Wrong parent</strong> &rarr; reveals sub-options:
+<ul>
+<li><strong>Reverse the direction</strong></li>
+<li><strong>&asymp; Synonym of parent</strong> &mdash; marks as synonym, keeps slip with <code>qualifier='[synonym]'</code></li>
+<li><strong>No relation &mdash; remove the relationship</strong></li>
+<li><strong>Skip or Not Applicable</strong></li>
+</ul>
+</li>
+<li><strong>Skip</strong> (main screen)</li>
+</ul>
+<p><strong>Worklist impact:</strong> Deleted concepts may create Immaculate Concept-ion worklist items (items that have no broader term pointing to them).</p>
+<h3><!-- obsidian --></h3>
+<p><strong>Current size:</strong> Finite. Only <code>ai_</code>, <code>roget</code>, <code>roget_clean</code>, <code>roget_hier</code> slips with <code>gm_parent IS NULL</code> are eligible. Human-entered slips never enter this pool.<br /> <strong>Depletion:</strong> Drains permanently as slips are confirmed, reversed, or removed. Once all Roget/AI-origin slips are reviewed, this pool is <strong>permanently empty</strong> until the next AI import batch.<br /> <strong>Replenishment:</strong> None without a new import. This is the only pool with a definite terminus.</p>
+<h3>Gap&nbsp;</h3>
+<p><strong>Pool Source</strong><br /> All&nbsp;concepts&nbsp;with <strong>5+ children</strong>. One child selected at random per qualifying parent. Excludes slips where <code>gm_gap = 'direct'</code> or <code>gm_gap = 'gap_flagged'</code>. Shuffled.</p>
+<p><strong>Screen Options</strong></p>
+<ul>
+<li><strong>Direct is right</strong> &mdash; no intermediate needed</li>
+<li><strong>Needs a step</strong> &mdash; flags this pair as having a gap</li>
+<li><strong>Skip</strong></li>
+</ul>
+<p><strong>Worklist impact:</strong> <code>gm_gap = 'gap_flagged'</code> feeds Parent-Child Gaps worklist. Both <code>'direct'</code> and <code>'gap_flagged'</code> excluded from game pool.</p>
+<p>&nbsp;</p>
+<h3><!-- obsidian --></h3>
+<p><strong>Current size:</strong> One entry per parent with 5+ children (one random child selected per qualifying parent at build time).<br /> <strong>Depletion:</strong> Acting on one child stamps that slip and excludes it from the pool, but the parent remains eligible until all its children are stamped. Pool grows with corpus as new parents reach the 5-child threshold.<br /> <strong>Replenishment:</strong> Self-replenishing. New slips added under qualifying parents enter immediately.</p>
+<h3>Symilar</h3>
+<p><strong>Pool Source</strong><br />Children of the same parent where: both words are <strong>childless</strong>, both slips are <strong>unqualified</strong> (qualifier = '' or identical qualifier) under that parent, and <code>gm_symilar IS NULL</code>. Groups by <code>parent + qualifier</code>. Pairs capped at 4 per parent, 200 total.&nbsp;Shuffled.</p>
+<p><strong>Screen&nbsp;Options</strong></p>
+<ul>
+<li><strong>✓ Yes &mdash; same thing</strong> &mdash; fully interchangeable</li>
+<li><strong>✗ No &mdash; they're distinct</strong> &mdash; meaningful difference exists</li>
+<li><strong>Skip</strong></li>
+</ul>
+<p><strong>Worklist impact:</strong> "No" feeds the&nbsp;Needs Qualifier worklist.</p>
+<p>&nbsp;</p>
+<h3 data-heading="5. Specify (was: Address)"><!-- obsidian --></h3>
+<p><strong>Current size:</strong> Capped at 200 pairs. Currently moderate &mdash; depends on how many childless co-children share a parent without qualifiers.<br /> <strong>Depletion:</strong> <code>gm_symilar</code> stamps drain pairs. Also shrinks indirectly as Qualify game adds qualifiers, which groups co-children more specifically and reduces pairing candidates.<br /> <strong>Replenishment:</strong> New unqualified slips under the same parent regenerate pairs. Inversely correlated with qualifier density.</p>
+<h3 data-heading="5. Specify (was: Address)">Specify</h3>
+<p><strong>Pool Source</strong><br /> All concepts where <code>qualifier</code> is non-empty and non-bracket, <code>gm_specify IS NULL</code>, <code>play_</code> excluded, and the parent has <strong>3+ other children</strong> to serve as distractors. Player is shown the parent&nbsp;and qualifier and must identify the correct child from choices.</p>
+<p><strong>Screen options</strong></p>
+<ul>
+<li><strong>[child word buttons]</strong> &mdash; player taps what they think the qualifier points to
+<ul>
+<li><strong>Correct</strong> &mdash; auto-advances after 2s (or tap Next)</li>
+<li><strong>Incorrect</strong> &mdash; shows "Added to Difficult Qualifiers worklist"; Continue button</li>
+</ul>
+</li>
+<li><strong>✗ They're all bad</strong> &mdash; none of the choices are right; qualifier itself is problematic</li>
+<li><strong>Skip</strong></li>
+</ul>
+<p><strong>Worklist impact:</strong> Wrong pick feeds the&nbsp;Difficult Qualifiers worklist.</p>
+<p>&nbsp;</p>
+<h3 data-heading="6. Misfit"><!-- obsidian --></h3>
+<p><strong>Current size:</strong> Currently thin &mdash; requires qualified, non-bracket slips with 3+ siblings as distractors. Few such slips exist early in curation.<br /> <strong>Depletion:</strong> <code>gm_specify</code> stamps drain eligible slips.<br /> <strong>Replenishment:</strong> Grows directly as the Qualify pool shrinks. Every new qualifier added creates a potential Specify candidate. This pool becomes dominant mid-curation.</p>
+<h3 data-heading="6. Misfit">Misfit</h3>
+<p><strong>Pool&nbsp;Source</strong><br />Concepts&nbsp;with <strong>3+ children,&nbsp;</strong>excluding parents already acted on this session (<code>misfitActedParents</code>), excluding child&ndash;parent pairs where <code>gm_misfit IS NOT NULL</code>. Up to 5 children shown per parent. Shuffled.</p>
+<p><strong>Screen options</strong></p>
+<ul>
+<li><strong>[child word buttons]</strong> &mdash; player taps which child doesn't belong</li>
+<li><strong>None &mdash; they all fit</strong> &mdash; stamps all children as reviewed</li>
+<li><strong>Skip</strong></li>
+</ul>
+<p><strong>Last-instance check:</strong> after player picks a word, <code>asgn</code> is scanned for any other slip where the word appears as child (<code>a</code>) or parent (<code>b</code>), excluding the current slip. If none found &mdash; last-instance path taken.</p>
+<p><strong>Worklist impact:</strong> Last-instance picks feed the&nbsp;Orphans worklist.</p>
+<h2><!-- obsidian --></h2>
+<p><strong>Current size:</strong> Large and persistent. Any parent with 3+ children qualifies; corpus currently has many such parents.<br /> <strong>Depletion:</strong> <code>gm_misfit</code> stamps on individual child&ndash;parent pairs provide durable exclusion. <code>misfitActedParents</code> (session-only) is the short-term exclusion &mdash; it resets on every page reload.<br /> <strong>Replenishment:</strong> Hardest pool to exhaust. Acted parents re-enter the pool on reload unless every child carries a <code>gm_misfit</code> stamp. Grows with corpus.</p>
+<h2>So Use It!</h2>
+<p>It's in its nascent &rsaquo; early &rsaquo; new days so the lookup is only as good as the few entries that have been submitted. But in exchange for that newness, you can take pride in being an early contributor. At this point, pride alone will have to be your reward &mdash; I don't want to slow it down with registration&nbsp;or tying user identity to specific curation.</p>
+<h2><a id="instructions"></a>Instructions/User Manual</h2>
+<h3>Qualifiers and Broader/Narrower, Part 1</h3>
+<p>There are two parts to the magic of Lexonomy:&nbsp;</p>
+<ul>
+<li>Declaring that one term is broader/narrower than another.</li>
+<li>Finding a word to describe that relationship</li>
+</ul>
+<p><a id="d_qual"></a>Keep saying this to yourself, as I had to making this whole system: if it were easy anyone could do it.</p>
+<p><img src="images/help390.png" alt="Diagram showing how a qualifier works" /></p>
+<h3><a id="qualifiers"></a>Qualifiers and Broader/Narrower, Part 2: A Great Example</h3>
+<p>Bland, boring, tedious: how do you put this into Lexonomy? An early tester tried to put this into Lexonomy.</p>
+<ul>
+<li>First ask yourself, which of the three is the broadest?</li>
+<li>Let's put it this way: which of the three <strong>would a child learn first</strong>? Boring!</li>
+<li>Pretty obvious once you think of it. No kid learns 'bland' or 'tedious' early, but they do learn borrrr-ing.</li>
+</ul>
+<p>Next, are tedious and bland part of the same family... related... same general&nbsp; idea? Yes they are. Roget thought they were and put them in a category, I think.</p>
+<p>Next, how would you qualify or narrow boring to get to bland? <strong>What would a crossword-puzzle, two-word clue be</strong> to get you to bland... but using boring??? 'Boring taste' or 'boring flavor.' Let's arbitrarily choose 'flavor.' So the qualifier is 'flavor.'</p>
+<p>Bland= boring flavor. Would someone get the answer in a crossword puzzle? I think they would.&nbsp;</p>
+<p>And 'tedious'? How would you qualify boring to get to tedious? 'Labor' or 'effort'... boring labor, boring effort... maybe 'work'... boring work.</p>
+<ul>
+<li>Which two-word clue would be best in a <strong>crossword</strong>? Boring work.</li>
+<li>Imagine you're writing a book of some other message, <strong>would you really use the two words interchangeably</strong>? Always a possibility... don't talk yourself into qualifiers.</li>
+<li>If not, when would</li>
+</ul>
+<p>Tedious= boring work.</p>
+<p>But Lexonomy is democratic. Perhaps you have THE right answer.</p>
+<h2><a id="avatars"></a>Avatars and Visitors</h2>
+<p>Lexonomy does not require creating an account or logging in. Our goal, until proven impractical, is to allow anonymous and completely free editing, other than deletions, which are protected with a password. Email me <a href="mailto:jackbellis@hotmail.com">jackbellis@hotmail.com</a>&nbsp;if you'd like the password. In exchange for this openness, there's no contribution tracking, only a randomly generated avatar name for each visitor. Like some other web systems that have public data that might be associated with a person or business, we allow you to 'claim' your avatar, which simply means entering any information you'd like... to identify yourself. It's one simple text input box with no rules. You can enter your genuine contact information such as an email or website, or just a note to inform others who you are. Offensive information will be deleted.</p>
+<p><strong>Claiming your avatar:</strong> Click the avatar name in the toolbar at the top of the screen.</p>
+<p><strong>Listing visitors</strong> who have claimed their avatar:&nbsp;Click the avatar name in the toolbar at the top of the screen.</p>
+<h3>Technical Implementation</h3>
+<p class="font-claude-response-body break-words whitespace-normal leading-[1.7]"><strong>How your Avatar Is Remembered</strong></p>
+<p class="font-claude-response-body break-words whitespace-normal leading-[1.7]">Your avatar name is stored in your browser's <em>local storage</em> &mdash; a permanent store that survives page refreshes, tab closes, browser restarts, and even OS restarts. It is not a cookie, and clearing your browser cache alone will not affect it.</p>
+<p class="font-claude-response-body break-words whitespace-normal leading-[1.7]"><strong>When a New Avatar Is Generated</strong></p>
+<ul class="[li_&amp;]:mb-0 [li_&amp;]:mt-1 [li_&amp;]:gap-1 [&amp;:not(:last-child)_ul]:pb-1 [&amp;:not(:last-child)_ol]:pb-1 list-disc flex flex-col gap-1 pl-8 mb-3">
+<li class="font-claude-response-body whitespace-normal break-words pl-2">You clear your browser's site data (the "local storage" store specifically)</li>
+<li class="font-claude-response-body whitespace-normal break-words pl-2">You use a different browser on the same machine (Chrome and Firefox each have their own separate local storage)</li>
+<li class="font-claude-response-body whitespace-normal break-words pl-2">You use a private / incognito window (local storage is wiped when that window closes)</li>
+<li class="font-claude-response-body whitespace-normal break-words pl-2">You visit on a new device or a fresh browser profile</li>
+</ul>
+<p class="font-claude-response-body break-words whitespace-normal leading-[1.7]"><strong>Avatar Persistence</strong></p>
+<p class="font-claude-response-body break-words whitespace-normal leading-[1.7]">Avatars persist across...</p>
+<ul class="[li_&amp;]:mb-0 [li_&amp;]:mt-1 [li_&amp;]:gap-1 [&amp;:not(:last-child)_ul]:pb-1 [&amp;:not(:last-child)_ol]:pb-1 list-disc flex flex-col gap-1 pl-8 mb-3">
+<li class="font-claude-response-body whitespace-normal break-words pl-2">Page refreshes</li>
+<li class="font-claude-response-body whitespace-normal break-words pl-2">Closing and reopening the tab or browser</li>
+<li class="font-claude-response-body whitespace-normal break-words pl-2">OS restarts</li>
+<li class="font-claude-response-body whitespace-normal break-words pl-2">Clearing the browser cache (cache and local storage are separate stores)</li>
+</ul>
+<p class="font-claude-response-body break-words whitespace-normal leading-[1.7]"><strong>The 3 Storage Levels of Browser Software</strong></p>
+<div class="overflow-x-auto w-full px-2 mb-6">
+<table class="min-w-full border-collapse text-sm leading-[1.7] whitespace-normal" style="border-color: #ddd; border-collapse: collapse;" border="1">
+<thead class="text-left">
+<tr>
+<th class="text-text-100 border-b-0.5 border-[hsl(var(--border-300)/0.6)] py-2 pr-4 align-top font-bold" scope="col">Store</th>
+<th class="text-text-100 border-b-0.5 border-[hsl(var(--border-300)/0.6)] py-2 pr-4 align-top font-bold" scope="col">Lifetime</th>
+<th class="text-text-100 border-b-0.5 border-[hsl(var(--border-300)/0.6)] py-2 pr-4 align-top font-bold" scope="col">Shared across tabs?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="border-b-0.5 border-[hsl(var(--border-300)/0.3)] py-2 pr-4 align-top">Local storage</td>
+<td class="border-b-0.5 border-[hsl(var(--border-300)/0.3)] py-2 pr-4 align-top">Permanent (until cleared)</td>
+<td class="border-b-0.5 border-[hsl(var(--border-300)/0.3)] py-2 pr-4 align-top">Yes</td>
+</tr>
+<tr>
+<td class="border-b-0.5 border-[hsl(var(--border-300)/0.3)] py-2 pr-4 align-top">Session storage</td>
+<td class="border-b-0.5 border-[hsl(var(--border-300)/0.3)] py-2 pr-4 align-top">One tab, until closed</td>
+<td class="border-b-0.5 border-[hsl(var(--border-300)/0.3)] py-2 pr-4 align-top">No</td>
+</tr>
+<tr>
+<td class="border-b-0.5 border-[hsl(var(--border-300)/0.3)] py-2 pr-4 align-top">Cache</td>
+<td class="border-b-0.5 border-[hsl(var(--border-300)/0.3)] py-2 pr-4 align-top">Until cleared or expired</td>
+<td class="border-b-0.5 border-[hsl(var(--border-300)/0.3)] py-2 pr-4 align-top">Yes</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3><a id="lookup"></a>Lookup</h3>
+<ul>
+<li>What it does: lets anyone harvest the fruit of Lexonomy's labor.&nbsp;</li>
+<li>If it requires any explanation at all, I have failed.
+<ul>
+<li>Can I blame any of it on Claude... Claude and I have failed??? No, not really. He did in hours what I have imagined since either 1983 or 2010.</li>
+</ul>
+</li>
+</ul>
+<h3><a id="build"></a>Build</h3>
+<h3><a id="quickadd"></a>Quick Add</h3>
+<ul>
+<li>What it does: enables you to <strong>add a new entry to Lexonomy with the least distraction</strong>.</li>
+<li>When/why to use it: on the spur-of-the-moment, on a phone in particular, when you notice a pair of words that have a relationship and you think it might not be in Lexonomy already.</li>
+<li>As you type in a field, it will show existing terms.</li>
+<li>Adding a qualifier is often the harder part. See our qualifier help diagram and section.</li>
+</ul>
+<h3><a id="edit"></a>Edit</h3>
+<ul>
+<li>What it does: enables you to do more extensive additions than the one-and-done Quick Add but is really a compromise compared to using the full-screen Curate which shows you very visually the whole set of relationships in a category.&nbsp;</li>
+<li>When/why to use it: if for some reason you want to do more than one-word editing and you're not near a desktop.</li>
+<li><strong><span style="color: #ff0000;">To do the initial grouping of terms in a category, use the full-screen Curate instead.</span>&nbsp;</strong></li>
+<li>Some features require a password because they risk more serious changes (or loss) of the data.&nbsp; Email me if you're interested.</li>
+</ul>
+<h3><a id="play"></a>Game</h3>
+<ul>
+<li>What it does: lets you kill time by helping build Lexonomy.&nbsp;</li>
+<li>After 12 game pages or rooms, you get a report on your session showing decisions you made and how they might have changed the data or added 'to-do' items to worklists. Closing the Complete message just repeats the cycle.</li>
+<li>Selecting Level Up explains that you can move on to reviewing worklists and starts you with a fun one, Difficult Qualifiers.</li>
+<li>You can 'pin' any game that you might like, to have it repeat just that one game.&nbsp;</li>
+<li>After any game page, you can re-visit the terms that were in the question by looking at Lookup&gt;History. If you wanted to change your mind, you can click the respective term in History. Worklist items might stay but there's no harm in that.</li>
+</ul>
+<h3><a id="specify"></a>Specify Game</h3>
+<p>The Specify game shows you a term and one of its qualifiers, such as "practice(repeat)" and asks you to pick which of several possible concepts are specified by that combination.</p>
+<ul>
+<li><em>Which term is <strong>specified</strong> by &hellip;&nbsp;<span id="play2-addr-parent">image</span><span id="play2-addr-qual">&nbsp;(visual)</span></em></li>
+<li>Match: If you click the term already in the database for that combination, a confirmation message appears and you are advanced to the next game.</li>
+<li>Difference: If you choose a different term than the one already 'qualified' by 'repeat' (in the example above), your choice gets added as a work item in the worklist Difficult Qualifiers.&nbsp;</li>
+</ul>
+<h3><a id="qualify"></a>Qualify Game</h3>
+<p>This game challenges you to do the hardest job in Lexonomy: thinking of a word that narrows one to another.</p>
+<ul>
+<li><em>What word makes &lsquo;decrease&rsquo; more specific to mean &lsquo;abatement&rsquo;?</em></li>
+<li>Variant: For word pairs that aren't really different concepts but just different forms, click Variant and choose from the preset options. Square brackets [ ] indicate such pseudo-qualifiers.&nbsp;</li>
+<li><strong>ANTONYMS</strong>: until or unless an antonym gets its own list of child terms, it's actually just a variant to Lexonomy... select the Variant button and <strong>choose [not]</strong>.</li>
+</ul>
+<h3><a id="parent"></a>Parent Game</h3>
+<p>The Parent game asks you for a yes/no&nbsp;confirmation of a parent-child (broader-narrower) relationship:</p>
+<ul>
+<li><em>Is &lsquo;change&rsquo; the right <strong>broader</strong> term for &lsquo;reform&rsquo;?&nbsp;</em></li>
+<li>If you select "Wrong Parent," you have these options:</li>
+<li>Reverse: makes the second term ('reform' above) the parent of 'change.'</li>
+<li>Synonym: indicates the second term as a synonym of the first (by putting in a qualifier of [synonym].</li>
+<li>No relation: removes the&nbsp;parent-child relationship from the database... no moderator will question your work. And unlike some of the games, this decision doesn't even result in a worklist entry. If your 'deletion' happens to be the last instance of a term in all of Lexonomy, it won't be completely deleted.&nbsp;&nbsp;</li>
+</ul>
+<h3><a id="gap"></a>Gap Game</h3>
+<p>The Gap game asks you to confirm if parent-child relationships are possibly bridging too far:</p>
+<ul>
+<li><em>Is there a missing level between &lsquo;direction&rsquo; and &lsquo;trend&rsquo;, like</em> person&gt;WORKER&gt;fireman?</li>
+<li>If you answer "Needs a Step," the pair of words is added to the&nbsp;Gaps worklist.</li>
+</ul>
+<h3><a id="symilar"></a>Symilar Game</h3>
+<p>The Symilar game is about synonyms. But we use the term 'symilar' in Lexonomy to indicate that words might have the identical parent, and no qualifiers (or identical qualifiers)... but that's not necessarily a verdict that they're interchangeable. They might simply not have been addressed by any curator yet. And they might have been accidentally given identical qualifiers by multiple users who didn't notice the overlap. So this game tries to check such things.</p>
+<ul>
+<li><em>Are these completely interchangeable?</em></li>
+<li>If you say "No, not interchangeable" the pair is added to the Needs Qualifier worklist.</li>
+</ul>
+<h3><a id="misfit"></a>Misfit Game</h3>
+<p>The Misfit game&nbsp;asks you for a&nbsp;multiple-choice&nbsp;confirmation of&nbsp;several parent-child (broader-narrower) relationships at once:</p>
+<ul>
+<li><em>Is there a term below that seems least like a kind/subset of&hellip;</em></li>
+<li>If any of them are not really derivatives of the main term in some way, shape, or form... click that term and its parent-child relationship will be removed. Not the words, just their connection to each other. That precise action is not even reviewed... you're the curator.</li>
+<li>If you happen to delete a parent-child relationship that&nbsp;includs&nbsp;the last instance of a word anywhere in Lexonomy, that term will be added as a worklist item in the Orphans worklist.</li>
+</ul>
+<h3><a id="curate"></a>Curate</h3>
+<ul>
+<li>What it does: <strong>power editing.&nbsp;</strong></li>
+<li>When/why: if you really get a kick out of the Lexonomy concept and you want to try the heavy lifting... organizing a whole topic, usually one of the full sets of words from Roget's categories.&nbsp;</li>
+<li>Curate (vs. Inheritance) is strongest for almost every situation. It evolved from the less visual Inheritance function, which seems to have only one distinct benefit now: the ability to do three levels of specification in one screen. (Multiple levels could be done in Curate by restarting that page from a lower level term... or at least that's what would make sense. Try it and let us know. This is virgin code territory.)&nbsp;</li>
+<li>Some features require a password because they risk more serious changes (or loss) of the data. Email me if you're interested.</li>
+</ul>
+<hr />
+<h3>&nbsp;Advice and Examples for Curating</h3>
+<p><strong>This Is Hard</strong></p>
+<p>This is what it's all about. Don't mistake some seemingly impossible curation for failure. Vagueness, intricacy, looping, bad or incomplete software design, bad data... yes, these are all realities of the work. If the theory and exercising of it is a failure, so it will be... but it won't be from the challenges along the way.</p>
+<p>You are doing something that, it would appear, has never been done. Roget worked on this for decades and only got a flat list. We'll do better.&nbsp;</p>
+<p><strong>Data Updating: RELOAD THE WEB PAGE</strong></p>
+<p>The software doesn't accommodate every action you want to do. If you are confused that something has not updated... reload the web page. Not every single thing you touch will be perfectly reflected on subsequent screens. (This is somehow a seeming Achille's Heel of my AI coding partner, Claude.ai. I've asked him many times to work on this.)</p>
+<p><strong>How to Even Start</strong></p>
+<ol>
+<li>Play the games. After completing a round, consider taking the option to 'level up,' which prompts you to work on perhaps our most enticing worklist: Competing Qualifiers.&nbsp;</li>
+<li>Look at other worklists and try to help pare them down.</li>
+<li>When you see an interesting two-word clue in a crossword puzzle see if the answer is already in Lexonomy and how it's structured, meaning what it's parent(qualifier) set is. Maybe the crossword clue is better. Edit it.</li>
+</ol>
+<p><strong>Circularity</strong></p>
+<p>When you try to add qualifiers, you'll see circularity. For instance consider 'precise' and 'accurate,' both children under 'correct.' Their qualifiers might reference each other: precise=correct(accurate) and accurate=correct(precise). Perhaps this is the best that Lexonomy will ever get at 'addressing' these two. But maybe not. Either way, don't be hesitant to initially enter circular qualifiers. In Lexonomy 'getting close or closer' is always helpful... it will help someone else drive toward an answer that might possibly be better.&nbsp;</p>
+<p>Questions to Ask Yourself when Qualifying</p>
+<p><strong>The Original Roget Data</strong></p>
+<p>Roget's data created a huge number of broader-narrower relationships that are much less precise than the goal&nbsp;of Lexonomy. Feel free to delete terms you see up top that are 'broader.' But how do you do this? By using the various wrench icons and ellipsis buttons to access various tool dialogs.</p>
+<p><strong>Deleting broader-narrower relationships...</strong></p>
+<p>...does not delete words or whole groups... just their topmost connections.&nbsp;As an extreme example, let's imagine that a huge swath (70%) of Lexonomy ended up under the word 'act,' which in turn had only one parent, 'do.' If you were to delete&nbsp;the child-parent relationship of do&gt;act, just one little data record would be removed from the database and those 70% of words (and their parent relationships) would still be present.</p>
+<p><strong>Verbs&nbsp;versus Nouns</strong></p>
+<p>Lexonomy leans toward verbs because it's all about the formation of vocabulary in the growing brain... and action is the essence of the difference between plants and animals. Action is the start. Nouns came along later, especially abstract ones. Yes, words for mother and father and food are early, but the cognitive device of turning words (not things) into things (abstractions) is generally later rather than sooner.&nbsp;</p>
+<p><strong>Childish Word Choice</strong></p>
+<p><span style="font-weight: 400;">Aalways think of the more childish word/use/meaning. Consider the word 'will,' (I &lsquo;will&rsquo; do this versus my &lsquo;will&rsquo; is&nbsp; that it be done).&nbsp;</span><span style="font-weight: 400;">Lexonomy decisions can often be based on 'when-acquired' rather than 'what-meant.' And what about having both senses of 'will' in Lexonomy? If they're genuinely different senses, they'll have either two different parents or two different qualifiers. Notice in the example of 'will' that both refer to 'intent': "I will" means "I intend to"; "my will is that" ... means "my intention is that." This is an absolute core of Lexonomy, discovering that seeming strangers are actually quite close cousins if not siblings.</span></p>
+<p><strong>Subset between Different Parts of Speech</strong></p>
+<p>Consider the terms 'like' and 'favorite.' 'Like' is generally a verb in Lexonomy because a child starts hearing that usage perhaps the first day of life. Favorite is generally an adjective. It's easy to see that 'favorite' is narrower. It can be a child despite the different part of speech.&nbsp;</p>
+<p><strong>Those Pesky Conjunctions</strong></p>
+<p>Early in the work of Lexonomy, the long list of short words (for, at, by, if, and...) looked like outliers, troublemakers for Lexonomy's contention that all 'thought words' (as opposed to words of the natural or man-made world) are 'concepts' that can be reduced to combinations of two other words. Well, some of those nuisance words have started to yield to what Claude calls 'curation pressure.'</p>
+<ul>
+<li><strong>For:&nbsp;</strong><span style="font-weight: 400;">Consider the word 'representative.' It's easy to decide on a parent, 'person.' But what's the qualifier? An early, automated curation pass by AI put&nbsp;something like 'acting for'... not bad, but too narrow, right? I stared at that for a while before realizing the answer, the best qualifier, is just 'for'... a representative is a 'person for'!</span></li>
+</ul>
+<p>&nbsp;</p>
+<p><strong>True Synonyms</strong></p>
+<p>Lexonomy seems to reveal that truly interchangeable concepts, synonyms, are rare, or at least infrequent. Here are some we've bottomed-out on.</p>
+<ul>
+<li><span style="font-weight: 400;">yearly annual</span></li>
+</ul>
+<p><span style="font-weight: 400;">Add a documentation example the word see as a parent should not have appear as a child appear should be a child of change((visibility)</span></p>
+<p><span style="font-weight: 400;"><strong>Lexonemes</strong></span></p>
+<p><span style="font-weight: 400;">These are word pairs that are very close in meaning and at first might seem like synonyms, but enough curation pressure draws out the slight space between them. It is this extremely small gap, perhaps the smallest possible space, that distinguishes a lexoneme pair. We'll see how well this coinage passes the test of time.</span></p>
+<ul>
+<li><span style="font-weight: 400;"> near versus around. Can you split them with a qualifier?</span></li>
+</ul>
+<p><strong>Simplicity of Qualifiers</strong></p>
+<p>Given a choice between two qualifiers, choose the simpler one. Consider how you'd narrow 'distance' to be the more specific word 'depth': you could use 'down' or 'downward.' The idea behind Lexonomy is that it is the 'down' concept that is at work here. Eventually the choice of 'down' will work better when the dictionary reaches the point where every qualifier is also a parent or child. Having simpler word forms will connect better. In the future, it's likely we'll&nbsp;do automated curation passes to 'fit' many words into the simplified word that is their most common conceptual phrasing.</p>
+<ul>
+<li><span style="font-weight: 400;">parent: distance</span></li>
+<li><span style="font-weight: 400;">child: depth</span></li>
+<li><span style="font-weight: 400;">Which qualifier,&nbsp;'down' or 'downward'? Down!</span></li>
+</ul>
+<ul>
+<li>parent: information</li>
+<li><span style="font-weight: 400;">child: news</span></li>
+<li><span style="font-weight: 400;">Which qualifier, 'about events' or 'events' or 'event'? Event!</span></li>
+</ul>
+<ul>
+<li><span style="font-weight: 400;">parent: destroy</span></li>
+<li><span style="font-weight: 400;">child: annihilate</span></li>
+<li><span style="font-weight: 400;">Which qualifier, 'complete' or 'completely'? Complete!</span></li>
+</ul>
+<ul>
+<li><span style="font-weight: 400;">parent: think</span></li>
+<li><span style="font-weight: 400;">child: speculate</span></li>
+<li><span style="font-weight: 400;">Which qualifier, 'about future' or 'future'? Future!</span></li>
+</ul>
+<p>&nbsp;</p>
+<p><strong>One Particular Wording Choice: Sense versus Feel</strong></p>
+<p>Lexonomy uses the term 'feel' to refer not to the traditional 5 human senses, but perceptions other than those. We regard the word 'sense' as a somewhat advanced abstraction that occurs after the primitives are learned. We highlight this one terminology matter only because it is so close to the root of language and we don't want to cause endless flipflopping of the word choice.&nbsp;</p>
+<p><strong>True Lexophone vs Polysemy: 'Kind'</strong></p>
+<p><span style="font-weight: 400;">Linguists refer to two uses or 'senses' of a word, such as 'kind' for 'type' versus 'caring'&nbsp;as polysemy (multiple meanings). The word 'kind' is a good example. It sure looks like there's no common root to these two uses. If no one ever finds a single parent (and then two different qualifiers) then kind is in fact not just polysemy, but truly so in Lexonomy, which makes it a lexophone. See our discussion of 'mole' and 'fluke.'</span></p>
+<p>&nbsp;</p>
+<p><strong>For Qualifiers, Use Concepts not Modifiers</strong></p>
+<p>Consider the term 'competence,' a narrower term than 'skill.' But what is the qualifier? It's tempting to simply use 'type' implying that competence is a specific type of skill. But that approach can be used on almost every qualifier in Lexonomy, specifying matters or degree or size or broadness. Instead the idea is to find a concept that, when added to the parent, gets closer to the sense of the child word. We're not sure of our solution here, but few things in Lexonomy are 'slam dunks.' A competences is a skill that you CAN do.</p>
+<ul>
+<li>Parent: skill</li>
+<li>Child: competence</li>
+<li>Which qualifier, 'type' or 'kind' or 'can'? Can!</li>
+</ul>
+<p><strong>Difficult Qualifier? Maybe Make a&nbsp;Parent</strong></p>
+<p>Consider the terms 'time,' 'era' and 'epoch.' Era and epoch are easily recognized as children of time. But era and epoch are hard to narrow distinctly. At first one might try to find the single magical word that distinguishes them... but that's elusive. This is an example of when the solution isn't just a qualifier, but parenting. Epoch is a child of era... an historical era. So the tree looks like this.</p>
+<ul>
+<li>time
+<ul>
+<li>period (range)
+<ul>
+<li>era (long)
+<ul>
+<li>epoch (history)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>&nbsp;</p>
+<p><strong>Earlier versus Later Qualification: From Set Member to 'Product'</strong></p>
+<p>In the early growth of vocabulary, there seem to be clear 'set inclusion' judgements going on...</p>
+<ul>
+<li>good: [nice, friendly, happy] and similar.</li>
+</ul>
+<p>Lexonomy draws this out, and&nbsp;curating terms along these lines is clear if not often easy. But it seems as one spends time curating, that as you get to more complex, more adult concepts, that the 'set inclusion' logic gives way to more of cross-pollination between terms. In other words, rather than qualifiers clearly narrowing from the parent, the two terms are conceptual equals and each is modifying the other... the term being addressed is the product of two terms, not as member of a set.</p>
+<p><span style="font-weight: 400;">If you've gotten this far, you're an expert lexonomist... share your&nbsp; knowledge.</span></p>
+<hr />
+<p>Thank you.</p>
+<p><a href="mailto:jackbellis@hotmail.com">jackbellis@hotmail.com</a><br /><small>(Spam filtering is always possible but I will try to respond. Consider adding your contact info to your avatar.)</small></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<hr />
+<p>&nbsp;</p>
+<h2><a id="bugs"></a>Bugs, Limitations, Stuff Like That</h2>
+<ul>
+<li>Many phone app conventions will not occur, such as tapping at the top of a list to scroll to its top.</li>
+<li>On phones, after clicking the Help (?) button, the help properly appears... but only the first time. On successive clicks, the right context-sensitive topic will scroll to the top but the help tab/page won't come to the foreground. You have to manually navigate to it.</li>
+<li>Some features might not be instantaneous at showing changes you have made as you jump around between pages. Don't worry... all entries are making it to the database.&nbsp;Reload the web page if you don't see one of your changes.</li>
+</ul>
+<h2><a id="wish"></a>Wish List</h2>
+<ul>
+<li>Add child counts to terms, particularly in Build&gt;Edit.</li>
+<li>Add link in Help to re-display the Welcome screen. This was tried but was buggy.</li>
+</ul>
+<h2 id="revision">Revision History</h2>
+<p><strong>June 3, 2026&mdash; </strong>Now at Claude session 49. Lexonomy has every major function I can think of to curate the dictionary. Some features and functions pop up as glaring omissions, though, with every turn at real usage. But most are simply cases where you can find a way to do the task, just not in the first place you look for it... or not as few steps.</p>
+<p><strong>May 27, 2026&mdash;&nbsp;</strong>Now at Claude session 36, a gap in this revision history of a month and 34 AI conversations. Too many improvements and discoveries to list. But there is a theme: virtually all curation can be done in the main page, which is inherently phone-sized!&nbsp;</p>
+<p><strong>v2604290413</strong> &mdash; April 29, 2026 &mdash; Session 12. Qualifier search in Lookup: typeahead finds qualifier matches and navigates to parent showing qualifier in context. Breadcrumb pruning: every breadcrumb word opens a tools dialog (Look up, Edit, Curate, Remove relationship, Define). Symilars redefined with pure filter: unqualified, childless co-children only. Temporal Coherence Constraint named and documented. Hierarchy compression walk conceived. NO as proto-word and the absence-of-distinction as its counterpart identified as the two poles of the system.</p>
+<p><strong>v2604231423</strong> &mdash; April 23, 2026 &mdash; Image files moved to images/ subfolder. Version stamps added to help.html and changeabletext.js.</p>
+</body></html>
