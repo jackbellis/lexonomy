@@ -19,6 +19,8 @@ var QA_PLAY_TEXT = 'Play this game to help curate Lexonomy. Your choice goes liv
 //'<br>3. To categorize a topic that has little or no structure yet, use the //Curate tab.';
 
 // Curate (VC) tab — fixed instruction above coaching tip
+var CURATE_ADMIN_BLURB = 'Enter the admin password to access special administrator-only features.';
+
 var CURATE_COACH = 'For categories that have little hierarchy, drag terms into groups and assign a parent to each group. Use the qualifier field to distinguish similar parents. You might be looking at a hierarchy that was initially suggested by Claude.' +
 '<br>1. WARNING: use the main Save button at the top after DRAGGING items to rearrange. Qualifier changes are immediate after using the buttons at their right.' +
 '<br>2. CAUTION: All of your relationship and qualifier entries are saved, but some screens don\'t show every change instantly.' +
@@ -124,25 +126,28 @@ var WL_BRACKETS_DESCRIPTION = 'Qualifiers that were vaguely flagged as just part
 
 // ── Multi-word Qualifiers worklist ────────────────────────────────────────────
 var CM_MULTIWORDQUAL_LABEL      = 'Multi-word Qualifiers';
+var CM_QUALCENSUS_LABEL         = 'Qualifier Census';
+var CM_QUALCENSUS_BLURB         = 'Every qualifier in the corpus, ranked by how often it\'s used. Tap one to see all the parent-child pairs it qualifies.';
+var WL_QUALCENSUS_DESCRIPTION   = 'The corpus\'s operator lexicon: each qualifier with its usage count. Frequent qualifiers are the reusable subtractions; the long tail may hide near-duplicates worth consolidating. This is a census, not a task list.';
 var CM_MULTIWORDQUAL_BLURB      = 'Sloppy qualifiers containing spaces, that need to be changed to a single word.';
 var WL_MULTIWORDQUAL_DESCRIPTION = 'Sloppy qualifiers containing spaces. Change them to a single word, concentrating on narrower terms, not just resorting to adjectives if possible.';
 
 
 // ── ccccccccccccccc  ────────────────────────────────────────────
-var CM_BH_LABEL           = 'Undercurated';
+var CM_BH_LABEL           = 'Undercurated?';
 var CM_BH_BLURB           = 'Terms with many children and/or few qualifiers.';
 var BH_DESCRIPTION        = "Terms with many children and/or few qualifiers. Edit them to add qualifiers. If there are more than 7-10 direct children, consider using the full-screen Curate page to find smaller groups within.";
 
 // ── ccccccccccccccc  ────────────────────────────────────────────
 var CM_IMMACULATE_LABEL      = 'Immaculate Concept-ions';
 var CM_IMMACULATE_BLURB      = 'Terms with no parent... no spot identified in the hierarchy of vocabulary.';
-var WL_IMMACULATE_DESCRIPTION = "Terms with no parent (but possibly many children)... no spot identified in the hierarchy of vocabulary. Can you specify one? For foundational words like \'do\' or \'and,\' no parent might be fine. For others, the goal is to enter ANY suitable parent, which is then easier to adjust from that starting point. Don\'t try to be perfect. When you click in a field you\'ll get our special suggestion list of primitives.";
+var WL_IMMACULATE_DESCRIPTION = "Terms with no parent (but possibly many children)... no spot identified in the hierarchy of vocabulary. Can you specify one? For foundational words like \'do\' or \'and,\' no parent might be fine. For others, the goal is to enter ANY suitable parent, which is then easier to adjust from that starting point. Don\'t try to be perfect. When you click in a field you\'ll get our special suggestion list of primitives. This list is similar to Orphans, but from different causes.";
 
 
 // ── ccccccccccccccc  ────────────────────────────────────────────
 var CM_ORPHANS_LABEL = 'Orphans';
 var CM_ORPHANS_BLURB = 'From the Misfit game, words that were down to their last occurrence anywhere in the system, and now are left with no parent.';
-var WL_ORPHANS_DESCRIPTION = 'From the Misfit game, words that were down to their last occurrence anywhere in the system (even qualifiers), and now are left with no parent because their only parent was flagged in that game as incorrect. Can you specify a good parent?';
+var WL_ORPHANS_DESCRIPTION = 'From the Misfit game, words that were down to their last occurrence anywhere in the system (even qualifiers), and now are left with no parent because their only parent was flagged in that game as incorrect. Can you specify a good parent? This list is similar to Immaculate Concept-ions, but from a different source.';
 
 // ── ccccccccccccccc  ────────────────────────────────────────────
 var CM_CQUALS_LABEL       = 'Competing Qualifiers';
@@ -189,6 +194,15 @@ var CM_OPEN_CURATE_BLURB  = 'Full-screen-optimized workspace for extensive reorg
 var CM_VISITORS_LABEL     = 'Visitors';
 var CM_VISITORS_BLURB     = 'People who have identified themselves by claiming their avatar';
 
+var CM_PIPELINE_LABEL     = 'AI Curation Review';
+var CM_PIPELINE_BLURB     = 'From the results of having AI curate the 2800-word New General Service List Project (NGSL) list, assigned parents and some qualifiers by AI.';
+var WL_PIPELINE_DESCRIPTION = 'Confirm AI suggestions, for qualifiers and some parents, of the 2800-word NGSL terms.';
+
+var CM_TC_LABEL           = 'Temporal Coherence Review (AoA)';
+var CM_TC_BLURB           = 'Confirm AI suggested corrections that conform with TC and age-of-acquisition';
+var WL_TC_TITLE           = 'Temporal Coherence Review (AoA)';
+var WL_TC_DESCRIPTION     = 'Confirm AI suggested qualifiers that are logical based on temporal coherence (when words arose in the lexicon) and age-of-acquisition (when words are believed to have been acquired by children).';
+
 
 // ── Curate group panels ────────────────
 
@@ -208,11 +222,11 @@ var GAME_Q_GAP      = 'Is there a <b style="color:#2E7D32">missing level</b> bet
 // ── Dashboard metric strings ──────────────────────────────────────────────────
 
 var DB_VISITORS_TITLE    = 'Unique Visitors';
-var DB_VISITORS_DESC     = 'People who have claimed their arbitrarily-assigned avatar.';
+var DB_VISITORS_DESC     = 'Users who have interacted with the site, based on unique session IDs assigned by browsers.';
 var DB_VISITORS_RELATION = '1000 is an arbitrary success target, relative to the world of linguists.';
 
 var DB_WORDS_TITLE      = 'Terms';
-var DB_WORDS_DESC       = 'Distinct terms that are found anywhere in the data as a parent, child, or qualifier.';
+var DB_WORDS_DESC       = 'Distinct terms whether parent, child, or qualifier. Click/tap to browse all.';
 var DB_WORDS_RELATION   = '';
 
 var DB_TOTAL_TITLE       = 'Concepts';
@@ -235,7 +249,42 @@ var DB_ORPHAN_TITLE      = 'Orphans';
 var DB_ORPHAN_DESC       = 'Terms assigned the placeholder parent value, \'[orphan]\' typically from other relationships being deleted.';
 var DB_ORPHAN_RELATION   = 'Another race to the bottom; each needs a broader/earlier term.';
 
+var DB_TINV_TITLE        = 'Temporal Inversions';
+var DB_TINV_DESC         = 'slips whose qualifier sits deeper in the tree than the child it qualifies';
+var DB_TINV_RELATION     = '';
+
+var DB_REACH_TITLE       = 'Reachability';
+var DB_REACH_DESC        = 'words with an unbroken chain to a prime';
+var DB_REACH_RELATION    = '';
+
+var DB_FAT_TITLE         = 'Undercurated... Big Families';
+var DB_FAT_DESC          = 'Families of \u226512 children \u2014 the familization docket; falls as Phase 3 builds generations';
+var DB_FAT_RELATION      = '';
+
+var DB_SYMC_TITLE        = 'Symilar Collisions';
+var DB_SYMC_DESC         = 'Sibling groups sharing an identical qualifier \u2014 subtractions that no longer distinguish';
+var DB_SYMC_RELATION     = '';
+
+var DB_DUP_TITLE         = 'Duplicate Slips';
+var DB_DUP_DESC          = 'surplus rows repeating an existing child under the same parent';
+var DB_DUP_RELATION      = '';
+
+var DB_QC_TITLE          = 'Qualifier Census';
+var DB_QC_DESC           = 'Distinct qualifiers in use \u2014 the corpus\'s operator lexicon. Click/tap to examine.';
+var DB_QC_RELATION       = 'Qualifiers are the main curatorial pressure of Lexonomy, essentially a counter-force against polysemy.';
+
 var DB_IMM_TITLE         = 'Prime Terms- Potentially';
 var DB_IMM_DESC          = 'Terms that are a child of no one. For root words like \'do\' this can be correct.';
 var DB_IMM_RELATION      = 'Will this eventually end up just the 6 intersections with the physical world: do/thing/be/you/here/now?';
 
+
+// ── Avatar Claim / Update dialog ──────────────────────────────────────────────
+var AV_CLAIM_BODY = 'Lexonomy values first and foremost complete openness in curation. But if you would like to identify yourself — cryptically, humorously, or even down to contact information — enter it here. Others will then be able to see your description in the list of visitors. Inappropriate content will be removed.';
+var AV_CLAIM_PLACEHOLDER = 'Who are you?';
+var AV_CLAIM_EMPTY_ERROR = 'Please enter a description, or Cancel.';
+var AV_CLAIM_SAVE_ERROR = 'Save failed. Please try again.';
+var AV_CLAIM_DELETE_CONFIRM = 'Delete your avatar claim? This cannot be undone.';
+var AV_CLAIM_DELETE_ERROR = 'Delete failed. Please try again.';
+
+// ── Delete term dialog ─────────────────────────────────────────────────────────
+var ED_DELETE_BODY = '(TO ACQUIRE THIS PASSWORD, CLAIM YOUR AVATAR.) This purges the term and its relationships, but last instances of any parent or qualifier terms are retained (and visible in the Orphans worklist).';

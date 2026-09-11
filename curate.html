@@ -1,4 +1,4 @@
-<!DOCTYPE html><!-- v2606071930 -->
+<!DOCTYPE html><!-- v2609111253 -->
 <!--
   Lexonomy Curate — unified Curate (VC) + Inheritance (columns) editor
 
@@ -100,7 +100,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .wb-hier-child::before{content:"·";color:#595959;flex-shrink:0}
 .wb-hier-word{color:#185FA5;cursor:grab}
 .wb-hier-word:hover{text-decoration:underline}
-.wb-hier-qual{font-size:11px;color:#595959;font-style:italic}
+.wb-hier-qual{color:#333;font-style:normal}
 .wb-hier-orphan{font-size:12px;color:#595959;padding:2px 0 2px 4px;display:flex;align-items:baseline;gap:4px}
 .wb-hier-orphan::before{content:"○";color:#ddd;font-size:10px;flex-shrink:0}
 .wb-hier-section{font-size:10px;font-weight:600;color:#595959;text-transform:uppercase;letter-spacing:.5px;margin:10px 0 4px}
@@ -207,7 +207,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   <button onclick="txOpen()" style="display:none;padding:4px 10px;border:1.5px solid #185FA5;border-radius:100px;background:#f0f6ff;color:#185FA5;font-size:12px;font-weight:600;cursor:pointer" title="Full Tree Explorer">🌳 Explorer</button>
   <button onclick="bhToggle()" id="bh-btn" style="padding:4px 10px;border:1.5px solid #ccc;border-radius:100px;background:#f5f5f0;color:#555;font-size:12px;font-weight:600;cursor:pointer">⬤ Worklists</button>
   <span style="font-size:15px;font-weight:700;color:#185FA5">Curate</span>
-  <a id="version-stamp-curate" href="https://lexonomy.netlify.app/help.html#revision" target="_blank" style="font-size:11px;color:#595959;margin-left:4px;text-decoration:none">v2606071930</a>
+  <a id="version-stamp-curate" href="https://lexonomy.netlify.app/help.html#revision" target="_blank" style="font-size:11px;color:#595959;margin-left:4px;text-decoration:none">v2609111253</a>
   <span id="cv-avatar-display" onclick="cvAvMenuOpen(this)" title="Avatar options" style="display:none;align-items:center;gap:5px;margin-left:auto;padding:0 6px;cursor:pointer">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="#aaa" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
     <span id="cv-avatar-text" style="font-size:11px;color:#595959;white-space:nowrap"></span>
@@ -232,9 +232,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
   </div>
   <span class="wb-status" id="wb-status"></span>
   <div style="position:relative">
-    <a onclick="lxKeyToggle()" id="lx-key-btn" style="font-size:16px;font-weight:700;color:#595959;cursor:pointer;text-decoration:none;user-select:none" title="Admin password">&#9881;</a>
+    <a onclick="lxKeyToggle()" id="lx-key-btn" style="font-size:16px;font-weight:700;color:#595959;cursor:pointer;text-decoration:none;user-select:none" title="Administration">&#9881;</a>
     <div id="lx-key-popover" style="display:none;position:absolute;top:28px;right:0;background:#fff;border:1.5px solid #ddd;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.14);padding:12px 14px;z-index:600;min-width:260px;flex-direction:column;gap:8px">
-      <div style="font-size:11px;font-weight:600;color:#595959;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px">Admin Password</div>
+      <div style="font-size:11px;font-weight:600;color:#595959;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px">Administration</div>
+      <div id="lx-key-blurb" style="font-size:12px;color:#595959;line-height:1.45;margin-bottom:4px"></div>
       <input id="lx-key-input" type="password" autocomplete="off" autocapitalize="none" spellcheck="false"
         placeholder="sk-ant-api03-…"
         style="padding:7px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:12px;width:100%;box-sizing:border-box;font-family:monospace"/>
@@ -558,6 +559,27 @@ function toggleDirectOnly(on){
 }
 
 
+// ── Qualifier navigation — every rendered ⟨qualifier⟩ is interactive (S70) ────
+// Capture phase so a qualifier tap wins over its row's word click.
+document.addEventListener('click', function(e){
+  var el = (e.target && e.target.closest) ? e.target.closest('.qnav') : null;
+  if(!el) return;
+  var q = (el.textContent || '').replace(/[\u27e8\u27e9]/g, '').trim();
+  if(!q || q === '\u2205' || q === 'NOT' || /^\[.+\]$/.test(q) || /\s/.test(q)) return;
+  e.preventDefault();
+  e.stopPropagation();
+  wbPick(q);
+}, true);
+
+function lexNorm(s){
+  if(!s) return s;
+  return s.trim().replace(/\s+/g,' ')
+          .replace(/\s+\(/g,'(').replace(/\(\s+/g,'(')
+          .replace(/\s+\)/g,')')
+          .replace(/\s+\[/g,'[').replace(/\[\s+/g,'[')
+          .replace(/\s+\]/g,']');
+}
+
 function wbPick(name){
   cvQualsDirty = false;
   currentCat = name;
@@ -643,7 +665,7 @@ function cvBuildPaths(name){
       }
       var item = document.createElement('span');
       item.textContent = w;
-      if(q){ var qs = document.createElement('span'); qs.style.cssText = 'color:#777;font-size:10px'; qs.textContent = ' (' + q + ')'; item.appendChild(qs); }
+      if(q){ var qs = document.createElement('span'); qs.className='qnav'; qs.style.cursor='pointer'; qs.textContent = '⟨' + dq(q) + '⟩'; item.appendChild(qs); }
       var isCurrent = w.toLowerCase() === v;
       item.style.cssText = isCurrent
         ? 'font-weight:700;color:#185FA5'
@@ -658,9 +680,10 @@ function cvBuildPaths(name){
 function cvInitForCat(name){
   cvBuildPaths(name);
   var nameLower = name.toLowerCase();
-  fetch(SUPABASE_URL + '/rest/v1/murray_slips?select=child,parent,qualifier,session_id,notes&parent=eq.' + encodeURIComponent(nameLower) + '&session_id=not.like.play_*&order=created_at.desc&limit=500', {
+  fetch(SUPABASE_URL + '/rest/v1/murray_slips?select=child,parent,qualifier,qual_kind,session_id,notes,source&parent=eq.' + encodeURIComponent(nameLower) + '&session_id=not.like.play_*&order=created_at.desc&limit=500', {
     headers: {'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY}
   }).then(function(r){ return r.json(); }).then(function(directRows){
+    reconRows(directRows);
     var wordSet = new Set();
     var directChildren = {};
     if(Array.isArray(directRows)){
@@ -668,16 +691,17 @@ function cvInitForCat(name){
         if(!r.child) return;
         wordSet.add(r.child);
         if(!directChildren[r.child]) directChildren[r.child] = [];
-        directChildren[r.child].push({q: r.qualifier || null, isAI: r.session_id === 'ai_roget_1' || (r.notes && r.notes.slice(0,2) === 'ww')});
+        directChildren[r.child].push({q: r.qualifier || null, isAI: r.source === 'ai_agent'});
       });
     }
     var childNames = Object.keys(directChildren);
     cvFamilizeChildren = childNames.slice(); // cache for Familize
     if(!childNames.length){ cvBuildCanvas(name, [], [], {}); return; }
 
-    fetch(SUPABASE_URL + '/rest/v1/murray_slips?select=child,parent,qualifier,session_id,notes&parent=in.(' + childNames.map(encodeURIComponent).join(',') + ')&limit=1000', {
+    fetch(SUPABASE_URL + '/rest/v1/murray_slips?select=child,parent,qualifier,qual_kind,session_id,notes,source&parent=in.(' + childNames.map(encodeURIComponent).join(',') + ')&limit=1000', {
       headers: {'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY}
     }).then(function(r2){ return r2.json(); }).then(function(grandRows){
+      reconRows(grandRows);
       var grandChildren = {};
       if(Array.isArray(grandRows)){
         grandRows.forEach(function(r){
@@ -686,7 +710,7 @@ function cvInitForCat(name){
           var bk = r.parent.toLowerCase();
           if(!grandChildren[bk]) grandChildren[bk] = [];
           if(!grandChildren[bk].some(function(x){ return x.word === r.child; })){
-            grandChildren[bk].push({word:r.child, qualifier:r.qualifier||null, isAI: r.session_id === 'ai_roget_1' || (r.notes && r.notes.slice(0,2) === 'ww')});
+            grandChildren[bk].push({word:r.child, qualifier:r.qualifier||null, isAI: r.source === 'ai_agent'});
           }
         });
       }
@@ -816,7 +840,7 @@ function cvBuildCanvas(catName, words, hier, directChildrenRef){
         promBtn.style.opacity = qualInp.value.trim() ? '1' : '.4';
       });
       async function doPromote(word, inp, oldQ, rowEl){
-        var newQ = inp.value.trim().toLowerCase();
+        var newQ = lexNorm(inp.value).toLowerCase();
         if(!newQ) return;
         inp.value = ''; promBtn.disabled = true; promBtn.style.opacity = '.4';
         var wl = word.toLowerCase(), cl = catName.toLowerCase();
@@ -826,7 +850,7 @@ function cvBuildCanvas(catName, words, hier, directChildrenRef){
           await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(wl)+'&parent=eq.'+encodeURIComponent(cl)+'&'+qualFilter(oldQ),
             {method:'DELETE',headers:H});
           await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:HJ,
-            body:JSON.stringify({child:wl,parent:cl,qualifier:newQ,session_id:'cavendish7'})});
+            body:JSON.stringify({child:wl,parent:cl,qualifier:qualVal(newQ),qual_kind:qualKindOf(newQ),session_id:'cavendish7'})});
           rowEl.remove();
           cvInitForCat(currentCat);
         }catch(e){ alert('Promote failed: '+e.message); }
@@ -1034,19 +1058,49 @@ async function cvCollapseGroup(g,div){
   var child=g.parent.trim().toLowerCase(),grandparent=currentCat.trim().toLowerCase(),kids=g.children,kidCount=kids.length;
   cvGdOpen({word:child,title:'Concept Pruner — ‘'+child+'’',sub:'NOTE: Since only 2 levels are shown, ‘Flatten’ might bring new subgroups into view.',remove:true, swap:true, moveBroader:true,rename:true,flatten:true,
     swapFn:function(){cvSwapWithParent(child,grandparent,g.parentQualifier||'');},
-    removeFn:async function(){cvModalClose();try{await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(child)+'&parent=eq.'+encodeURIComponent(grandparent)+'&'+qualFilter(g.parentQualifier),{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'}});cvRemoveFromSlipData(child,grandparent,g.parentQualifier||'');await cvCheckAndRescue([child,grandparent,g.parentQualifier||'']);renderHierarchy(currentCat);setTimeout(function(){cvInitForCat(currentCat);},400);}catch(e){alert('Remove failed: '+e.message);}},
-    moveBroaderFn:function(){cvModalMoveToBroader();},
+    removeFn:async function(){cvModalClose();try{await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(child)+'&parent=eq.'+encodeURIComponent(grandparent)+'&'+qualFilter(g.parentQualifier),{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'}});cvRemoveFromSlipData(child,grandparent,g.parentQualifier||'');fetch(SUPABASE_URL+'/rest/v1/curator_log',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'},body:JSON.stringify({action_type:'remove',child:child,parent:grandparent,notes:'removed relationship'+((g.parentQualifier||'')?' \u27e8'+g.parentQualifier+'\u27e9':''),session_id:'cavendish7'})}).catch(function(){console.error('Remove: curator_log write failed');});await cvCheckAndRescue([child,grandparent,g.parentQualifier||'']);renderHierarchy(currentCat);setTimeout(function(){cvInitForCat(currentCat);},400);}catch(e){alert('Remove failed: '+e.message);}},
+    moveBroaderFn:function(){cvModalMoveToBroader(child, grandparent, g.parentQualifier||'');},
     flattenFn:async function(){cvModalClose();try{
-      if(kids.length){await Promise.all(kids.map(function(k){return fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal,resolution=ignore-duplicates'},body:JSON.stringify({child:k.word.trim().toLowerCase(),parent:grandparent,qualifier:k.qualifier||'',category:currentCat,session_id:'cavendish7'})});}));await Promise.all(kids.map(function(k){return fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(k.word.trim().toLowerCase())+'&parent=eq.'+encodeURIComponent(child),{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'}});}));}
+      if(kids.length){
+        var sbHdr={'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
+        var sbJson={'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'};
+        var movedNames=[];
+        for(var fi=0;fi<kids.length;fi++){
+          var kw=kids[fi].word.trim().toLowerCase();
+          // PATCH, not delete+recreate: moves every qualifier variant and preserves notes, source, AI flags, provenance
+          var pr=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(kw)+'&parent=eq.'+encodeURIComponent(child),{method:'PATCH',headers:sbJson,body:JSON.stringify({parent:grandparent})});
+          if(!pr.ok){
+            // Collision: some qualifier variant already exists under the grandparent. Resolve row-by-row.
+            var oceanRows=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?select=id,qualifier&child=eq.'+encodeURIComponent(kw)+'&parent=eq.'+encodeURIComponent(child),{headers:sbHdr}).then(function(r){return r.json();});
+            var gpRows=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?select=qualifier&child=eq.'+encodeURIComponent(kw)+'&parent=eq.'+encodeURIComponent(grandparent),{headers:sbHdr}).then(function(r){return r.json();});
+            var gpQuals={};(gpRows||[]).forEach(function(r){gpQuals[(r.qualifier||'').toLowerCase()]=1;});
+            for(var ri=0;ri<(oceanRows||[]).length;ri++){
+              var row=oceanRows[ri];
+              if(gpQuals[(row.qualifier||'').toLowerCase()]){
+                // Exact duplicate would result — delete the now-redundant edge (the only honest delete in a flatten)
+                var dr=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?id=eq.'+encodeURIComponent(row.id),{method:'DELETE',headers:sbJson});
+                if(!dr.ok){console.error('Flatten: duplicate-edge delete failed for',kw,'id',row.id);}
+              } else {
+                var p2=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?id=eq.'+encodeURIComponent(row.id),{method:'PATCH',headers:sbJson,body:JSON.stringify({parent:grandparent})});
+                if(!p2.ok){console.error('Flatten: row move failed for',kw,'id',row.id);}
+              }
+            }
+          }
+          movedNames.push(kw);
+        }
+        // Audit trail: one curator_log row per flatten so history shows it
+        fetch(SUPABASE_URL+'/rest/v1/curator_log',{method:'POST',headers:sbJson,body:JSON.stringify({action_type:'flatten',child:child,parent:grandparent,notes:'flattened \u2018'+child+'\u2019: moved '+kidCount+' child'+(kidCount===1?'':'ren')+' up to \u2018'+grandparent+'\u2019 \u2014 '+movedNames.join(', '),session_id:'cavendish7'})}).catch(function(){console.error('Flatten: curator_log write failed');});
+      }
       renderHierarchy(currentCat);setTimeout(function(){cvInitForCat(currentCat);},400);}catch(e){alert('Flatten failed: '+e.message);}},
     yourTermFn:function(){wbPick(child);cvModalClose();},
     changeParent:true,
     changeParentFn:async function(newParent){
-      await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(child)+'&parent=eq.'+encodeURIComponent(grandparent)+'&'+qualFilter(g.parentQualifier),
-        {method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'}});
-      await fetch(SUPABASE_URL+'/rest/v1/murray_slips',
-        {method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal,resolution=ignore-duplicates'},
-        body:JSON.stringify({child:child.toLowerCase(),parent:newParent,qualifier:g.parentQualifier||'',category:currentCat,session_id:'cavendish7'})});
+      var cpHJ={'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'};
+      // PATCH, not delete+recreate: notes, source, AI flags, provenance survive the move
+      var cpRes=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(child)+'&parent=eq.'+encodeURIComponent(grandparent)+'&'+qualFilter(g.parentQualifier),
+        {method:'PATCH',headers:cpHJ,body:JSON.stringify({parent:newParent})});
+      if(!cpRes.ok){console.error('Change parent: PATCH failed for',child,'\u2192',newParent);alert('Change parent failed \u2014 see console.');return;}
+      fetch(SUPABASE_URL+'/rest/v1/curator_log',{method:'POST',headers:cpHJ,body:JSON.stringify({action_type:'change_parent',child:child,parent:newParent,notes:'prev_parent: '+grandparent,session_id:'cavendish7'})}).catch(function(){console.error('Change parent: curator_log write failed');});
       renderHierarchy(currentCat);
       setTimeout(function(){cvInitForCat(currentCat);},400);
     }
@@ -1133,7 +1187,7 @@ function cvAddGroup(){
     var restoreBtn = busyBtn(pSave, '\u2026');
     try{
       await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:HJ,
-        body:JSON.stringify({child:pl,parent:currentCat.toLowerCase(),qualifier:g.parentQualifier||'',category:currentCat,session_id:'cavendish7'})});
+        body:JSON.stringify({child:pl,parent:currentCat.toLowerCase(),qualifier:qualVal(g.parentQualifier||''),qual_kind:qualKindOf(g.parentQualifier||''),category:currentCat,session_id:'cavendish7'})});
       pSave.style.display = 'none';
       cvShowSavedToast();
       renderHierarchy(currentCat);
@@ -1160,13 +1214,16 @@ function cvAddGroup(){
   pQSave.title = 'Save qualifier';
   pQSave.className = 'cv-parent-qsave';
   pQSave.style.cssText = 'flex-shrink:0;padding:1px 5px;background:#185FA5;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px;opacity:.35;margin-left:4px';
-  pQualInput.addEventListener('input', function(){ pQSave.style.opacity = pQualInput.value.trim() ? '1' : '.35'; });
+  pQualInput.addEventListener('input', function(){
+    pQSave.style.opacity = pQualInput.value.trim() ? '1' : '.35';
+    pQSave.style.background = '#c0392b'; // S70: changed field → red checkmark
+  });
   pQSave.addEventListener('mousedown', function(e){ e.stopPropagation(); });
   pQualInput.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); pQSave.click(); } });
   attachCvQualPills(pQualInput, pQSave);
   pQSave.addEventListener('click', async function(e){
     e.stopPropagation();
-    var newQ = pQualInput.value.trim().toLowerCase();
+    var newQ = lexNorm(pQualInput.value).toLowerCase();
     var catL = currentCat.toLowerCase(), pl = g.parent.trim().toLowerCase();
     var oldQ = g.parentQualifier ? g.parentQualifier.trim().toLowerCase() : '';
     var H = {'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'};
@@ -1175,11 +1232,12 @@ function cvAddGroup(){
     try{
       // update only the header slip (pl → catL), not children
       await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(pl)+'&parent=eq.'+encodeURIComponent(catL),{method:'DELETE',headers:H});
-      await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:HJ,body:JSON.stringify({child:pl,parent:catL,qualifier:newQ,session_id:'cavendish7'})});
+      await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:HJ,body:JSON.stringify({child:pl,parent:catL,qualifier:qualVal(newQ),qual_kind:qualKindOf(newQ),session_id:'cavendish7'})});
       g.parentQualifier = newQ;
       g.parentIsAI = false;
       pQualInput.style.color = '';
       pQSave.style.opacity = '.35';
+      pQSave.style.background = '#185FA5';
       cvShowSavedToast();
       renderHierarchy(currentCat);
     }catch(err){ alert('Save qualifier failed: '+err.message); }
@@ -1262,7 +1320,7 @@ function cvMakeAddRow(g, groupDiv){
   wireAdminTypeahead(inp, (function(){ var s=document.createElement('div'); s.className='lx-sug-box'; s.style.cssText='position:fixed;z-index:9999;margin:0;background:#fff;border:1px solid #d0d8e8;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.12);overflow:hidden;display:none'; document.body.appendChild(s); return s; })());
 
   async function doAdd(){
-    var word = inp.value.trim().toLowerCase();
+    var word = lexNorm(inp.value).toLowerCase();
     if(!word || !g.parent) return;
     inp.value = '';
     btn.disabled = true;
@@ -1271,7 +1329,7 @@ function cvMakeAddRow(g, groupDiv){
       await fetch(SUPABASE_URL + '/rest/v1/murray_slips', {
         method:'POST',
         headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal,resolution=ignore-duplicates'},
-        body:JSON.stringify({child:word, parent:g.parent.trim().toLowerCase(), qualifier:'', category:currentCat, session_id:'cavendish7'})
+        body:JSON.stringify({child:word, parent:g.parent.trim().toLowerCase(), qualifier:'', qual_kind:null, category:currentCat, session_id:'cavendish7'})
       });
       g.children.push({word:word, qualifier:''});
       cvRefreshBodyZone(groupDiv, g);
@@ -1315,7 +1373,7 @@ function cvFlushQualifiers(persist){
                 {method:'DELETE',headers:H})
               .then(function(){
                 return fetch(SUPABASE_URL+'/rest/v1/murray_slips',
-                  {method:'POST',headers:HJ,body:JSON.stringify({child:word,parent:g.parent.toLowerCase(),qualifier:val,session_id:'cavendish7'})});
+                  {method:'POST',headers:HJ,body:JSON.stringify({child:word,parent:g.parent.toLowerCase(),qualifier:qualVal(val),qual_kind:qualKindOf(val),session_id:'cavendish7'})});
               })
               .then(function(){ c._dbQualifier = val; })
               .catch(function(e){ console.log('[cvFlush] flush failed', e); })
@@ -1361,7 +1419,7 @@ function cvMakeChildEl(g, groupDiv, child){
   qual.spellcheck = false;
   // anchor the saved baseline so qSave can detect actual changes
   if(child._savedQualifier === undefined) child._savedQualifier = child.qualifier || '';
-  qual.addEventListener('input', function(){ child.qualifier = qual.value.trim(); cvQualsDirty = true; });
+  qual.addEventListener('input', function(){ child.qualifier = lexNorm(qual.value); cvQualsDirty = true; });
   if(child.isAI && child.qualifier) qual.style.color = '#9d1d1d';
   qual.addEventListener('mousedown', function(e){ e.stopPropagation(); });
   wireQualTypeahead(qual);
@@ -1371,8 +1429,12 @@ function cvMakeChildEl(g, groupDiv, child){
   qSave.style.cssText = 'flex-shrink:0;padding:1px 5px;background:#185FA5;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px;opacity:.35;visibility:hidden';
   if(child.isAI && child.qualifier){ qSave.style.opacity = '1'; qSave.style.visibility = ''; }
   qual.addEventListener('input', function(){
-    child.qualifier = qual.value.trim();
+    child.qualifier = lexNorm(qual.value);
+    var dirty = lexNorm(qual.value) !== (child._savedQualifier || '');
     qSave.style.opacity = qual.value.trim() ? '1' : '.35';
+    // S70: a changed field shows a red, persistent checkmark (unsaved-work signal)
+    if(dirty){ qSave.dataset.dirty = '1'; qSave.style.visibility = ''; qSave.style.background = '#c0392b'; }
+    else { delete qSave.dataset.dirty; qSave.style.background = '#185FA5'; }
   });
   qSave.addEventListener('mousedown', function(e){ e.stopPropagation(); });
   qual.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); qSave.click(); } });
@@ -1388,20 +1450,22 @@ function cvMakeChildEl(g, groupDiv, child){
     try{
       if(oldQ !== newQ || child.isAI){
         await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(wl)+'&parent=eq.'+encodeURIComponent(pl)+'&'+qualFilter(oldQ),{method:'DELETE',headers:H});
-        await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:HJ,body:JSON.stringify({child:wl,parent:pl,qualifier:newQ,session_id:'cavendish7'})});
+        await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:HJ,body:JSON.stringify({child:wl,parent:pl,qualifier:qualVal(newQ),qual_kind:qualKindOf(newQ),session_id:'cavendish7'})});
         child._savedQualifier = newQ;
         child.qualifier = newQ;
         child.isAI = false;
         qual.style.color = '';
       }
       qSave.style.opacity = '.35';
+      qSave.style.background = '#185FA5';
+      delete qSave.dataset.dirty;
       cvShowSavedToast();
       renderHierarchy(currentCat);
     }catch(err){ alert('Save failed: '+err.message); }
     finally{ restoreBtn(); }
   });
   row.addEventListener('mouseenter', function(){ qSave.style.visibility=''; });
-  row.addEventListener('mouseleave', function(){ qSave.style.visibility='hidden'; });
+  row.addEventListener('mouseleave', function(){ if(qSave.dataset.dirty !== '1') qSave.style.visibility='hidden'; });
   var x = document.createElement('span');
   x.className = 'cv-child-x';
   x.textContent = '···';
@@ -1456,13 +1520,25 @@ function cvRemoveWordFromData(w){
 var cvAutoSaveTimer = null;
 // ── Orphan rescue helpers (parallel to index.html) ───────────────────────────
 function cvIsBracketQual(q){ return !!q && /^\[.+\]$/.test(q); }
+// S71 item 2 Phase B: kind inference at every write gate (empty → null,
+// [x] → 'variant', else 'operator') + dual-era row read with string fallback.
+function dq(q){ return (typeof q==='string' && /^\[?not\]?$/i.test(q.trim())) ? 'NOT' : q; }
+// Phase C: stored values are bare; brackets are paint. See index.html notes.
+function qualVal(q){ q = (q==null?'':String(q)).trim(); var m = /^\[(.+)\]$/.exec(q); return m ? m[1].trim() : q; }
+function reconQ(q, k){ q = (q==null?'':q); if((k==='variant'||k==='negation') && q && q.charAt(0)!=='[') return '['+q+']'; return q; }
+function reconRows(rows){ if(Array.isArray(rows)) rows.forEach(function(r){ if(r && r.qualifier !== undefined) r.qualifier = reconQ(r.qualifier, r.qual_kind); }); return rows; }
+function qualKindOf(q){ q = (q||'').trim(); if(!q) return null; var ql = q.toLowerCase(); if(ql==='[not]'||ql==='not') return 'negation'; return /^\[.+\]$/.test(q) ? 'variant' : 'operator'; }
+function cvEdgeIsVariant(r){
+  if(r.qual_kind) return r.qual_kind === 'variant';
+  return cvIsBracketQual(((r.qualifier)||'').trim());
+}
 
 function cvWordInCorpus(word){
   var wl = word.toLowerCase();
   return allSlipData.some(function(r){
     return (r.child && r.child.toLowerCase()===wl) ||
            (r.parent && r.parent.toLowerCase()===wl) ||
-           (!cvIsBracketQual(r.qualifier) && (r.qualifier||'').toLowerCase()===wl);
+           (!cvEdgeIsVariant(r) && (r.qualifier||'').toLowerCase()===wl);
   });
 }
 
@@ -1473,7 +1549,7 @@ async function cvRescueAsOrphan(word){
     await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{
       method:'POST',
       headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal,resolution=ignore-duplicates'},
-      body:JSON.stringify({child:wl, parent:'[orphan]', qualifier:'', session_id:rescueSid})
+      body:JSON.stringify({child:wl, parent:'[orphan]', qualifier:'', qual_kind:null, session_id:rescueSid})
     });
     allSlipData.push({child:wl, parent:'[orphan]', qualifier:'', session_id:rescueSid});
   }catch(e){ console.error('cvRescueAsOrphan failed for "'+word+'":', e); }
@@ -1519,18 +1595,18 @@ function busyBtn(btn, label){
 }
 function qualFilter(q){
   // PostgREST: NULL needs 'qualifier=is.null', empty string needs 'qualifier=eq.'
-  return (q===null||q===undefined) ? 'qualifier=is.null' : 'qualifier=eq.'+encodeURIComponent(q);
+  return (q===null||q===undefined) ? 'qualifier=is.null' : 'qualifier=eq.'+encodeURIComponent(qualVal(q));
 }
 async function reloadAllSlipData(){
   window._depthMap = null; // invalidate depth cache
   var pageSize=10000, offset=0, all=[];
   while(true){
-    var r=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?select=child,parent,qualifier,session_id,notes,status,gm_misfit,wl_competing_parents,wl_variant_review,wl_multiword_qual&session_id=not.like.play_*&order=created_at.asc&limit='+pageSize+'&offset='+offset,
+    var r=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?select=child,parent,qualifier,qual_kind,session_id,notes,status,gm_misfit,wl_competing_parents,wl_variant_review,wl_multiword_qual&session_id=not.like.play_*&order=created_at.asc&limit='+pageSize+'&offset='+offset,
       {headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
     var rows=r.ok?await r.json():[];if(!Array.isArray(rows))rows=[];
     all=all.concat(rows);if(rows.length<pageSize)break;offset+=pageSize;
   }
-  allSlipData=all;
+  allSlipData=all; reconRows(allSlipData);
 }
 
 // ── Primitives dropdown (shared singleton) ────────────────────────────────────
@@ -2071,26 +2147,27 @@ function renderHierarchy(catName){
   if(!scroll) return;
   scroll.innerHTML = '<div class="wb-hier-empty">Loading...</div>';
 
-  fetch(SUPABASE_URL + '/rest/v1/murray_slips?select=child,parent,qualifier,session_id,notes&parent=eq.' + encodeURIComponent(catName.toLowerCase()) + '&session_id=not.like.play_*&order=created_at.desc&limit=500', {
+  fetch(SUPABASE_URL + '/rest/v1/murray_slips?select=child,parent,qualifier,qual_kind,session_id,notes,source&parent=eq.' + encodeURIComponent(catName.toLowerCase()) + '&session_id=not.like.play_*&order=created_at.desc&limit=500', {
     headers: {'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY}
   }).then(function(r){ return r.json(); }).then(function(directRows){
+    reconRows(directRows);
     if(!Array.isArray(directRows)){ scroll.innerHTML = '<div class="wb-hier-empty">No data.</div>'; return; }
 
     var directChildren = {};
     directRows.forEach(function(r){
       if(!r.child) return;
       if(!directChildren[r.child]) directChildren[r.child] = [];
-      directChildren[r.child].push({q: r.qualifier || null, isAI: r.session_id === 'ai_roget_1' || (r.notes && r.notes.slice(0,2) === 'ww')});
+      directChildren[r.child].push({q: r.qualifier || null, isAI: r.source === 'ai_agent'});
     });
     var childNames = Object.keys(directChildren);
 
     // fetch broader terms of root (one level above)
-    fetch(SUPABASE_URL + '/rest/v1/murray_slips?select=parent,qualifier&child=eq.' + encodeURIComponent(catName.toLowerCase()) + '&limit=20', {
+    fetch(SUPABASE_URL + '/rest/v1/murray_slips?select=parent,qualifier,qual_kind&child=eq.' + encodeURIComponent(catName.toLowerCase()) + '&limit=20', {
       headers: {'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY}
     }).then(function(rb){ return rb.json(); }).then(function(broaderRows){
       var broaderTerms = [];
       if(Array.isArray(broaderRows)){
-        broaderRows.forEach(function(r){ if(r.parent) broaderTerms.push({word:r.parent, qualifier:r.qualifier!=null?r.qualifier:''}); });
+        broaderRows.forEach(function(r){ if(r.parent) broaderTerms.push({word:r.parent, qualifier:r.qualifier!=null?reconQ(r.qualifier,r.qual_kind):''}); });
       }
 
       if(!childNames.length){
@@ -2099,9 +2176,10 @@ function renderHierarchy(catName){
         return;
       }
 
-      fetch(SUPABASE_URL + '/rest/v1/murray_slips?select=child,parent,qualifier,session_id,notes&parent=in.(' + childNames.map(encodeURIComponent).join(',') + ')&limit=1000', {
+      fetch(SUPABASE_URL + '/rest/v1/murray_slips?select=child,parent,qualifier,qual_kind,session_id,notes,source&parent=in.(' + childNames.map(encodeURIComponent).join(',') + ')&limit=1000', {
         headers: {'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY}
       }).then(function(r2){ return r2.json(); }).then(function(grandRows){
+        reconRows(grandRows);
         var grandChildren = {};
         if(Array.isArray(grandRows)){
           grandRows.forEach(function(r){
@@ -2109,7 +2187,7 @@ function renderHierarchy(catName){
             var bk = r.parent;
             if(!grandChildren[bk]) grandChildren[bk] = [];
             if(!grandChildren[bk].some(function(x){ return x.word === r.child; })){
-              grandChildren[bk].push({word:r.child, qualifier:r.qualifier||null, isAI: r.session_id === 'ai_roget_1' || (r.notes && r.notes.slice(0,2) === 'ww')});
+              grandChildren[bk].push({word:r.child, qualifier:r.qualifier||null, isAI: r.source === 'ai_agent'});
             }
           });
         }
@@ -2120,9 +2198,10 @@ function renderHierarchy(catName){
     }).catch(function(){
       // broader fetch failed — render without it
       if(!childNames.length){ buildHierarchyDOM(scroll, catName, {}, [], {}, []); return; }
-      fetch(SUPABASE_URL + '/rest/v1/murray_slips?select=child,parent,qualifier&parent=in.(' + childNames.map(encodeURIComponent).join(',') + ')&limit=1000', {
+      fetch(SUPABASE_URL + '/rest/v1/murray_slips?select=child,parent,qualifier,qual_kind&parent=in.(' + childNames.map(encodeURIComponent).join(',') + ')&limit=1000', {
         headers: {'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY}
       }).then(function(r2){ return r2.json(); }).then(function(grandRows){
+        reconRows(grandRows);
         var grandChildren = {};
         if(Array.isArray(grandRows)){
           grandRows.forEach(function(r){
@@ -2161,8 +2240,9 @@ function hierMakeRow(className, word, qualifier, parentWord, hasChildren, isAI){
 
   if(qualifier){
     var q = document.createElement('span');
-    q.style.cssText = 'font-size:11px;color:' + (isAI ? '#9d1d1d' : '#999') + ';font-style:italic;margin-left:4px';
-    q.textContent = '(' + qualifier + ')';
+    q.className = 'qnav';
+    q.style.cssText = 'color:' + (isAI ? '#9d1d1d' : '#333') + ';margin-left:4px;cursor:pointer';
+    q.textContent = '⟨' + dq(qualifier) + '⟩';
     left.appendChild(q);
   }
   row.appendChild(left);
@@ -2194,6 +2274,8 @@ function hierMakeRow(className, word, qualifier, parentWord, hasChildren, isAI){
 
 // ── API key management ────────────────────────────────────────────────────────────────────────
 function lxKeyToggle(){
+  var kb = document.getElementById('lx-key-blurb');
+  if(kb && typeof CURATE_ADMIN_BLURB !== 'undefined') kb.textContent = CURATE_ADMIN_BLURB;
   var pop = document.getElementById('lx-key-popover');
   var isOpen = pop.style.display === 'flex';
   if(isOpen){ pop.style.display = 'none'; return; }
@@ -2286,14 +2368,14 @@ async function cvFamilizeCrunch(term){
     var systemPrompt =
       'You are a lexical taxonomy assistant. Your task is to group a flat list of child terms under a parent term into families. ' +
       'Rules: ' +
-      '(1) Choose family heads exclusively from the provided children list — do not invent new terms. ' +
-      '(2) Each non-head child should appear in exactly one family’s members list, or in ejects. ' +
+      '(1) Prefer family heads from the provided children list. If no child names a cluster, you MAY propose one new head word not in the list — it must be a common, early-acquired, non-Latinate English word that names the cluster (a missing generation), and you must mark that family with \"newHead\": true. ' +
+      '(2) Each non-head child should appear in exactly one family’s members list, or in ejects. Members must come ONLY from the provided children list; NEVER include the parent term itself as a member. A term must NEVER appear in both a members list and ejects — if uncertain, put it ONLY in ejects. ' +
       '(3) A head term should NOT also appear in any members list. ' +
       '(4) Ejects: children that appear to belong under a different parent entirely — advisory only. ' +
       '(5) temporalWarn: if a head term is etymologically younger (e.g. Latinate/French vs Anglo-Saxon) than one or more of its proposed members, add a brief warning string. ' +
       '(6) Do not produce qualifiers. ' +
       'Respond with ONLY a valid JSON object, no prose, no markdown fences. Schema: ' +
-      '{"families":[{"head":"<child>","members":["<child>",...],"temporalWarn":"<optional string>"}],"ejects":["<child>",...]}';
+      '{"families":[{"head":"<child-or-new-word>","newHead":false,"members":["<child>",...],"temporalWarn":"<optional string>"}],"ejects":["<child>",...]}';
 
     var userMsg =
       'Parent term: ' + term + '\n' +
@@ -2308,8 +2390,8 @@ async function cvFamilizeCrunch(term){
         'anthropic-dangerous-direct-browser-access': 'true'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1500,
+        model: 'claude-sonnet-4-6',
+        max_tokens: 8000,
         system: systemPrompt,
         messages: [{ role: 'user', content: userMsg }]
       })
@@ -2324,9 +2406,25 @@ async function cvFamilizeCrunch(term){
     var raw = (data.content && data.content[0] && data.content[0].text) || '';
     // Strip markdown fences if present
     raw = raw.replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'').trim();
+    // Extract first balanced JSON object — model occasionally prepends/appends prose despite instructions
+    var js = raw.indexOf('{');
+    if(js > -1){
+      var depth = 0, inStr = false, esc = false;
+      for(var ji = js; ji < raw.length; ji++){
+        var jc = raw[ji];
+        if(esc){ esc = false; continue; }
+        if(jc === '\\' && inStr){ esc = true; continue; }
+        if(jc === '"'){ inStr = !inStr; continue; }
+        if(!inStr){
+          if(jc === '{') depth++;
+          else if(jc === '}'){ depth--; if(depth === 0){ raw = raw.slice(js, ji + 1); break; } }
+        }
+      }
+    }
     result = JSON.parse(raw);
   } catch(e) {
     errMsg = e.message || 'Unknown error';
+    try { console.error('Familize parse failure. Raw reply:', raw); } catch(e2){}
   }
 
   // Remove crunch overlay
@@ -2345,19 +2443,37 @@ function cvFamilizeShowGateB(term, result){
   var families = result.families || [];
   var ejects   = result.ejects   || [];
 
+  // Terms the model listed BOTH as family members and as ejects — self-contradiction = uncertainty signal
+  var memberSet = new Set();
+  families.forEach(function(f){ (f.members||[]).forEach(function(m){ memberSet.add(m.toLowerCase()); }); });
+  var doubleSet = new Set(ejects.filter(function(e){ return memberSet.has(e.toLowerCase()); }).map(function(e){ return e.toLowerCase(); }));
+  var effectiveEjects = ejects.filter(function(e){ return !memberSet.has(e.toLowerCase()); });
+
   var backdrop = document.createElement('div');
   backdrop.id = 'fam-gate-b';
   backdrop.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.35);z-index:700;display:flex;align-items:center;justify-content:center;padding:16px';
 
   // Build tree HTML
   var treeHtml = '<div class="wb-hier-root">' + term + '</div>';
-  families.forEach(function(fam){
+  families.forEach(function(fam, fi){
     var warn = fam.temporalWarn ? ' <span style="font-size:11px;color:#c07000;font-style:italic">⚠ ' + fam.temporalWarn + '</span>' : '';
-    treeHtml += '<div class="wb-hier-parent">' + fam.head + warn + '</div>';
+    var isNewHead = !cvFamilizeChildren.some(function(ch){ return ch.toLowerCase() === fam.head.toLowerCase(); });
+    var newBadge = isNewHead ? ' <span style="font-size:11px;color:#185FA5;font-weight:700">(new — will be inserted)</span>' : '';
+    treeHtml += '<div class="wb-hier-parent">' + fam.head + newBadge + warn + '</div>';
     (fam.members || []).forEach(function(m){
+      var ml = m.toLowerCase();
+      var isRoot = (ml === term.toLowerCase());
+      var isReal = cvFamilizeChildren.some(function(ch){ return ch.toLowerCase() === ml; });
+      var skipBadge = '';
+      if(isRoot) skipBadge = ' <span style="font-size:11px;color:#c0392b;font-weight:700">⛔ root term — will be skipped (cycle)</span>';
+      else if(!isReal) skipBadge = ' <span style="font-size:11px;color:#c0392b;font-weight:700">⛔ not a child of ' + term + ' — will be skipped</span>';
+      var isDouble = doubleSet.has(ml);
+      if(isDouble && !skipBadge) skipBadge = ' <span style="font-size:11px;color:#c07000;font-weight:700">⚠ model also ejected this — uncertain, unchecked by default</span>';
+      var cb = (skipBadge && !isDouble) ? '' :
+        '<input type="checkbox" class="fam-mem-cb" data-fam="' + fi + '" data-mem="' + m.replace(/"/g,'&quot;') + '" ' + (isDouble ? '' : 'checked ') + 'style="margin-right:6px;vertical-align:middle">';
       treeHtml +=
-        '<div class="wb-hier-child" style="margin-bottom:1px">' +
-        '<span class="wb-hier-word" style="cursor:default">' + m + '</span>' +
+        '<div class="wb-hier-child" style="margin-bottom:1px">' + cb +
+        '<span class="wb-hier-word" style="cursor:default">' + m + '</span>' + skipBadge +
         '</div>';
     });
   });
@@ -2380,10 +2496,15 @@ function cvFamilizeShowGateB(term, result){
 
   // Ejects
   var ejectLine = '';
-  if(ejects.length){
+  if(effectiveEjects.length){
     ejectLine = '<div style="font-size:12px;color:#c07000;margin-top:10px;padding:8px 10px;background:#fff8e1;border-radius:6px">' +
-      '⚠ ' + ejects.length + ' term' + (ejects.length===1?'':'s') + ' not processed: ' +
-      ejects.join(', ') + '</div>';
+      '⚠ ' + effectiveEjects.length + ' term' + (effectiveEjects.length===1?'':'s') + ' not processed: ' +
+      effectiveEjects.join(', ') + '</div>';
+  }
+  if(doubleSet.size){
+    ejectLine += '<div style="font-size:12px;color:#c07000;margin-top:6px;padding:8px 10px;background:#fff8e1;border-radius:6px">' +
+      '⚠ ' + doubleSet.size + ' term' + (doubleSet.size===1?'':'s') + ' listed as both placed and ejected (model uncertain) — shown unchecked above: ' +
+      Array.from(doubleSet).join(', ') + '</div>';
   }
 
   var inner = document.createElement('div');
@@ -2405,7 +2526,16 @@ function cvFamilizeShowGateB(term, result){
     document.getElementById('fam-gate-b').remove();
   };
   document.getElementById('fam-gate-b-save').onclick = function(){
-    cvFamilizeCommit(term, families, ejects);
+    var off = {};
+    document.querySelectorAll('#fam-gate-b .fam-mem-cb').forEach(function(cb){
+      if(!cb.checked) off[cb.dataset.fam + '|' + cb.dataset.mem.toLowerCase()] = 1;
+    });
+    var pruned = families.map(function(f, fi){
+      return Object.assign({}, f, { members: (f.members || []).filter(function(m){
+        return !off[fi + '|' + m.toLowerCase()];
+      })});
+    });
+    cvFamilizeCommit(term, pruned, ejects);
   };
 }
 
@@ -2425,6 +2555,7 @@ async function cvFamilizeCommit(term, families, ejects){
     'Prefer': 'return=minimal'
   };
   var HI = Object.assign({}, H, {'Prefer': 'return=minimal,resolution=ignore-duplicates'});
+  var H2 = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY };
 
   var errors = [];
   var moveCount = 0;
@@ -2433,18 +2564,39 @@ async function cvFamilizeCommit(term, families, ejects){
     var fam = families[fi];
     var head = fam.head.toLowerCase();
     var members = (fam.members||[]).map(function(m){ return m.toLowerCase(); });
+    // Law 7: if head is a new word (missing generation), insert it as a child of term first
+    var headExists = cvFamilizeChildren.some(function(ch){ return ch.toLowerCase() === head; });
+    if(!headExists){
+      try {
+        await fetch(SUPABASE_URL+'/rest/v1/murray_slips', {
+          method:'POST', headers:HI,
+          body:JSON.stringify({child:head, parent:termLower, qualifier:'', qual_kind:null, session_id:'ai_familize', notes:'familize-newhead:'+termLower})
+        });
+      } catch(e) { errors.push('newhead '+head+': '+e.message); }
+    }
     for(var mi=0; mi<members.length; mi++){
       var child = members[mi];
       if(child === head) continue; // safety: skip if head somehow in members
+      if(child === termLower) continue; // cycle guard: never move the root term under its own child
+      if(!cvFamilizeChildren.some(function(ch){ return ch.toLowerCase() === child; })) continue; // hallucination guard: members must be real children
       try {
-        // Delete old edge: term -> child
-        await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(child)+'&parent=eq.'+encodeURIComponent(termLower), {
-          method:'DELETE', headers:H
-        });
-        // Insert new edge: head -> child
-        await fetch(SUPABASE_URL+'/rest/v1/murray_slips', {
-          method:'POST', headers:HI,
-          body:JSON.stringify({child:child, parent:head, qualifier:'', session_id:'ai_familize', notes:'familize:'+termLower})
+        // S68: PATCH the parent, never delete+insert. The qualifier is the
+        // incumbent (Law: overturn requires argument; ∅ is not an argument) and
+        // the notes are provenance — both survive the move. The FCP re-adjudicates
+        // the family on arrival staleness: KEEP where the qualifier still
+        // differentiates, REQUALIFY with argument where the new roster broke it.
+        var gr = await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(child)+'&parent=eq.'+encodeURIComponent(termLower)+'&select=id,qualifier,notes', {headers:H2});
+        var rows = await gr.json();
+        if(!rows || !rows.length){ errors.push(child+': source row not found'); continue; }
+        var row = rows[0];
+        // duplicate guard: does head already hold this child at this qualifier?
+        var dq = await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(child)+'&parent=eq.'+encodeURIComponent(head)+'&select=id', {headers:H2});
+        var dups = await dq.json();
+        if(dups && dups.length){ errors.push(child+': already exists under '+head+' — left in place for the desk'); continue; }
+        var wasNote = 'familize:'+termLower+' (was '+termLower+'\u2716'+(row.qualifier||'\u2205')+')' + (row.notes ? ' | '+row.notes : '');
+        await fetch(SUPABASE_URL+'/rest/v1/murray_slips?id=eq.'+encodeURIComponent(row.id), {
+          method:'PATCH', headers:H,
+          body:JSON.stringify({parent:head, notes:wasNote.slice(0,500)})
         });
         moveCount++;
       } catch(e) {
@@ -2468,9 +2620,18 @@ async function cvFamilizeCommit(term, families, ejects){
   // Patch allSlipData in-memory so worklist reflects moves immediately
   families.forEach(function(fam){
     var headLower = fam.head.toLowerCase();
+    var headWasChild = allSlipData.some(function(r){
+      return r.child && r.child.toLowerCase() === headLower &&
+             r.parent && r.parent.toLowerCase() === termLower;
+    });
+    if(!headWasChild){
+      allSlipData.push({child:headLower, parent:termLower, qualifier:'', session_id:'ai_familize', notes:'familize-newhead:'+termLower});
+    }
     (fam.members||[]).forEach(function(m){
       var memberLower = m.toLowerCase();
       if(memberLower === headLower) return;
+      if(memberLower === termLower) return; // cycle guard (mirror of commit)
+      if(!cvFamilizeChildren.some(function(ch){ return ch.toLowerCase() === memberLower; })) return; // hallucination guard (mirror of commit)
       // remove all old edges term->member (may be multiple due to competing qualifiers)
       for(var i = allSlipData.length - 1; i >= 0; i--){
         var r = allSlipData[i];
@@ -2493,6 +2654,25 @@ async function cvFamilizeCommit(term, families, ejects){
   cvInitForCat(currentCat);
 }
 
+// ── Dictionary lookup: Wiktionary REST, normalized to dictionaryapi.dev shape ──
+// (replaced https://api.dictionaryapi.dev/api/v2/entries/en/{word} — service down, S70)
+async function lexDictLookup(word){
+  var res = await fetch('https://en.wiktionary.org/api/rest_v1/page/definition/' + encodeURIComponent(word));
+  if(!res.ok) return null;
+  var json = await res.json();
+  var entries = json && json.en;
+  if(!Array.isArray(entries) || !entries.length) return null;
+  var tmp = document.createElement('div');
+  function strip(h){ tmp.innerHTML = h || ''; return (tmp.textContent || '').replace(/\s+/g,' ').trim(); }
+  var meanings = [];
+  entries.forEach(function(e){
+    var defs = (e.definitions || []).map(function(d){ return { definition: strip(d.definition) }; })
+                                    .filter(function(d){ return d.definition; });
+    if(defs.length) meanings.push({ partOfSpeech: (e.partOfSpeech || '').toLowerCase(), definitions: defs });
+  });
+  return meanings.length ? [{ meanings: meanings }] : null;
+}
+
 async function cvModalDefine(){
   var word = cvModalWord;
   var panel = document.getElementById('cv-modal-def-panel');
@@ -2500,10 +2680,8 @@ async function cvModalDefine(){
   panel.style.display = 'block';
   panel.innerHTML = '<span style="color:#595959">Looking up…</span>';
   try {
-    var res = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + encodeURIComponent(word));
-    if(!res.ok){ panel.innerHTML = '<span style="color:#595959">No definition found.</span>'; return; }
-    var data = await res.json();
-    if(!Array.isArray(data) || !data.length){ panel.innerHTML = '<span style="color:#595959">No definition found.</span>'; return; }
+    var data = await lexDictLookup(word);
+    if(!data){ panel.innerHTML = '<span style="color:#595959">No definition found.</span>'; return; }
     var html = '';
     data[0].meanings.slice(0,3).forEach(function(m){
       html += '<div class="cv-modal-def-pos">' + m.partOfSpeech + '</div>';
@@ -2728,8 +2906,27 @@ async function doLeafDelete(word, btn){
     var catEl = document.querySelector('#wb-cats-scroll .wb-cat[data-cat="'+wl+'"]');
     if(catEl) catEl.remove();
     applyWbFilter();
-    renderHierarchy(currentCat);
-    setTimeout(function(){ cvInitForCat(currentCat); }, 400);
+    // S70: deleting the main term itself returns the page to its initial
+    // no-term state instead of re-rendering a hierarchy for a word that no
+    // longer exists.
+    if((currentCat||'').toLowerCase() === wl){
+      currentCat = '';
+      var _cl = document.getElementById('wb-cat-label'); if(_cl) _cl.textContent = '';
+      ['wb-hier-scroll-curate','wb-hier-scroll-inh'].forEach(function(sid){
+        var sc = document.getElementById(sid);
+        if(sc) sc.innerHTML = '<div class="wb-hier-empty">Select a term to curate.</div>';
+      });
+      // Right side: clear paths, coach, groups canvas back to initial state
+      ['cv-paths','cv-fixed-coach','cv-coach-heading','cv-coach-text'].forEach(function(pid){
+        var pe = document.getElementById(pid); if(pe) pe.innerHTML = '';
+      });
+      var cv = document.getElementById('cv-canvas');
+      if(cv) cv.querySelectorAll('.cv-group').forEach(function(gel){ gel.remove(); });
+      var pw = document.getElementById('cv-pool-wrap'); if(pw) pw.style.display = 'none';
+    } else {
+      renderHierarchy(currentCat);
+      setTimeout(function(){ cvInitForCat(currentCat); }, 400);
+    }
   } catch(e){ alert('Delete failed: ' + e.message); console.error(e); }
   if(btn) btn.style.pointerEvents = '';
 }
@@ -2738,8 +2935,7 @@ async function doLeafDelete(word, btn){
 async function lexDoSwap(child, parent, qual){
   var cl = child.toLowerCase(), pl = parent.toLowerCase(), ql = qual || '';
   var H = {'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
-  var HJ = {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal,resolution=ignore-duplicates'};
-  var HD = {'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'};
+  var HJ = {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'};
 
   // guard: check for circular relationship (parent is already a child of child)
   var circRes = await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(pl)+'&parent=eq.'+encodeURIComponent(cl)+'&select=child&limit=1',
@@ -2750,39 +2946,37 @@ async function lexDoSwap(child, parent, qual){
     return;
   }
 
-  // op1: delete child→parent, insert parent→child
-  await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(cl)+'&parent=eq.'+encodeURIComponent(pl),
-    {method:'DELETE',headers:HD});
-  await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:HJ,
-    body:JSON.stringify({child:pl,parent:cl,qualifier:ql,session_id:'cavendish7'})});
-
-  // op2: siblings re-parented to child
-  var sibRes = await fetch(SUPABASE_URL+'/rest/v1/murray_slips?parent=eq.'+encodeURIComponent(pl)+'&child=neq.'+encodeURIComponent(cl)+'&select=child,qualifier',
+  // op0: capture parent's grandparent edges BEFORE the flip, so the flip edge can never
+  // appear in its own grandparent list (the old delete+insert order silently orphaned pl).
+  var gpRes = await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(pl)+'&select=id,parent,qualifier,qual_kind',
     {headers:H});
-  var siblings = await sibRes.json();
-  if(siblings && siblings.length){
-    await Promise.all(siblings.map(async function(s){
-      var sc = s.child.toLowerCase(), sq = s.qualifier || '';
-      await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(sc)+'&parent=eq.'+encodeURIComponent(pl),
-        {method:'DELETE',headers:HD});
-      await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:HJ,
-        body:JSON.stringify({child:sc,parent:cl,qualifier:sq,session_id:'cavendish7'})});
-    }));
+  var grandparents = await gpRes.json(); if(!Array.isArray(grandparents)) grandparents = []; reconRows(grandparents);
+
+  // op1: flip child\u2194parent by PATCHing the edge in place \u2014 qualifier, notes, provenance preserved
+  var flipRes = await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(cl)+'&parent=eq.'+encodeURIComponent(pl),
+    {method:'PATCH',headers:HJ,body:JSON.stringify({child:pl,parent:cl})});
+  if(!flipRes.ok){ console.error('Swap: flip PATCH failed for',cl,'\u2194',pl); alert('Swap failed \u2014 see console.'); return; }
+
+  // op2: siblings re-parented to child \u2014 single PATCH moves all rows, all columns intact
+  var sibRes = await fetch(SUPABASE_URL+'/rest/v1/murray_slips?parent=eq.'+encodeURIComponent(pl)+'&child=neq.'+encodeURIComponent(cl),
+    {method:'PATCH',headers:HJ,body:JSON.stringify({parent:cl})});
+  if(!sibRes.ok){ console.error('Swap: sibling re-parent PATCH failed under',pl); }
+
+  // op3: grandparent edges re-pointed from parent to child, row-by-row by id (captured pre-flip)
+  for(var gi=0; gi<grandparents.length; gi++){
+    var g = grandparents[gi];
+    var gp = (g.parent||'').toLowerCase();
+    if(gp === cl) continue; // safety: never re-point at the swap partner
+    var pRes = await fetch(SUPABASE_URL+'/rest/v1/murray_slips?id=eq.'+encodeURIComponent(g.id),
+      {method:'PATCH',headers:HJ,body:JSON.stringify({child:cl})});
+    if(!pRes.ok){
+      // collision: cl already sits under this grandparent \u2014 the old edge is redundant, delete it
+      var dRes = await fetch(SUPABASE_URL+'/rest/v1/murray_slips?id=eq.'+encodeURIComponent(g.id),{method:'DELETE',headers:HJ});
+      if(!dRes.ok){ console.error('Swap: grandparent edge cleanup failed, id',g.id); }
+    }
   }
 
-  // op3: grandparents re-pointed from parent to child
-  var gpRes = await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(pl)+'&select=parent,qualifier',
-    {headers:H});
-  var grandparents = await gpRes.json();
-  if(grandparents && grandparents.length){
-    await Promise.all(grandparents.map(async function(g){
-      var gp = g.parent.toLowerCase(), gq = g.qualifier || '';
-      await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(pl)+'&parent=eq.'+encodeURIComponent(gp),
-        {method:'DELETE',headers:HD});
-      await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:HJ,
-        body:JSON.stringify({child:cl,parent:gp,qualifier:gq,session_id:'cavendish7'})});
-    }));
-  }
+  fetch(SUPABASE_URL+'/rest/v1/curator_log',{method:'POST',headers:HJ,body:JSON.stringify({action_type:'swap',child:pl,parent:cl,notes:'swapped: \u2018'+cl+'\u2019 now broader than \u2018'+pl+'\u2019 (siblings and grandparent edges carried)',session_id:'cavendish7'})}).catch(function(){console.error('Swap: curator_log write failed');});
 }
 
 async function cvSwapWithParent(word, parent, qualifier){
@@ -2796,16 +2990,26 @@ async function cvSwapWithParent(word, parent, qualifier){
 
 async function cvSynonymOfParent(word, parent){
   cvModalClose();
+  var wl=word.toLowerCase(), pl=parent.toLowerCase();
+  var syH={'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
+  var syHJ={'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'};
   try{
-    // delete any existing slip for this child→parent (any qualifier)
-    await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(word.toLowerCase())+'&parent=eq.'+encodeURIComponent(parent.toLowerCase()),
-      {method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'}});
-    // re-insert with qualifier=[synonym]
-    await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal,resolution=ignore-duplicates'},
-      body:JSON.stringify({child:word.toLowerCase(),parent:parent.toLowerCase(),qualifier:'[synonym]',session_id:'cavendish7'})
-    });
+    // Re-qualify in place: PATCH the first edge row to [synonym] (notes/provenance survive), delete other variants
+    var rows=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?select=id,qualifier,qual_kind&child=eq.'+encodeURIComponent(wl)+'&parent=eq.'+encodeURIComponent(pl)+'&order=created_at.asc',{headers:syH}).then(function(r){return r.json();});
+    rows=Array.isArray(rows)?rows:[]; reconRows(rows);
+    if(!rows.length){
+      await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:syHJ,
+        body:JSON.stringify({child:wl,parent:pl,qualifier:'synonym',qual_kind:'variant',session_id:'cavendish7'})});
+    } else {
+      var keep=rows[0], prevQual=keep.qualifier||'';
+      var pRes=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?id=eq.'+encodeURIComponent(keep.id),{method:'PATCH',headers:syHJ,body:JSON.stringify({qualifier:'synonym',qual_kind:'variant'})});
+      if(!pRes.ok){console.error('Synonym: qualifier PATCH failed for',wl,'id',keep.id);alert('Synonym failed \u2014 see console.');return;}
+      for(var si=1;si<rows.length;si++){
+        var dRes=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?id=eq.'+encodeURIComponent(rows[si].id),{method:'DELETE',headers:syHJ});
+        if(!dRes.ok){console.error('Synonym: variant delete failed for',wl,'id',rows[si].id);}
+      }
+    }
+    fetch(SUPABASE_URL+'/rest/v1/curator_log',{method:'POST',headers:syHJ,body:JSON.stringify({action_type:'synonym',child:wl,parent:pl,notes:'requalified to [synonym]'+(rows.length&&(rows[0].qualifier||'')?' (was \u27e8'+rows[0].qualifier+'\u27e9)':''),session_id:'cavendish7'})}).catch(function(){console.error('Synonym: curator_log write failed');});
     renderHierarchy(currentCat);
     setTimeout(function(){cvInitForCat(currentCat);},400);
   }catch(e){alert('Synonym failed: '+e.message);}
@@ -2817,10 +3021,10 @@ function hierDeleteLeaf(word,parent,qualifier,btn){
     swapFn:function(){cvSwapWithParent(word,parent,qualifier);},
     removeFn:async function(){
       cvModalClose();
-      try{await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(word)+'&parent=eq.'+encodeURIComponent(parent)+'&'+qualFilter(qualifier),{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'}});cvRemoveFromSlipData(word,parent,qualifier||'');await cvCheckAndRescue([word,parent,qualifier||'']);renderHierarchy(currentCat);setTimeout(function(){cvInitForCat(currentCat);},400);}catch(e){alert('Remove failed: '+e.message);}
+      try{await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(word)+'&parent=eq.'+encodeURIComponent(parent)+'&'+qualFilter(qualifier),{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'}});cvRemoveFromSlipData(word,parent,qualifier||'');fetch(SUPABASE_URL+'/rest/v1/curator_log',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'},body:JSON.stringify({action_type:'remove',child:word,parent:parent,notes:'removed relationship'+((qualifier||'')?' \u27e8'+qualifier+'\u27e9':''),session_id:'cavendish7'})}).catch(function(){console.error('Remove: curator_log write failed');});await cvCheckAndRescue([word,parent,qualifier||'']);renderHierarchy(currentCat);setTimeout(function(){cvInitForCat(currentCat);},400);}catch(e){alert('Remove failed: '+e.message);}
       if(btn)btn.style.pointerEvents='';
     },
-    moveBroaderFn:function(){cvModalMoveToBroader();},
+    moveBroaderFn:function(){cvModalMoveToBroader(word, parent, qualifier||'');},
     deleteFn:function(){
       document.getElementById('cv-modal-pw-err').textContent='';
       if(rlPwVerified){
@@ -2835,11 +3039,12 @@ function hierDeleteLeaf(word,parent,qualifier,btn){
     yourTermFn:function(){wbPick(word);cvModalClose();},
     changeParent:true,
     changeParentFn:async function(newParent){
-      await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(word)+'&parent=eq.'+encodeURIComponent(parent)+'&'+qualFilter(qualifier),
-        {method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'}});
-      await fetch(SUPABASE_URL+'/rest/v1/murray_slips',
-        {method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal,resolution=ignore-duplicates'},
-        body:JSON.stringify({child:word.toLowerCase(),parent:newParent,qualifier:qualifier,category:currentCat,session_id:'cavendish7'})});
+      var cpHJ={'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'};
+      // PATCH, not delete+recreate: notes, source, AI flags, provenance survive the move
+      var cpRes=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(word)+'&parent=eq.'+encodeURIComponent(parent)+'&'+qualFilter(qualifier),
+        {method:'PATCH',headers:cpHJ,body:JSON.stringify({parent:newParent})});
+      if(!cpRes.ok){console.error('Change parent: PATCH failed for',word,'\u2192',newParent);alert('Change parent failed \u2014 see console.');return;}
+      fetch(SUPABASE_URL+'/rest/v1/curator_log',{method:'POST',headers:cpHJ,body:JSON.stringify({action_type:'change_parent',child:word,parent:newParent,notes:'prev_parent: '+parent,session_id:'cavendish7'})}).catch(function(){console.error('Change parent: curator_log write failed');});
       renderHierarchy(currentCat);
       setTimeout(function(){cvInitForCat(currentCat);},400);
     }
@@ -2858,19 +3063,47 @@ async function hierDeleteSlip(child,parent,qualifier,btn){
     var kids=kidsRes.ok?await kidsRes.json():[];if(!Array.isArray(kids))kids=[];var kidCount=kids.length;
     cvGdOpen({word:child,title:'Concept Pruner — ‘'+child+'’',sub:'NOTE: Since only 2 levels are shown, ‘Flatten’ might bring new subgroups into view.',remove:true, swap:true, moveBroader:true,rename:true,flatten:true,
       swapFn:function(){cvSwapWithParent(child,parent,qualifier);},
-      removeFn:async function(){cvModalClose();try{await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(child)+'&parent=eq.'+encodeURIComponent(parent)+'&'+qualFilter(qualifier),{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'}});cvRemoveFromSlipData(child,parent,qualifier||'');await cvCheckAndRescue([child,parent,qualifier||'']);renderHierarchy(currentCat);setTimeout(function(){cvInitForCat(currentCat);},400);}catch(e){alert('Remove failed: '+e.message);}},
-      moveBroaderFn:function(){cvModalMoveToBroader();},
+      removeFn:async function(){cvModalClose();try{await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(child)+'&parent=eq.'+encodeURIComponent(parent)+'&'+qualFilter(qualifier),{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'}});cvRemoveFromSlipData(child,parent,qualifier||'');fetch(SUPABASE_URL+'/rest/v1/curator_log',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'},body:JSON.stringify({action_type:'remove',child:child,parent:parent,notes:'removed relationship'+((qualifier||'')?' \u27e8'+qualifier+'\u27e9':''),session_id:'cavendish7'})}).catch(function(){console.error('Remove: curator_log write failed');});await cvCheckAndRescue([child,parent,qualifier||'']);renderHierarchy(currentCat);setTimeout(function(){cvInitForCat(currentCat);},400);}catch(e){alert('Remove failed: '+e.message);}},
+      moveBroaderFn:function(){cvModalMoveToBroader(child, parent, qualifier||'');},
       flattenFn:async function(){cvModalClose();try{
-        if(kids.length){await Promise.all(kids.map(function(k){return fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal,resolution=ignore-duplicates'},body:JSON.stringify({child:k.child.trim().toLowerCase(),parent:parent.trim().toLowerCase(),qualifier:k.qualifier||'',category:currentCat,session_id:'cavendish7'})});}));await Promise.all(kids.map(function(k){return fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(k.child.trim().toLowerCase())+'&parent=eq.'+encodeURIComponent(child),{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'}});}));}
-        await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(child)+'&parent=eq.'+encodeURIComponent(parent),{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'}});renderHierarchy(currentCat);setTimeout(function(){cvInitForCat(currentCat);},400);}catch(e){alert('Flatten failed: '+e.message);}},
+        var sbHdr2={'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
+        var sbJson2={'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'};
+        if(kids.length){
+          var movedNames2=[];
+          for(var fi=0;fi<kids.length;fi++){
+            var kw=kids[fi].child.trim().toLowerCase();
+            var tp=parent.trim().toLowerCase();
+            // PATCH, not delete+recreate: moves every qualifier variant and preserves notes, source, AI flags, provenance
+            var pr=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(kw)+'&parent=eq.'+encodeURIComponent(child),{method:'PATCH',headers:sbJson2,body:JSON.stringify({parent:tp})});
+            if(!pr.ok){
+              var srcRows=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?select=id,qualifier&child=eq.'+encodeURIComponent(kw)+'&parent=eq.'+encodeURIComponent(child),{headers:sbHdr2}).then(function(r){return r.json();});
+              var tgtRows=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?select=qualifier&child=eq.'+encodeURIComponent(kw)+'&parent=eq.'+encodeURIComponent(tp),{headers:sbHdr2}).then(function(r){return r.json();});
+              var tgtQuals={};(tgtRows||[]).forEach(function(r){tgtQuals[(r.qualifier||'').toLowerCase()]=1;});
+              for(var ri=0;ri<(srcRows||[]).length;ri++){
+                var row=srcRows[ri];
+                if(tgtQuals[(row.qualifier||'').toLowerCase()]){
+                  var dr=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?id=eq.'+encodeURIComponent(row.id),{method:'DELETE',headers:sbJson2});
+                  if(!dr.ok){console.error('Flatten: duplicate-edge delete failed for',kw,'id',row.id);}
+                } else {
+                  var p2=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?id=eq.'+encodeURIComponent(row.id),{method:'PATCH',headers:sbJson2,body:JSON.stringify({parent:tp})});
+                  if(!p2.ok){console.error('Flatten: row move failed for',kw,'id',row.id);}
+                }
+              }
+            }
+            movedNames2.push(kw);
+          }
+          fetch(SUPABASE_URL+'/rest/v1/curator_log',{method:'POST',headers:sbJson2,body:JSON.stringify({action_type:'flatten',child:child,parent:parent,notes:'flattened \u2018'+child+'\u2019 (dissolved under \u2018'+parent+'\u2019): moved '+kidCount+' child'+(kidCount===1?'':'ren')+' up \u2014 '+movedNames2.join(', '),session_id:'cavendish7'})}).catch(function(){console.error('Flatten: curator_log write failed');});
+        }
+        await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(child)+'&parent=eq.'+encodeURIComponent(parent),{method:'DELETE',headers:sbJson2});await cvCheckAndRescue([child]);renderHierarchy(currentCat);setTimeout(function(){cvInitForCat(currentCat);},400);}catch(e){alert('Flatten failed: '+e.message);}},
       yourTermFn:function(){wbPick(child);cvModalClose();},
       changeParent:true,
       changeParentFn:async function(newParent){
-        await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(child)+'&parent=eq.'+encodeURIComponent(parent)+'&'+qualFilter(qualifier),
-          {method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'}});
-        await fetch(SUPABASE_URL+'/rest/v1/murray_slips',
-          {method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal,resolution=ignore-duplicates'},
-          body:JSON.stringify({child:child.toLowerCase(),parent:newParent,qualifier:qualifier,category:currentCat,session_id:'cavendish7'})});
+        var cpHJ={'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'};
+        // PATCH, not delete+recreate: notes, source, AI flags, provenance survive the move
+        var cpRes=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(child)+'&parent=eq.'+encodeURIComponent(parent)+'&'+qualFilter(qualifier),
+          {method:'PATCH',headers:cpHJ,body:JSON.stringify({parent:newParent})});
+        if(!cpRes.ok){console.error('Change parent: PATCH failed for',child,'\u2192',newParent);alert('Change parent failed \u2014 see console.');return;}
+        fetch(SUPABASE_URL+'/rest/v1/curator_log',{method:'POST',headers:cpHJ,body:JSON.stringify({action_type:'change_parent',child:child,parent:newParent,notes:'prev_parent: '+parent,session_id:'cavendish7'})}).catch(function(){console.error('Change parent: curator_log write failed');});
         renderHierarchy(currentCat);
         setTimeout(function(){cvInitForCat(currentCat);},400);
       }
@@ -3110,7 +3343,7 @@ function wireHierDrag(scroll){
       try{
         await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(movedWord)+'&parent=eq.'+encodeURIComponent(oldParent), {method:'DELETE',headers:H});
         await fetch(SUPABASE_URL+'/rest/v1/murray_slips', {method:'POST',headers:HJ,
-          body:JSON.stringify({child:movedWord, parent:newParent, qualifier:'', session_id:'cavendish7'})});
+          body:JSON.stringify({child:movedWord, parent:newParent, qualifier:'', qual_kind:null, session_id:'cavendish7'})});
         cvShowSavedToast();
         renderHierarchy(currentCat);
         setTimeout(function(){ cvInitForCat(currentCat); }, 400);
@@ -3136,8 +3369,9 @@ function buildHierarchyDOM(scroll, catName, directChildren, childNames, grandChi
       wordSpan.addEventListener('click', function(){ wbPick(b.word); });
       if(b.qualifier){
         var bq = document.createElement('span');
-        bq.style.cssText = 'font-size:11px;color:#595959;font-style:italic;margin-left:4px';
-        bq.textContent = '(' + b.qualifier + ')';
+        bq.className = 'qnav';
+        bq.style.cssText = 'color:#333;margin-left:4px;cursor:pointer';
+        bq.textContent = '⟨' + dq(b.qualifier) + '⟩';
         wordSpan.appendChild(bq);
       }
       row.appendChild(label);
@@ -3154,16 +3388,16 @@ function buildHierarchyDOM(scroll, catName, directChildren, childNames, grandChi
           e.stopPropagation();cvModalBtn=btn;
           cvGdOpen({word:broaderWord,title:'Concept Pruner — ‘'+broaderWord+'’',remove:true, moveNarrower:true,
             removeFn:async function(){cvModalClose();try{var qual=broaderQual;await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(catN.toLowerCase())+'&parent=eq.'+encodeURIComponent(broaderWord.toLowerCase())+'&'+qualFilter(qual),{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'}});cvRemoveFromSlipData(catN.toLowerCase(),broaderWord.toLowerCase(),qual||'');await cvCheckAndRescue([catN.toLowerCase(),broaderWord.toLowerCase(),qual||'']);renderHierarchy(currentCat);}catch(err){alert('Remove failed: '+err.message);}},
-            moveNarrowerFn:async function(){cvModalClose();try{var qual=broaderQual;await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(catN.toLowerCase())+'&parent=eq.'+encodeURIComponent(broaderWord.toLowerCase())+'&'+qualFilter(qual),{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'}});await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal,resolution=ignore-duplicates'},body:JSON.stringify({child:broaderWord.toLowerCase(),parent:catN.toLowerCase(),qualifier:qual,session_id:'cavendish7'})});renderHierarchy(currentCat);setTimeout(function(){cvInitForCat(currentCat);},400);}catch(err){alert('Move failed: '+err.message);}},
+            moveNarrowerFn:async function(){cvModalClose();try{var qual=broaderQual;await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(catN.toLowerCase())+'&parent=eq.'+encodeURIComponent(broaderWord.toLowerCase())+'&'+qualFilter(qual),{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'}});await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal,resolution=ignore-duplicates'},body:JSON.stringify({child:broaderWord.toLowerCase(),parent:catN.toLowerCase(),qualifier:qualVal(qual),qual_kind:qualKindOf(qual),session_id:'cavendish7'})});renderHierarchy(currentCat);setTimeout(function(){cvInitForCat(currentCat);},400);}catch(err){alert('Move failed: '+err.message);}},
             yourTermFn:function(){wbPick(broaderWord);cvModalClose();},
             changeParent:true,
             changeParentFn:async function(newParent){
               var qual=broaderQual;
-              await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(catN.toLowerCase())+'&parent=eq.'+encodeURIComponent(broaderWord.toLowerCase())+'&'+qualFilter(qual),
-                {method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'}});
-              await fetch(SUPABASE_URL+'/rest/v1/murray_slips',
-                {method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal,resolution=ignore-duplicates'},
-                body:JSON.stringify({child:catN.toLowerCase(),parent:newParent,qualifier:qual,session_id:'cavendish7'})});
+              var cpHJ={'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'};
+              var cpRes=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(catN.toLowerCase())+'&parent=eq.'+encodeURIComponent(broaderWord.toLowerCase())+'&'+qualFilter(qual),
+                {method:'PATCH',headers:cpHJ,body:JSON.stringify({parent:newParent})});
+              if(!cpRes.ok){console.error('Change parent: PATCH failed for',catN,'\u2192',newParent);alert('Change parent failed \u2014 see console.');return;}
+              fetch(SUPABASE_URL+'/rest/v1/curator_log',{method:'POST',headers:cpHJ,body:JSON.stringify({action_type:'change_parent',child:catN.toLowerCase(),parent:newParent,notes:'prev_parent: '+broaderWord.toLowerCase(),session_id:'cavendish7'})}).catch(function(){console.error('Change parent: curator_log write failed');});
               renderHierarchy(currentCat);
               setTimeout(function(){cvInitForCat(currentCat);},400);
             }
@@ -3209,11 +3443,11 @@ function buildHierarchyDOM(scroll, catName, directChildren, childNames, grandChi
       try{
         var HJ = {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal,resolution=ignore-duplicates'};
         await fetch(SUPABASE_URL+'/rest/v1/murray_slips', {method:'POST', headers:HJ,
-          body: JSON.stringify({child:catName.toLowerCase(), parent:newParent, qualifier:'', session_id:'cavendish7'})});
+          body: JSON.stringify({child:catName.toLowerCase(), parent:newParent, qualifier:'', qual_kind:null, session_id:'cavendish7'})});
         addBroaderInp.value = '';
         addBroaderBtn.style.opacity = '.35';
         cvShowSavedToast();
-        allSlipData.push({child:catName.toLowerCase(), parent:newParent, qualifier:'', session_id:'cavendish7'});
+        allSlipData.push({child:catName.toLowerCase(), parent:newParent, qualifier:'', qual_kind:null, session_id:'cavendish7'});
         renderHierarchy(currentCat);
         applyWbFilter();
       }catch(err){ alert('Save failed: '+err.message); }
@@ -3458,55 +3692,52 @@ async function loadAllCategories(){
   }
   applyWbFilter();
 }
-async function cvModalMoveToBroader(){
-  var term = cvModalWord; // the term to move out of current category
-  
-  console.log('Moving "' + term + '" to be broader than category "' + currentCat + '"');
+async function cvModalMoveToBroader(word, parentWord, qualifier){
+  var term = (word || cvModalWord).trim().toLowerCase();
+  var par  = (parentWord || currentCat).trim().toLowerCase();
+  var subj = currentCat.trim().toLowerCase();
   cvModalClose();
-  
+  var mbH  = {'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
+  var mbHJ = {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'};
   try {
-    // Step 1: Find current relationship to get qualifier
-    var currentRes = await fetch(
-      SUPABASE_URL + '/rest/v1/murray_slips?select=qualifier&child=eq.' + encodeURIComponent(term.toLowerCase()) + 
-      '&parent=eq.' + encodeURIComponent(currentCat.toLowerCase()) + '&limit=1',
-      {headers: {'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY}}
-    );
-    var currentData = await currentRes.json();
-    var qualifier = (currentData && currentData[0] && currentData[0].qualifier) || '';
-    
-    // Step 2: Delete current relationship (term → category)
-    await fetch(
-      SUPABASE_URL + '/rest/v1/murray_slips?child=eq.' + encodeURIComponent(term.toLowerCase()) +
-      '&parent=eq.' + encodeURIComponent(currentCat.toLowerCase()),
-      {method: 'DELETE', headers: {'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Prefer': 'return=minimal'}}
-    );
-    
-    // Step 3: Create flipped relationship (category → term) 
-    await fetch(
-      SUPABASE_URL + '/rest/v1/murray_slips',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_KEY,
-          'Authorization': 'Bearer ' + SUPABASE_KEY,
-          'Prefer': 'return=minimal,resolution=ignore-duplicates'
-        },
-        body: JSON.stringify({
-          child: currentCat.toLowerCase(),
-          parent: term.toLowerCase(), 
-          qualifier: qualifier,
-          session_id: 'cavendish7'
-        })
+    if(par !== subj){
+      // Grandchild (or deeper) row: promote ONE level — reparent term from its actual parent to the subject.
+      // PATCH preserves qualifier variants, notes, source, AI flags, provenance.
+      var pr = await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(term)+'&parent=eq.'+encodeURIComponent(par),
+        {method:'PATCH',headers:mbHJ,body:JSON.stringify({parent:subj})});
+      if(!pr.ok){
+        // Collision: some qualifier variant already exists under subj — resolve row-by-row.
+        var srcRows = await fetch(SUPABASE_URL+'/rest/v1/murray_slips?select=id,qualifier&child=eq.'+encodeURIComponent(term)+'&parent=eq.'+encodeURIComponent(par),{headers:mbH}).then(function(r){return r.json();});
+        var tgtRows = await fetch(SUPABASE_URL+'/rest/v1/murray_slips?select=qualifier&child=eq.'+encodeURIComponent(term)+'&parent=eq.'+encodeURIComponent(subj),{headers:mbH}).then(function(r){return r.json();});
+        var tgtQ = {};(tgtRows||[]).forEach(function(r){tgtQ[(r.qualifier||'').toLowerCase()]=1;});
+        for(var ri=0;ri<(srcRows||[]).length;ri++){
+          var row=srcRows[ri];
+          if(tgtQ[(row.qualifier||'').toLowerCase()]){
+            var dr=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?id=eq.'+encodeURIComponent(row.id),{method:'DELETE',headers:mbHJ});
+            if(!dr.ok){console.error('Move broader: duplicate-edge delete failed for',term,'id',row.id);}
+          } else {
+            var p2=await fetch(SUPABASE_URL+'/rest/v1/murray_slips?id=eq.'+encodeURIComponent(row.id),{method:'PATCH',headers:mbHJ,body:JSON.stringify({parent:subj})});
+            if(!p2.ok){console.error('Move broader: row move failed for',term,'id',row.id);}
+          }
+        }
       }
-    );
-    
-    // Step 4: Refresh the hierarchy display
+      fetch(SUPABASE_URL+'/rest/v1/curator_log',{method:'POST',headers:mbHJ,body:JSON.stringify({action_type:'move_broader',child:term,parent:subj,notes:'promoted one level: \u2018'+term+'\u2019 moved from under \u2018'+par+'\u2019 to under \u2018'+subj+'\u2019',session_id:'cavendish7'})}).catch(function(){console.error('Move broader: curator_log write failed');});
+    } else {
+      // Direct child of subject: flip — term becomes broader than the subject.
+      // Cycle guard: refuse if subj is already recorded as a parent of term via any other edge.
+      var circ = await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(subj)+'&parent=eq.'+encodeURIComponent(term)+'&select=id&limit=1',{headers:mbH}).then(function(r){return r.json();});
+      if(Array.isArray(circ)&&circ.length){
+        alert('Cannot move broader: \u2018'+subj+'\u2019 is already recorded as a child of \u2018'+term+'\u2019.');
+        return;
+      }
+      // PATCH-flip the edge(s) in place: child/parent swap, qualifier + notes + provenance preserved.
+      var fr = await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(term)+'&parent=eq.'+encodeURIComponent(subj),
+        {method:'PATCH',headers:mbHJ,body:JSON.stringify({child:subj,parent:term})});
+      if(!fr.ok){console.error('Move broader: flip PATCH failed for',term,'\u2194',subj);alert('Move failed \u2014 see console.');return;}
+      fetch(SUPABASE_URL+'/rest/v1/curator_log',{method:'POST',headers:mbHJ,body:JSON.stringify({action_type:'move_broader',child:subj,parent:term,notes:'flipped: \u2018'+term+'\u2019 is now broader than \u2018'+subj+'\u2019',session_id:'cavendish7'})}).catch(function(){console.error('Move broader: curator_log write failed');});
+    }
     renderHierarchy(currentCat);
     setTimeout(function(){ cvInitForCat(currentCat); }, 400);
-    
-    console.log('Successfully moved "' + term + '" to broader than category');
-    
   } catch(err) {
     console.error('Move failed:', err);
     alert('Move failed: ' + err.message);
@@ -3525,6 +3756,7 @@ function wlDescHeader(text){
   if(!text) return null;
   var PREVIEW_LEN = 40;
   var preview = text.length > PREVIEW_LEN ? text.slice(0, PREVIEW_LEN).trimEnd() + '…' : text;
+  var stateKey = 'lexWlDesc:' + preview; // S70: per-panel collapse persistence
   var fullHtml = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
   var wrap = document.createElement('div');
   var bar = document.createElement('div');
@@ -3544,11 +3776,13 @@ function wlDescHeader(text){
     var isOpen = full.classList.toggle('open');
     chevron.textContent = isOpen ? '▾' : '▸';
     previewEl.style.visibility = isOpen ? 'hidden' : '';
+    try{ if(isOpen){ localStorage.removeItem(stateKey); } else { localStorage.setItem(stateKey,'1'); } }catch(e){}
   };
-  // Start expanded by default
+  // Start expanded by default; S70 — honor persisted collapse
   full.classList.add('open');
   chevron.textContent = '▾';
   previewEl.style.visibility = 'hidden';
+  try{ if(localStorage.getItem(stateKey)==='1'){ full.classList.remove('open'); chevron.textContent = '▸'; previewEl.style.visibility = ''; } }catch(e){}
   wrap.appendChild(bar);
   wrap.appendChild(full);
   return wrap;
@@ -3590,15 +3824,15 @@ function wlShowTab(tab){
 // ── Shared: PATCH qualifier ───────────────────────────────────────────────────
 async function cvPatchQualifier(child, parent, oldQual, newQual){
   var H={'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal'};
-  var qFilter = oldQual ? 'qualifier=eq.'+encodeURIComponent(oldQual) : 'qualifier=is.null';
+  var qFilter = oldQual ? 'qualifier=eq.'+encodeURIComponent(qualVal(oldQual)) : 'qualifier=is.null';
   await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(child)+'&parent=eq.'+encodeURIComponent(parent)+'&'+qFilter,
-    {method:'PATCH', headers:H, body:JSON.stringify({qualifier:newQual||null})});
+    {method:'PATCH', headers:H, body:JSON.stringify({qualifier:qualVal(newQual)||null,qual_kind:qualKindOf(newQual)})});
 }
 
 function cvStampVariantReviewed(child, parent, qual, col){
   var H={'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal'};
   var colName = col || 'wl_variant_review';
-  var qFilter = qual ? 'qualifier=eq.'+encodeURIComponent(qual) : 'qualifier=is.null';
+  var qFilter = qual ? 'qualifier=eq.'+encodeURIComponent(qualVal(qual)) : 'qualifier=is.null';
   var body = {}; body[colName] = new Date().toISOString();
   fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(child)+'&parent=eq.'+encodeURIComponent(parent)+'&'+qFilter,
     {method:'PATCH', headers:H, body:JSON.stringify(body)}).catch(function(){});
@@ -3642,7 +3876,6 @@ function wlBuildImmaculate(){
     if(r.parent) allWords.add(r.parent.toLowerCase());
   });
   var dismissedWords = new Set();
-  data.forEach(function(r){ if(r.wl_immaculate&&r.parent) dismissedWords.add(r.parent.toLowerCase()); });
   var rows = [];
   allWords.forEach(function(w){
     if(!hasParent.has(w)&&!primeSet.has(w)&&w!=='no'&&w!=='[orphan]'&&!dismissedWords.has(w)) rows.push(w);
@@ -3712,7 +3945,7 @@ function wlBuildImmaculate(){
         await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{
           method:'POST',
           headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal,resolution=ignore-duplicates'},
-          body:JSON.stringify({child:word,parent:parent,qualifier:qual||'',session_id:'cavendish7'})
+          body:JSON.stringify({child:word,parent:parent,qualifier:qualVal(qual||''),qual_kind:qualKindOf(qual||''),session_id:'cavendish7'})
         });
         cvShowSavedToast();
         wrap.style.opacity='0.4';
@@ -3810,8 +4043,8 @@ async function wlBuildGap(){
         try{
           var H={'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal,resolution=ignore-duplicates'};
           var HD={'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'};
-          await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:H,body:JSON.stringify({child:r.child,parent:mid,qualifier:'',session_id:'cavendish7'})});
-          await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:H,body:JSON.stringify({child:mid,parent:r.parent,qualifier:'',session_id:'cavendish7'})});
+          await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:H,body:JSON.stringify({child:r.child,parent:mid,qualifier:'',qual_kind:null,session_id:'cavendish7'})});
+          await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:H,body:JSON.stringify({child:mid,parent:r.parent,qualifier:'',qual_kind:null,session_id:'cavendish7'})});
           await fetch(SUPABASE_URL+'/rest/v1/murray_slips?child=eq.'+encodeURIComponent(r.child)+'&parent=eq.'+encodeURIComponent(r.parent),{method:'DELETE',headers:HD});
           block.innerHTML='<div style="padding:6px 10px;font-size:12px;color:#595959">✓ ‘'+mid+'’ inserted between '+r.child+' and '+r.parent+'</div>';
           await reloadAllSlipData();
@@ -4192,7 +4425,7 @@ function txRenderNode(container, word, depth, ancestorSet){
           }));
         }
         await fetch(SUPABASE_URL+'/rest/v1/murray_slips',{method:'POST',headers:HJ,
-          body:JSON.stringify({child:txPlacing,parent:word,qualifier:'',session_id:'cavendish7'})});
+          body:JSON.stringify({child:txPlacing,parent:word,qualifier:'',qual_kind:null,session_id:'cavendish7'})});
         // rebuild maps and re-render
         txBuildMaps();
         txExpanded[word] = true;

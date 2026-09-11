@@ -1,7 +1,7 @@
 // avatars.js — shared module for avatar claim + visitor list
 // Included in both index.html and curate.html via <script src="avatars.js">
 // Requires: SUPABASE_URL, SUPABASE_KEY, USER_AVATAR (globals from host page)
-// Session 45 — updated v2605311246
+// Session 70 — updated v2609071650
 
 // ── Fetch all claimed avatars ─────────────────────────────────────────────────
 async function avFetchAll() {
@@ -57,6 +57,24 @@ function avRemovePortal(el) {
   if (el && el.parentNode) el.parentNode.removeChild(el);
 }
 
+// ── Session avatar display name ──────────────────────────────────────────────
+// Both hosts build sids as 'avatar_' + name-with-underscores; derive the
+// human-readable name from the sid so no host changes are needed. (S70)
+function avSessionName(sessionId){
+  return (sessionId && sessionId.indexOf('avatar_') === 0)
+    ? sessionId.slice(7).replace(/_/g, ' ')
+    : '';
+}
+
+function avSessionNameEl(sessionId, marginBottom){
+  var nm = avSessionName(sessionId);
+  if(!nm) return null;
+  var el = document.createElement('div');
+  el.style.cssText = 'font-size:13px;color:#D80000;text-align:center;line-height:1.4;padding:4px 12px;cursor:default' + (marginBottom ? ';margin-bottom:' + marginBottom : '');
+  el.textContent = 'Session avatar: \u2018' + nm + '\u2019';
+  return el;
+}
+
 // ── "Claim Avatar" dialog ─────────────────────────────────────────────────────
 // sessionId: the current user's session_id string
 // currentDescription: pre-fill if they've already claimed (pass '' if none)
@@ -82,9 +100,11 @@ function avShowClaimDialog(sessionId, currentDescription, onSaved) {
   titleRow.appendChild(title);
   titleRow.appendChild(helpLink);
 
+  var nameLine = avSessionNameEl(sessionId, '8px');
+
   var body = document.createElement('div');
   body.style.cssText = 'font-size:13px;color:#444;line-height:1.5;margin-bottom:12px';
-  body.textContent = 'Lexonomy values first and foremost complete openness in curation. But if you would like to identify yourself — cryptically, humorously, or even down to contact information — enter it here. Others will then be able to see your description in the list of visitors. Inappropriate content will be removed.';
+  body.textContent = AV_CLAIM_BODY;
 
   var label = document.createElement('div');
   label.style.cssText = 'font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#595959;margin-bottom:5px';
@@ -92,7 +112,7 @@ function avShowClaimDialog(sessionId, currentDescription, onSaved) {
 
   var textarea = document.createElement('textarea');
   textarea.style.cssText = 'width:100%;border:1.5px solid #ccc;border-radius:6px;padding:8px 10px;font-size:13px;font-family:inherit;line-height:1.5;resize:vertical;min-height:80px;white-space:pre-wrap;box-sizing:border-box';
-  textarea.placeholder = 'Who are you?';
+  textarea.placeholder = AV_CLAIM_PLACEHOLDER;
   textarea.maxLength = 500;
   // Use textContent-equivalent for textarea: .value — safe, no innerHTML
   textarea.value = currentDescription || '';
@@ -118,7 +138,7 @@ function avShowClaimDialog(sessionId, currentDescription, onSaved) {
   saveBtn.textContent = 'Save';
   saveBtn.onclick = async function(){
     var desc = textarea.value.trim();
-    if (!desc) { errMsg.textContent = 'Please enter a description, or Cancel.'; return; }
+    if (!desc) { errMsg.textContent = AV_CLAIM_EMPTY_ERROR; return; }
     saveBtn.disabled = true;
     saveBtn.textContent = 'Saving…';
     errMsg.textContent = '';
@@ -129,7 +149,7 @@ function avShowClaimDialog(sessionId, currentDescription, onSaved) {
     } catch(e) {
       saveBtn.disabled = false;
       saveBtn.textContent = 'Save';
-      errMsg.textContent = 'Save failed. Please try again.';
+      errMsg.textContent = AV_CLAIM_SAVE_ERROR;
     }
   };
 
@@ -139,7 +159,7 @@ function avShowClaimDialog(sessionId, currentDescription, onSaved) {
     deleteBtn.style.cssText = 'padding:7px 16px;border:1.5px solid #c00;border-radius:20px;font-size:13px;color:#c00;background:#fff;cursor:pointer;margin-right:auto';
     deleteBtn.textContent = 'Delete Claim';
     deleteBtn.onclick = async function(){
-      if (!confirm('Delete your avatar claim? This cannot be undone.')) return;
+      if (!confirm(AV_CLAIM_DELETE_CONFIRM)) return;
       deleteBtn.disabled = true;
       deleteBtn.textContent = 'Deleting…';
       errMsg.textContent = '';
@@ -150,7 +170,7 @@ function avShowClaimDialog(sessionId, currentDescription, onSaved) {
       } catch(e) {
         deleteBtn.disabled = false;
         deleteBtn.textContent = 'Delete Claim';
-        errMsg.textContent = 'Delete failed. Please try again.';
+        errMsg.textContent = AV_CLAIM_DELETE_ERROR;
       }
     };
     btnRow.appendChild(deleteBtn);
@@ -158,6 +178,7 @@ function avShowClaimDialog(sessionId, currentDescription, onSaved) {
   btnRow.appendChild(cancelBtn);
   btnRow.appendChild(saveBtn);
   card.appendChild(titleRow);
+  if(nameLine) card.appendChild(nameLine);
   card.appendChild(body);
   card.appendChild(label);
   card.appendChild(textarea);
@@ -195,6 +216,13 @@ function avShowMenu(anchorEl, sessionId, currentDescription, onVisitorList) {
     item.onmouseleave = function(){ item.style.background = ''; };
     item.onclick = function(){ avRemovePortal(menu); onclick(); };
     return item;
+  }
+
+  var nameHdr = avSessionNameEl(sessionId);
+  if(nameHdr){
+    nameHdr.style.padding = '9px 16px 4px';
+    nameHdr.style.maxWidth = '200px';
+    menu.appendChild(nameHdr);
   }
 
   menu.appendChild(menuItem(

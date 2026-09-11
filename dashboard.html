@@ -1,4 +1,4 @@
-<!DOCTYPE html><!-- v2606072620 -->
+<!DOCTYPE html><!-- v2609101627 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -90,6 +90,10 @@
   .tile-full { grid-column: 1 / -1; }
 
   /* ── tile base ── */
+  .tile-link { cursor: pointer; }
+  .tile-link:hover { box-shadow: 0 0 0 1.5px #185FA5, var(--tile-r); }
+  .tile-link .tile-label, .tile-link .tile-label a { color: #268ff6; }
+
   .tile {
     background: var(--tile);
     border-radius: 14px;
@@ -285,32 +289,8 @@
 
 <div class="dash-wrap">
 
-  <!-- ── Participation ── -->
-  <div class="section-head">Participation</div>
-  <div class="dash-grid">
-    <div class="tile tile-full stale" id="tile-visitors">
-      <span class="recalc-badge">Recalculating…</span>
-      <div class="tile-label" id="lbl-visitors">Unique Visitors</div>
-      <div class="tile-desc" id="desc-visitors"></div>
-      <div class="visitor-inner">
-        <div class="visitor-arc-wrap">
-          <svg viewBox="0 0 110 64" width="100" height="58">
-            <path d="M 10 60 A 45 45 0 0 1 100 60" fill="none" stroke="#e8e8e2" stroke-width="8" stroke-linecap="round"/>
-            <path id="arc-fill" d="M 10 60 A 45 45 0 0 1 100 60" fill="none" stroke="#185FA5" stroke-width="8" stroke-linecap="round"
-              stroke-dasharray="0 141.37" style="transition:stroke-dasharray .8s cubic-bezier(.4,0,.2,1),stroke .4s"/>
-          </svg>
-        </div>
-        <div class="visitor-numbers">
-          <div class="visitor-count" id="val-visitors">—</div>
-          <div class="visitor-pct" id="val-visitors-pct"></div>
-        </div>
-      </div>
-      <div class="tile-relation" id="rel-visitors"></div>
-    </div>
-  </div>
-
-  <!-- ── Quality ── -->
-  <div class="section-head">Quality</div>
+  <!-- ── Quantity ── -->
+  <div class="section-head">Quantity</div>
   <div class="dash-grid">
 
     <!-- Total Slips -->
@@ -323,24 +303,24 @@
     </div>
 
     <!-- Unique Words -->
-    <div class="tile stale" id="tile-words">
+    <div class="tile stale tile-link" id="tile-words" onclick="return dashNav('index.html?lk=terms')">
       <span class="recalc-badge">Recalculating…</span>
       <div class="tile-label" id="lbl-words">Unique Words</div>
       <div class="tile-desc" id="desc-words"></div>
-      <div class="tile-value state-blue" id="val-words">—</div>
+      <div class="tile-value state-blue" id="val-words"><span id="val-words-inner">—</span></div>
       <div class="tile-sub" id="sub-words"></div>
       <div class="tile-relation" id="rel-words"></div>
     </div>
 
     <!-- Vocabulary Frontier (full width) -->
-    <div class="tile tile-full stale" id="tile-frontier">
+    <div class="tile stale" id="tile-frontier">
       <span class="recalc-badge">Recalculating…</span>
       <div class="tile-label" id="lbl-frontier">Vocabulary Frontier</div>
       <div class="tile-desc" id="desc-frontier"></div>
       <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap">
         <div>
           <div class="tile-value state-amber" id="val-frontier">—</div>
-          <div class="tile-sub" id="sub-frontier">leaf words</div>
+          <div class="tile-sub" id="sub-frontier"></div>
         </div>
         <div style="flex:1;min-width:120px">
           <div class="frontier-bar-wrap">
@@ -362,44 +342,131 @@
       <div class="tile-relation" id="rel-frontier"></div>
     </div>
 
+    <div class="tile stale tile-link" id="tile-qc" onclick="return dashNav('index.html?wl=qualcensus')">
+      <span class="recalc-badge">Recalculating…</span>
+      <div class="tile-label" id="lbl-qc">Qualifier Census</div>
+      <div class="tile-desc" id="desc-qc">distinct qualifiers in use — the corpus's operator lexicon</div>
+      <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap">
+        <div>
+          <div class="tile-value state-amber" id="val-qc">—</div>
+          <div class="tile-sub" id="sub-qc"></div>
+        </div>
+        <div style="flex:1;min-width:120px">
+          <div class="frontier-bar-wrap">
+            <div class="frontier-bar-developed" id="bar-qc-quals" style="width:0%"></div>
+            <div class="frontier-bar-frontier" id="bar-qc-rest" style="width:0%"></div>
+          </div>
+          <div class="frontier-legend" style="flex-direction:column;align-items:flex-start;gap:2px">
+            <div class="frontier-legend-item">
+              <div class="frontier-dot" style="background:var(--blue)"></div>
+              <span id="legend-qc-quals">qualifiers</span>
+            </div>
+            <div class="frontier-legend-item">
+              <div class="frontier-dot" style="background:var(--amber)"></div>
+              <span id="legend-qc-terms">overall terms</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tile-relation" id="rel-qc">Qualifiers are the main curatorial pressure of Lexonomy, essentially a counter-force against polysemy.</div>
+    </div>
+
+  </div><!-- end quantity grid -->
+
+  <!-- ── Quality ── -->
+  <div class="section-head">Quality</div>
+  <div class="dash-grid">
+
     <!-- Unqualified -->
-    <div class="tile stale" id="tile-under">
+    <div class="tile stale tile-link" id="tile-under" onclick="return dashNav('index.html?wl=needsqual')">
       <span class="recalc-badge">Recalculating…</span>
       <div class="tile-label" id="lbl-under">Unqualified</div>
       <div class="tile-desc" id="desc-under"></div>
-      <div class="tile-value" id="val-under">—</div>
+      <div class="tile-value" id="val-under"><span id="val-under-inner">—</span></div>
       <div class="tile-sub" id="sub-under"></div>
       <div class="tile-bar-wrap"><div class="tile-bar" id="bar-under" style="width:0%"></div></div>
       <div class="tile-relation" id="rel-under"></div>
     </div>
 
     <!-- Competing Qualifiers -->
-    <div class="tile stale" id="tile-cq">
+    <div class="tile stale tile-link" id="tile-cq" onclick="return dashNav('index.html?wl=competingquals')">
       <span class="recalc-badge">Recalculating…</span>
       <div class="tile-label" id="lbl-cq">Competing Quals</div>
       <div class="tile-desc" id="desc-cq"></div>
-      <div class="tile-value" id="val-cq">—</div>
+      <div class="tile-value" id="val-cq"><span id="val-cq-inner">—</span></div>
       <div class="tile-relation" id="rel-cq"></div>
     </div>
 
     <!-- Orphans -->
-    <div class="tile stale" id="tile-orphans">
+    <div class="tile stale tile-link" id="tile-orphans" onclick="return dashNav('index.html?wl=orphans')">
       <span class="recalc-badge">Recalculating…</span>
       <div class="tile-label" id="lbl-orphans">Orphans</div>
       <div class="tile-desc" id="desc-orphans"></div>
-      <div class="tile-value" id="val-orphans">—</div>
+      <div class="tile-value" id="val-orphans"><span id="val-orphans-inner">—</span></div>
       <div class="tile-sub" id="sub-orphans"></div>
       <div class="tile-bar-wrap"><div class="tile-bar" id="bar-orphans" style="width:0%"></div></div>
       <div class="tile-relation" id="rel-orphans"></div>
     </div>
 
     <!-- Immaculate -->
-    <div class="tile stale" id="tile-imm">
+    <div class="tile stale tile-link" id="tile-imm" onclick="return dashNav('index.html?wl=immaculate')">
       <span class="recalc-badge">Recalculating…</span>
       <div class="tile-label" id="lbl-imm">Immaculate</div>
       <div class="tile-desc" id="desc-imm"></div>
-      <div class="tile-value state-blue" id="val-imm">—</div>
+      <div class="tile-value state-blue" id="val-imm"><span id="val-imm-inner">—</span></div>
       <div class="tile-relation" id="rel-imm"></div>
+    </div>
+
+    <!-- S67 doctrine metrics · computed from the same corpus pull -->
+    <!-- Temporal Inversions -->
+    <div class="tile stale" id="tile-tinv">
+      <span class="recalc-badge">Recalculating…</span>
+      <div class="tile-label" id="lbl-tinv">Temporal Inversions</div>
+      <div class="tile-desc" id="desc-tinv">slips whose qualifier sits deeper in the tree than the child it qualifies</div>
+      <div class="tile-value" id="val-tinv-wrap"><span id="val-tinv">—</span></div>
+      <div class="tile-sub" id="sub-tinv"></div>
+      <div class="tile-relation" id="rel-tinv"></div>
+    </div>
+
+    <!-- Reachability -->
+    <div class="tile stale" id="tile-reach">
+      <span class="recalc-badge">Recalculating…</span>
+      <div class="tile-label" id="lbl-reach">Reachability</div>
+      <div class="tile-desc" id="desc-reach">words with an unbroken chain to a prime</div>
+      <div class="tile-value" id="val-reach">—</div>
+      <div class="tile-sub" id="sub-reach"></div>
+      <div class="tile-bar-wrap"><div class="tile-bar" id="bar-reach" style="width:0%"></div></div>
+      <div class="tile-relation" id="rel-reach"></div>
+    </div>
+
+    <!-- Fat Families -->
+    <div class="tile stale tile-link" id="tile-fat" onclick="return dashNav('index.html?wl=bh')">
+      <span class="recalc-badge">Recalculating…</span>
+      <div class="tile-label" id="lbl-fat">Fat Families</div>
+      <div class="tile-desc" id="desc-fat">families of ≥12 children — the familization docket; falls as Phase 3 builds generations</div>
+      <div class="tile-value" id="val-fat-wrap"><span id="val-fat">—</span></div>
+      <div class="tile-sub" id="sub-fat"></div>
+      <div class="tile-relation" id="rel-fat"></div>
+    </div>
+
+    <!-- Symilar Collisions -->
+    <div class="tile stale" id="tile-symc">
+      <span class="recalc-badge">Recalculating…</span>
+      <div class="tile-label" id="lbl-symc">Symilar Collisions</div>
+      <div class="tile-desc" id="desc-symc">sibling groups sharing an identical qualifier — subtractions that no longer distinguish</div>
+      <div class="tile-value" id="val-symc">—</div>
+      <div class="tile-sub" id="sub-symc"></div>
+      <div class="tile-relation" id="rel-symc"></div>
+    </div>
+
+    <!-- Duplicate Slips -->
+    <div class="tile stale tile-link" id="tile-dup" onclick="return dashNav('index.html?wl=competingquals')">
+      <span class="recalc-badge">Recalculating…</span>
+      <div class="tile-label" id="lbl-dup">Duplicate Slips</div>
+      <div class="tile-desc" id="desc-dup">surplus rows repeating an existing child under the same parent</div>
+      <div class="tile-value" id="val-dup-wrap"><span id="val-dup">—</span></div>
+      <div class="tile-sub" id="sub-dup"></div>
+      <div class="tile-relation" id="rel-dup"></div>
     </div>
 
   </div><!-- end quality grid -->
@@ -407,10 +474,17 @@
 
 <div class="dash-footer">
   <a href="index.html">← Back to Lexonomy</a>
-  <span class="dash-footer-note">Live from Supabase · cached 1 hr</span>
+  <span class="dash-footer-note">Live from Supabase · cached 1 hr · v2609101627</span>
 </div>
 
 <script>
+// Navigate the opener (index.html tab) if available, else self
+function dashNav(url){
+  // S70: always navigate THIS tab. The old opener-tab routing "worked" invisibly —
+  // browsers ignore cross-tab focus(), so the user saw nothing happen.
+  window.location.href = url;
+  return false;
+}
 // ── config ────────────────────────────────────────────────────────────────────
 var SB_URL       = 'https://whtovqcfewvgviskhlwp.supabase.co';
 var SB_KEY       = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndodG92cWNmZXd2Z3Zpc2tobHdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2NTc3MjksImV4cCI6MjA4OTIzMzcyOX0._hUklyJU8LaaRY0P6K4YsANq_pRwyTiCYQI1fgLgH2U';
@@ -467,45 +541,72 @@ function render(data, stale){
   var frontier = data.frontier || 0;
   var developed = words - frontier;
 
-  // participation
-  var vpct = visitors / VISITOR_GOAL;
-  setArc(vpct);
-  setText('val-visitors', visitors.toLocaleString());
-  setText('val-visitors-pct', Math.min(Math.round(vpct * 100), 100) + '% of goal');
-
   // total slips
   setText('val-total', total.toLocaleString());
 
   // competing quals
   setClass('val-cq', 'tile-value ' + colorForCQ(cq));
-  setText('val-cq', cq.toLocaleString());
+  setText('val-cq-inner', cq.toLocaleString());
 
   // orphans — % of slips
   var oPct = total ? orphans / total : 0;
   setClass('val-orphans', 'tile-value ' + colorForPct(oPct));
-  setText('val-orphans', orphans.toLocaleString());
+  setText('val-orphans-inner', orphans.toLocaleString());
   setText('sub-orphans', total ? Math.round(oPct * 100) + '% of slips' : '');
   setBar('bar-orphans', oPct);
+
+  // ── S67 doctrine tiles ──
+  setText('val-tinv', (data.tinv||0).toLocaleString());
+  setText('sub-tinv', 'gap ≥2: ' + (data.tinv2||0) + ' · gap ≥3: ' + (data.tinv3||0));
+  setClass('val-tinv', 'tile-value ' + ((data.tinv||0)===0 ? 'state-zero' : ((data.tinv||0)<=200 ? 'state-amber' : 'state-red')));
+
+  var rPct = (data.lexN||0) ? (data.reachN||0)/(data.lexN||1) : 0;
+  setText('val-reach', Math.round(rPct*100) + '%');
+  setText('sub-reach', ((data.lexN||0)-(data.reachN||0)).toLocaleString() + ' words unreachable');
+  setClass('val-reach', 'tile-value ' + (rPct>=0.97 ? 'state-green' : (rPct>=0.9 ? 'state-amber' : 'state-red')));
+  setBar('bar-reach', 1-rPct);
+
+  setText('val-fat', (data.f12||0).toLocaleString());
+  var fatPct = (data.totalFamSlips||0) ? (data.fatSlips||0)/(data.totalFamSlips||1) : 0;
+  setText('sub-fat', '≥8: ' + (data.f8||0) + ' · ≥20: ' + (data.f20||0) + ' · ' + Math.round(fatPct*100) + '% of slips in ≥8 families');
+
+  setText('val-symc', (data.symc||0).toLocaleString());
+  setText('sub-symc', (data.symSlips||0) + ' slips share a sibling\u2019s qualifier');
+  setClass('val-symc', 'tile-value ' + ((data.symc||0)===0 ? 'state-zero' : ((data.symc||0)<=25 ? 'state-amber' : 'state-red')));
+
+  setText('val-dup', (data.dupSurplus||0).toLocaleString());
+  setText('sub-dup', (data.dupG||0) + ' duplicated child+parent pairs');
+  var qcOps = data.qcOps || 0;
+  var qcPct = words ? qcOps / words : 0;
+  setText('val-qc', words ? Math.round(qcPct * 100) + '%' : '—');
+  setText('sub-qc', 'of ' + words.toLocaleString() + ' terms');
+  var bq = document.getElementById('bar-qc-quals');
+  var br = document.getElementById('bar-qc-rest');
+  if(bq) bq.style.width = (qcPct * 100).toFixed(1) + '%';
+  if(br) br.style.width = (Math.max(0, 1 - qcPct) * 100).toFixed(1) + '%';
+  setText('legend-qc-quals', qcOps.toLocaleString() + ' qualifiers');
+  setText('legend-qc-terms', words.toLocaleString() + ' overall terms');
+  setClass('val-dup', 'tile-value ' + ((data.dupSurplus||0)===0 ? 'state-zero' : ((data.dupSurplus||0)<=50 ? 'state-amber' : 'state-red')));
 
   // unqualified — % of slips
   var uPct = total ? under / total : 0;
   setClass('val-under', 'tile-value ' + colorForPct(uPct));
-  setText('val-under', under.toLocaleString());
+  setText('val-under-inner', under.toLocaleString());
   setText('sub-under', total ? Math.round(uPct * 100) + '% of slips' : '');
   setBar('bar-under', uPct);
 
   // immaculate
-  setText('val-imm', imm.toLocaleString());
+  setText('val-imm-inner', imm.toLocaleString());
 
   // unique words — ratio to slips
-  setText('val-words', words.toLocaleString());
+  setText('val-words-inner', words.toLocaleString());
   setText('sub-words', '');
 
   // vocabulary frontier — % of unique words
   var fPct = words ? frontier / words : 0;
   var dPct = words ? developed / words : 0;
-  setText('val-frontier', frontier.toLocaleString());
-  setText('sub-frontier', words ? Math.round(fPct * 100) + '% of vocabulary' : '');
+  setText('val-frontier', words ? Math.round(fPct * 100) + '%' : '—');
+  setText('sub-frontier', 'of ' + words.toLocaleString() + ' terms');
   // split bar
   var bDev = document.getElementById('bar-developed');
   var bFro = document.getElementById('bar-frontier-fill');
@@ -515,12 +616,8 @@ function render(data, stale){
   setText('legend-developed', developed.toLocaleString() + ' developed');
   setText('legend-frontier',  frontier.toLocaleString()  + ' frontier');
 
-  // shimmer
-  var tileIds = ['tile-visitors','tile-total','tile-cq','tile-orphans','tile-under','tile-imm','tile-words','tile-frontier'];
-  tileIds.forEach(function(id){
-    var el = document.getElementById(id);
-    if(el) el.classList.toggle('stale', !!stale);
-  });
+  // shimmer — all tiles, no membership list (S68 fix: hardcoded id list stranded the five doctrine tiles in stale)
+  document.querySelectorAll('.tile').forEach(function(el){ el.classList.toggle('stale', !!stale); });
 
   // timestamp
   var updEl = document.getElementById('dash-updated');
@@ -571,7 +668,7 @@ async function fetchVisitors(){
 async function fetchCompetingQuals(){
   var PAGE=1000, offset=0, cqMap={};
   while(true){
-    var rows = await sbFetch('/rest/v1/murray_slips?select=child,parent,qualifier'+
+    var rows = await sbFetch('/rest/v1/murray_slips?select=child,parent,qualifier,qual_kind'+
       '&session_id=not.like.play_*&limit='+PAGE+'&offset='+offset);
     if(!Array.isArray(rows)||rows.length===0) break;
     rows.forEach(function(r){
@@ -598,8 +695,9 @@ async function fetchWordsAndFrontier(){
   var PAGE=1000, offset=0;
   var allWords=new Set(), parentWords=new Set(), childWords=new Set();
   var primeSet=new Set(), dismissedWords=new Set();
+  var slips=[], primeSet2=new Set(); // S67: raw rows + current-convention primes (parent='[prime]')
   while(true){
-    var rows = await sbFetch('/rest/v1/murray_slips?select=child,parent,qualifier,wl_immaculate'+
+    var rows = await sbFetch('/rest/v1/murray_slips?select=child,parent,qualifier,qual_kind'+
       '&session_id=not.like.play_*&limit='+PAGE+'&offset='+offset);
     if(!Array.isArray(rows)||rows.length===0) break;
     rows.forEach(function(r){
@@ -614,9 +712,10 @@ async function fetchWordsAndFrontier(){
       // prime: parent='no', qualifier='[prime]'
       if(r.child && r.parent && r.parent.toLowerCase()==='no' && r.qualifier==='[prime]')
         primeSet.add(r.child.toLowerCase());
-      // curator-dismissed immaculates
-      if(r.wl_immaculate && r.parent)
-        dismissedWords.add(r.parent.toLowerCase());
+      // S67: current convention — primes are children of '[prime]'
+      if(r.child && r.parent==='[prime]') primeSet2.add(r.child.toLowerCase());
+      slips.push({ c:(r.child||'').toLowerCase().trim(), p:(r.parent||'').toLowerCase().trim(), q:(r.qualifier||'').toLowerCase().trim(), k:(r.qual_kind||null) });
+
     });
     if(rows.length<PAGE) break;
     offset+=PAGE;
@@ -628,7 +727,59 @@ async function fetchWordsAndFrontier(){
   parentWords.forEach(function(w){
     if(!childWords.has(w) && !primeSet.has(w) && w!=='no' && !dismissedWords.has(w)) imm++;
   });
-  return { words: allWords.size, frontier: frontier, imm: imm };
+  // ── S67 doctrine metrics (same pull, one pass + BFS) ──
+  var kids={};
+  slips.forEach(function(s){ if(s.p && s.p.charAt(0)!=='[' && s.c){ (kids[s.p]=kids[s.p]||new Set()).add(s.c); } });
+  var depth={}, queue=[];
+  primeSet2.forEach(function(pr){ depth[pr]=0; queue.push(pr); });
+  while(queue.length){
+    var u=queue.shift(), ch=kids[u];
+    if(ch) ch.forEach(function(v){ if(depth[v]===undefined){ depth[v]=depth[u]+1; queue.push(v); } });
+  }
+  var lexWords=new Set();
+  slips.forEach(function(s){ if(s.c && s.c.charAt(0)!=='[') lexWords.add(s.c); if(s.p && s.p.charAt(0)!=='[') lexWords.add(s.p); });
+  primeSet2.forEach(function(pr){ lexWords.add(pr); });
+  var reachN=0; lexWords.forEach(function(w){ if(depth[w]!==undefined) reachN++; });
+
+  function qmain(q){ return q.replace(/\s*\[alt:[^\]]*\]\s*/g,'').trim(); }
+  var tinv=0, tinv2=0, tinv3=0;
+  var symGroups={}, dupGroups={};
+  slips.forEach(function(s){
+    if(!s.p || s.p.charAt(0)==='[') return;
+    dupGroups[s.c+'\u0001'+s.p]=(dupGroups[s.c+'\u0001'+s.p]||0)+1;
+    var q=qmain(s.q);
+    var mech = s.k ? s.k==='variant' : (!!q && q.charAt(0)==='[');
+    if(q && !mech){
+      var dc=depth[s.c], dq=depth[q];
+      if(dc!==undefined && dq!==undefined && dq>dc){ tinv++; if(dq-dc>=2) tinv2++; if(dq-dc>=3) tinv3++; }
+      (symGroups[s.p+'\u0001'+q]=symGroups[s.p+'\u0001'+q]||new Set()).add(s.c);
+    }
+  });
+  var qcOps=new Set(), qcVars=new Set();
+  slips.forEach(function(s){
+    var q=(s.q||'').trim(); if(!q) return;
+    var isVar = s.k ? s.k==='variant' : /^\[.+\]$/.test(q);
+    if(isVar) qcVars.add(q.toLowerCase()); else qcOps.add(qmain(q).toLowerCase());
+  });
+  var symc=0, symSlips=0;
+  Object.keys(symGroups).forEach(function(k){ var n=symGroups[k].size; if(n>1){ symc++; symSlips+=n; } });
+  var dupG=0, dupSurplus=0;
+  Object.keys(dupGroups).forEach(function(k){ var n=dupGroups[k]; if(n>1){ dupG++; dupSurplus+=n-1; } });
+  var f8=0, f12=0, f20=0, fatSlips=0, totalFamSlips=0;
+  Object.keys(kids).forEach(function(p){
+    var n=kids[p].size;
+    if(n>=8){ f8++; fatSlips+= (slips.filter(function(s){return s.p===p;}).length); }
+    if(n>=12) f12++;
+    if(n>=20) f20++;
+  });
+  slips.forEach(function(s){ if(s.p && s.p.charAt(0)!=='[') totalFamSlips++; });
+
+  return { words: allWords.size, frontier: frontier, imm: imm,
+    tinv:tinv, tinv2:tinv2, tinv3:tinv3,
+    reachN:reachN, lexN:lexWords.size,
+    f8:f8, f12:f12, f20:f20, fatSlips:fatSlips, totalFamSlips:totalFamSlips,
+    symc:symc, symSlips:symSlips, dupG:dupG, dupSurplus:dupSurplus,
+    qcOps:qcOps.size, qcVars:qcVars.size };
 }
 
 // ── main fetch ────────────────────────────────────────────────────────────────
@@ -652,6 +803,11 @@ async function fetchAll(){
     words:    wf.words,
     frontier: wf.frontier,
     imm:      wf.imm,
+    tinv: wf.tinv||0, tinv2: wf.tinv2||0, tinv3: wf.tinv3||0,
+    reachN: wf.reachN||0, lexN: wf.lexN||0,
+    f8: wf.f8||0, f12: wf.f12||0, f20: wf.f20||0, fatSlips: wf.fatSlips||0, totalFamSlips: wf.totalFamSlips||0,
+    symc: wf.symc||0, symSlips: wf.symSlips||0, dupG: wf.dupG||0, dupSurplus: wf.dupSurplus||0,
+    qcOps: wf.qcOps||0, qcVars: wf.qcVars||0,
     ts:       Date.now()
   };
 }
@@ -660,21 +816,26 @@ async function fetchAll(){
 function str(k){ try{ var v=window[k]; return typeof v==='string'&&v?v:''; }catch(e){ return ''; } }
 function applyStrings(){
   var map = {
-    visitors: { lbl:'DB_VISITORS_TITLE', desc:'DB_VISITORS_DESC', rel:'DB_VISITORS_RELATION' },
     total:    { lbl:'DB_TOTAL_TITLE',    desc:'DB_TOTAL_DESC',    rel:'DB_TOTAL_RELATION'    },
     cq:       { lbl:'DB_CQ_TITLE',       desc:'DB_CQ_DESC',       rel:'DB_CQ_RELATION'       },
     orphans:  { lbl:'DB_ORPHAN_TITLE',   desc:'DB_ORPHAN_DESC',   rel:'DB_ORPHAN_RELATION'   },
     under:    { lbl:'DB_UNQUAL_TITLE',   desc:'DB_UNQUAL_DESC',   rel:'DB_UNQUAL_RELATION'   },
     imm:      { lbl:'DB_IMM_TITLE',      desc:'DB_IMM_DESC',      rel:'DB_IMM_RELATION'      },
     words:    { lbl:'DB_WORDS_TITLE',    desc:'DB_WORDS_DESC',    rel:'DB_WORDS_RELATION'    },
-    frontier: { lbl:'DB_FRONTIER_TITLE', desc:'DB_FRONTIER_DESC', rel:'DB_FRONTIER_RELATION' }
+    frontier: { lbl:'DB_FRONTIER_TITLE', desc:'DB_FRONTIER_DESC', rel:'DB_FRONTIER_RELATION' },
+    tinv:     { lbl:'DB_TINV_TITLE',     desc:'DB_TINV_DESC',     rel:'DB_TINV_RELATION'     },
+    reach:    { lbl:'DB_REACH_TITLE',    desc:'DB_REACH_DESC',    rel:'DB_REACH_RELATION'    },
+    fat:      { lbl:'DB_FAT_TITLE',      desc:'DB_FAT_DESC',      rel:'DB_FAT_RELATION'      },
+    symc:     { lbl:'DB_SYMC_TITLE',     desc:'DB_SYMC_DESC',     rel:'DB_SYMC_RELATION'     },
+    dup:      { lbl:'DB_DUP_TITLE',      desc:'DB_DUP_DESC',      rel:'DB_DUP_RELATION'      },
+    qc:       { lbl:'DB_QC_TITLE',       desc:'DB_QC_DESC',       rel:'DB_QC_RELATION'       }
   };
   Object.keys(map).forEach(function(key){
     var m=map[key];
     ['lbl','desc','rel'].forEach(function(part){
       var el=document.getElementById(part+'-'+key);
       var s=str(m[part]);
-      if(el&&s) el.textContent=s;
+      if(el&&s){ var anchor=el.querySelector('a'); if(part==='lbl'&&anchor){ anchor.textContent=s; } else { el.textContent=s; } }
     });
   });
 }
@@ -689,8 +850,7 @@ function applyStrings(){
     cacheSave(fresh);
     render(fresh, false);
   } catch(e){
-    ['tile-visitors','tile-total','tile-cq','tile-orphans','tile-under','tile-imm','tile-words','tile-frontier']
-      .forEach(function(id){ var el=document.getElementById(id); if(el) el.classList.remove('stale'); });
+    document.querySelectorAll('.tile').forEach(function(el){ el.classList.remove('stale'); });
     var updEl = document.getElementById('dash-updated');
     updEl.textContent = 'Live fetch failed';
     updEl.classList.remove('recalc');
