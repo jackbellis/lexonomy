@@ -28,7 +28,7 @@
 </style> </head>
   <body class="bodycntr">
     <h1>Welcome to Lexonomy</h1>
-    <p>September 11, 2026 </p>
+    <p>November 21, 2026 </p>
     <p><strong>Table of Contents</strong></p>
     <p><a href="accessibility.html">Accessibility Statement</a>&nbsp;&nbsp;<a href="#bugs">Bugs
         and Limitations</a>&nbsp;&nbsp;<a href="#about">About</a></p>
@@ -36,7 +36,7 @@
       &nbsp;&nbsp;<a href="#where">Where</a>&nbsp; &nbsp;&nbsp;<a href="#why">Why</a>&nbsp;
       &nbsp;&nbsp;<a href="#when">When</a>&nbsp; &nbsp; &nbsp;<a href="#how">How</a>&nbsp;
       &nbsp;&nbsp;<a href="#howmuch">How Much</a>&nbsp;</p>
-    <p><a href="#underthehood">Under the Hood</a>&nbsp;&nbsp;<a href="#synonyms">Synonyms,
+    <p><a href="#dataset">The Open Dataset</a>&nbsp;&nbsp;<a href="#underthehood">Under the Hood</a>&nbsp;&nbsp;<a href="#synonyms">Synonyms,
         Antonyms, Nature, and Parts-of-Speech</a>&nbsp;&nbsp;<a href="#prime">Prime
         Words</a> <a href="#connectors">Connectors</a></p>
     <p><a href="#instructions">Instructions</a>&nbsp; &nbsp;<a href="#avatars">Avatars</a></p>
@@ -244,6 +244,8 @@
     <h2><a id="where"></a>Where</h2>
     <ul>
       <li>Lexonomy.org</li>
+      <li>And the complete corpus is published as an open dataset: <a href="https://huggingface.co/datasets/jbellis/lexonomy">huggingface.co/datasets/jbellis/lexonomy</a>
+        (see <a href="#dataset">The Open Dataset</a>, below).</li>
     </ul>
     <h2><a id="why"></a>Why</h2>
     <ul>
@@ -398,6 +400,32 @@
       <li>Free, other than the cost of getting on the Web.</li>
       <li>No spam, currently no login, no password, no secret handshake, no
         nothin. If it gets trashed I'll do a restore and do what has to be done.</li>
+    </ul>
+    <h2><a id="dataset"></a>The Open Dataset</h2>
+    <p>As of September 2026, the complete Lexonomy corpus—roughly 6,000
+      entries—is published as an open dataset on <a href="https://huggingface.co/datasets/jbellis/lexonomy">Hugging
+        Face</a>, the platform where the machine-learning and
+      computational-linguistics communities share data. A few particulars:</p>
+    <ul>
+      <li><strong>License: CC0</strong> (public domain dedication). Use it for
+        anything—research, teaching, analysis, even training AI—no permission
+        or attribution required, though a citation is appreciated.</li>
+      <li><strong>What's in it:</strong> every entry (term, parent, qualifier,
+        and the qualifier's kind: operator, variant, or negation), the full
+        curation trail in the notes—prior placements, rule citations, recorded
+        dissents—and the written 'curation constitution' that governs the
+        AI-assisted curation passes.</li>
+      <li><strong>The headline result</strong> on the dataset card: the
+        hierarchy's placement order was tested against the Kuperman
+        age-of-acquisition norms (31,105 words), producing 492 corrections and
+        reducing the measured temporal-coherence debt from 808 to 429. In other
+        words, the tree's core ordering claim—parents are acquired no later
+        than their children—has been checked against empirical data, row by
+        row.</li>
+      <li><strong>Using it:</strong> browse it in the page's built-in data
+        viewer, download the CSV, or load it in one line of Python: <code>load_dataset("jbellis/lexonomy")</code>.</li>
+      <li>The dataset is a snapshot, refreshed as curation milestones land;
+        lexonomy.org is always the live corpus.</li>
     </ul>
     <h2><a id="underthehood"></a><strong>'Under the Hood'</strong></h2>
     <p>Lexonomy uses a simple database that is fundamentally 3 fields:</p>
@@ -1823,6 +1851,10 @@
       alt="Complex multi-format diagram of many Lexonomy principles" title="Lexonomy Infographic">
     <p></p>
     <h2>Revision History</h2>
+    <p><strong>November 21, 2026— </strong>Added 'The Open Dataset' section:
+      the complete corpus is published on Hugging Face (CC0), with the Kuperman
+      age-of-acquisition validation as the headline. Also linked under 'Where.'<br>
+    </p>
     <p><strong>August 28, 2026</strong><strong>— </strong>Changed primitives
       diagram to simpler vertical version.<strong><br>
       </strong></p>
